@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/common/text_style.dart';
+import 'package:hackaton_v1/controllers/recipe_creation_controller.dart';
 import 'package:hackaton_v1/core/extensions.dart';
 import '../../../common/custom_image_icon.dart';
 import '../../../common/custom_list_tile.dart';
@@ -9,9 +10,9 @@ import '../../../common/custom_textfield.dart';
 import '../../../common/network_image_widget.dart';
 import '../../../core/utils.dart';
 import '../../../gen/assets.gen.dart';
-import '../controller/recipe_creation_controller.dart';
 import '../views/image_preview.dart';
 import '../views/recipe_creation_view.dart';
+import 'package:hackaton_v1/models/cooking_step.dart';
 
 class CookingStepWidget extends StatelessWidget {
   const CookingStepWidget({
@@ -20,18 +21,19 @@ class CookingStepWidget extends StatelessWidget {
     required this.ref,
     required this.cookingStep,
     required this.cookingStepNumber,
+    required this.provider,
   });
 
   final TextTheme textTheme;
-
   final WidgetRef ref;
   final CookingStep cookingStep;
   final int cookingStepNumber;
+  final AutoDisposeStateProvider<List<CookingStep>> provider;
 
   @override
   Widget build(BuildContext context) {
-    final cookingSteps = ref.watch(cookingStepsProvider);
-    final List<CookingStep> steps = ref.watch(cookingStepsProvider);
+    final cookingSteps = ref.watch(provider);
+    final List<CookingStep> steps = ref.watch(provider);
     final cookingCreationController =
         ref.watch(recipeCreationProvider.notifier);
 
@@ -47,60 +49,57 @@ class CookingStepWidget extends StatelessWidget {
                 maxRadius: 12,
                 child: Text('$cookingStepNumber', style: context.h6),
               ),
-              IconButton(
-                onPressed: () {},
-                icon: PopupMenuButton<int>(
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      value: 1,
-                      onTap: () {
-                        final cookingStep = CookingStep(
-                          attachment: '',
-                          instructions: TextEditingController(),
-                        );
-                        ref.read(cookingStepsProvider.notifier).state = [
-                          ...cookingSteps,
-                          cookingStep
-                        ];
-                        SchedulerBinding.instance
-                            .addPostFrameCallback((timeStamp) {
-                          ref
-                              .read(scrollControllerProvider.notifier)
-                              .state
-                              .animateTo(
-                                ref
-                                    .read(scrollControllerProvider.notifier)
-                                    .state
-                                    .position
-                                    .maxScrollExtent,
-                                curve: Curves.easeOut,
-                                duration: const Duration(milliseconds: 300),
-                              );
-                        });
-                      },
-                      child: const CustomListTile(
-                        title: Text('Add new step'),
-                        leading: Icon(Icons.add),
-                      ),
+              PopupMenuButton<int>(
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    value: 1,
+                    onTap: () {
+                      final cookingStep = CookingStep(
+                        attachment: '',
+                        instructions: TextEditingController(),
+                      );
+                      ref.read(provider.notifier).state = [
+                        ...cookingSteps,
+                        cookingStep
+                      ];
+                      SchedulerBinding.instance
+                          .addPostFrameCallback((timeStamp) {
+                        ref
+                            .read(scrollControllerProvider.notifier)
+                            .state
+                            .animateTo(
+                              ref
+                                  .read(scrollControllerProvider.notifier)
+                                  .state
+                                  .position
+                                  .maxScrollExtent,
+                              curve: Curves.easeOut,
+                              duration: const Duration(milliseconds: 300),
+                            );
+                      });
+                    },
+                    child: const CustomListTile(
+                      title: Text('Add new step'),
+                      leading: Icon(Icons.add),
                     ),
-                    PopupMenuItem(
-                      onTap: () {
-                        int currentStepIndex = steps.indexOf(cookingStep);
-                        steps.removeAt(currentStepIndex);
-                        ref.read(cookingStepsProvider.notifier).update((state) {
-                          return [...steps];
-                        });
-                      },
-                      value: 2,
-                      child: const CustomListTile(
-                        title: Text('Delete'),
-                        leading: Icon(Icons.delete),
-                      ),
+                  ),
+                  PopupMenuItem(
+                    onTap: () {
+                      int currentStepIndex = steps.indexOf(cookingStep);
+                      steps.removeAt(currentStepIndex);
+                      ref.read(provider.notifier).update((state) {
+                        return [...steps];
+                      });
+                    },
+                    value: 2,
+                    child: const CustomListTile(
+                      title: Text('Delete'),
+                      leading: Icon(Icons.delete),
                     ),
-                  ],
-                  elevation: 2,
-                  child: const Icon(Icons.more_horiz),
-                ),
+                  ),
+                ],
+                elevation: 2,
+                child: const Icon(Icons.more_horiz),
               ),
             ],
           ),
@@ -127,6 +126,7 @@ class CookingStepWidget extends StatelessWidget {
                     replacement: GestureDetector(
                       onTap: () async {
                         FocusScope.of(context).unfocus();
+                        updateAttachment(context, cookingStep.attachment);
                       },
                       child: Container(
                         height: 140,
@@ -172,9 +172,7 @@ class CookingStepWidget extends StatelessWidget {
 
                         //update the cookings step list
 
-                        ref
-                            .watch(cookingStepsProvider.notifier)
-                            .update((state) {
+                        ref.watch(provider.notifier).update((state) {
                           return [...steps];
                         });
                       },
@@ -201,8 +199,8 @@ class CookingStepWidget extends StatelessWidget {
     );
   }
 
-  Future<dynamic> newMethod(BuildContext context, String e) {
-    List<CookingStep> cookingSteps = ref.watch(cookingStepsProvider);
+  Future<dynamic> updateAttachment(BuildContext context, String attachment) {
+    List<CookingStep> cookingSteps = ref.watch(provider);
     int currentStepIndex = cookingSteps.indexOf(cookingStep);
     CookingStep currentStep = cookingSteps[currentStepIndex];
     return showModalBottomSheet(
@@ -224,7 +222,7 @@ class CookingStepWidget extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => ImagePreviewView(imagePath: e),
+                        builder: (_) => ImagePreviewView(imagePath: attachment),
                       ),
                     );
                   },
@@ -235,18 +233,7 @@ class CookingStepWidget extends StatelessWidget {
                   onTap: () async {
                     Navigator.pop(context);
 
-                    //delete the image from api
-
-                    await ref
-                        .read(recipeCreationProvider.notifier)
-                        .deleteAttachment(e);
-
-                    //pick an image from storage
-
                     final image = await pickImage();
-
-                    //upload the image and get the id back
-
                     final imageId = await ref
                         .read(recipeCreationProvider.notifier)
                         .uploadAttachment(
@@ -257,7 +244,8 @@ class CookingStepWidget extends StatelessWidget {
                         );
 
                     currentStep = currentStep.copyWith(attachment: imageId);
-                    ref.read(cookingStepsProvider.notifier).update((state) {
+                    cookingSteps[currentStepIndex] = currentStep;
+                    ref.read(provider.notifier).update((state) {
                       return [...cookingSteps];
                     });
                   },
@@ -267,10 +255,8 @@ class CookingStepWidget extends StatelessWidget {
                   leading: const Icon(Icons.delete),
                   onTap: () {
                     currentStep = currentStep.copyWith(attachment: '');
-                    ref
-                        .read(recipeCreationProvider.notifier)
-                        .deleteAttachment(e);
-                    ref.read(cookingStepsProvider.notifier).update((state) {
+                    cookingSteps[currentStepIndex] = currentStep;
+                    ref.read(provider.notifier).update((state) {
                       return [...cookingSteps];
                     });
                     Navigator.pop(context);

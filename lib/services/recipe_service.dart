@@ -88,28 +88,6 @@ class RecipeService extends IRecipeService {
     }
   }
 
-  // @override
-  // Future<({Failure? failure, model.Document? recipe})> getRecipe({
-  //   required String recipeId,
-  // }) async {
-  //   try {
-  //     final recipe = await _databases.getDocument(
-  //       databaseId: AppwriteConstants.marketplaceDatabaseId,
-  //       collectionId: AppwriteConstants.recipeCollectionId,
-  //       documentId: ID.unique(),
-  //     );
-
-  //     return (failure: null, recipe: recipe);
-  //   } on AppwriteException catch (e, stackTrace) {
-  //     return (
-  //       failure: Failure(e.message ?? UiMessages.unexpectedError, stackTrace),
-  //       recipe: null
-  //     );
-  //   } catch (e, stackTrace) {
-  //     return (failure: Failure(e.toString(), stackTrace), recipe: null);
-  //   }
-  // }
-
   @override
   Future<({RecipeModel? recipe, Failure? failure})> getRecipe({
     required String recipeId,
@@ -132,7 +110,7 @@ class RecipeService extends IRecipeService {
     }
   }
 
-  Future<({bool? isSucceded, Failure? failure})> updateRecipe({
+  Future<({bool hasSucceded, Failure? failure})> updateRecipe({
     required String recipeId,
     required Map data,
   }) async {
@@ -144,14 +122,14 @@ class RecipeService extends IRecipeService {
         data: data,
       );
 
-      return (isSucceded: true, failure: null);
+      return (hasSucceded: true, failure: null);
     } on AppwriteException catch (e, stackTrace) {
       return (
         failure: Failure(e.message ?? UiMessages.unexpectedError, stackTrace),
-        isSucceded: null
+        hasSucceded: false
       );
     } catch (e, stackTrace) {
-      return (failure: Failure(e.toString(), stackTrace), isSucceded: null);
+      return (failure: Failure(e.toString(), stackTrace), hasSucceded: false);
     }
   }
 }

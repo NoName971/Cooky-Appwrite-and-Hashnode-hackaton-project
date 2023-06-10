@@ -76,7 +76,6 @@ class RecipeModel {
     result.addAll({'cookingTime': cookingTime});
     result.addAll({'cookingSteps': cookingSteps});
     result.addAll({'cookingStepsPics': cookingStepsPics});
-    result.addAll({'likes': likes});
     if (createdAt != null) {
       result.addAll({'createdAt': createdAt});
     }

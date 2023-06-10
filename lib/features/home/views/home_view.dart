@@ -69,7 +69,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   ? Assets.icons.favoriteFilled.path
                   : Assets.icons.favorite.path,
             ),
-            label: 'Favorites',
+            label: 'My recipes',
           ),
           NavigationDestination(
             icon: CustomImageIcon(

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/common/custom_button.dart';
-import 'package:hackaton_v1/features/auth/controller/auth_controller.dart';
+import 'package:hackaton_v1/constants/ui_messages.dart';
 
 class ErrorView extends ConsumerStatefulWidget {
-  const ErrorView({super.key, required this.error});
+  const ErrorView({
+    super.key,
+    required this.provider,
+  });
 
-  final String error;
+  final ProviderBase provider;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ErrorViewState();
@@ -16,13 +19,12 @@ class _ErrorViewState extends ConsumerState<ErrorView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(widget.error),
+            const Text(UiMessages.unexpectedError),
             const SizedBox(
               height: 20,
             ),
@@ -33,7 +35,7 @@ class _ErrorViewState extends ConsumerState<ErrorView> {
                 buttonSize: ButtonSize.large,
                 child: const Text('Retry'),
                 onPressed: () {
-                  ref.invalidate(authControllerProvider);
+                  ref.invalidate(widget.provider);
                 },
               ),
             )

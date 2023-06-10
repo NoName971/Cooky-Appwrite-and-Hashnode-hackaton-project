@@ -72,16 +72,44 @@ class RecipeCreationController extends StateNotifier<bool> {
         }
       } else {
         if (context.mounted) {
-          logger.d(response.failure!.message);
-          logger.d(response.failure!.stackTrace);
-
           showSnackBar(context, response.failure!.message);
         }
       }
-    } catch (e, stackTrace) {
+    } catch (e) {
       state = false;
-      logger.d(stackTrace);
-      logger.d(e);
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  Future<void> updateRecipe({
+    required RecipeModel recipeModel,
+    required BuildContext context,
+  }) async {
+    try {
+      state = true;
+      final ingredientsToString = recipeModel.ingredients.join(" ");
+      final title = recipeModel.title;
+      final queryableString = '$title $ingredientsToString';
+
+      final recipe = recipeModel.copyWith(queryableString: queryableString);
+
+      final response = await _recipeService.updateRecipe(
+        recipeId: recipe.id,
+        data: recipe.toMap(),
+      );
+      state = false;
+      if (response.hasSucceded) {
+        if (context.mounted) {
+          showSnackBar(context, 'Recipe updated successfully');
+          Navigator.pop(context);
+        }
+      } else {
+        if (context.mounted) {
+          showSnackBar(context, response.failure!.message);
+        }
+      }
+    } catch (e) {
+      state = false;
       showSnackBar(context, e.toString());
     }
   }

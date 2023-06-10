@@ -4,7 +4,7 @@ import 'package:focus_detector/focus_detector.dart';
 import 'package:hackaton_v1/common/custom_textfield.dart';
 import 'package:hackaton_v1/common/text_style.dart';
 import 'package:hackaton_v1/core/extensions.dart';
-import 'package:hackaton_v1/features/search/controller/search_controller.dart';
+import 'package:hackaton_v1/controllers/search_controller.dart';
 import 'package:hackaton_v1/models/recipe_model.dart';
 import '../../../common/appbar.dart';
 import '../../../common/custom_list_tile.dart';

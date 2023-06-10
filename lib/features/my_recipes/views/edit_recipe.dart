@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,16 +9,17 @@ import 'package:hackaton_v1/common/custom_list_tile.dart';
 import 'package:hackaton_v1/common/custom_textfield.dart';
 import 'package:hackaton_v1/common/network_image_widget.dart';
 import 'package:hackaton_v1/common/text_style.dart';
+import 'package:hackaton_v1/controllers/recipe_creation_controller.dart';
 import 'package:hackaton_v1/core/extensions.dart';
 import 'package:hackaton_v1/core/utils.dart';
-import 'package:hackaton_v1/controllers/recipe_creation_controller.dart';
 import 'package:hackaton_v1/features/create_recipe/views/image_preview.dart';
+import 'package:hackaton_v1/features/create_recipe/widgets/cooking_step_widget.dart';
+import 'package:hackaton_v1/features/create_recipe/widgets/new_recipe_textfield.dart';
+import 'package:hackaton_v1/features/create_recipe/widgets/textfield_label_widget.dart';
 import 'package:hackaton_v1/gen/assets.gen.dart';
+import 'package:hackaton_v1/main.dart';
 import 'package:hackaton_v1/models/cooking_step.dart';
-import '../../../main.dart';
-import '../widgets/cooking_step_widget.dart';
-import '../widgets/new_recipe_textfield.dart';
-import '../widgets/textfield_label_widget.dart';
+import 'package:hackaton_v1/models/recipe_model.dart';
 
 final ingredientsProvider = StateProvider.autoDispose<List<String>>((ref) {
   return [];
@@ -52,18 +54,71 @@ final scrollControllerProvider = StateProvider.autoDispose((ref) {
   return ScrollController();
 });
 
-class RecipeCreationView extends ConsumerStatefulWidget {
-  static route() =>
-      MaterialPageRoute(builder: (context) => const RecipeCreationView());
-  const RecipeCreationView({super.key});
+class EditRecipe extends ConsumerStatefulWidget {
+  final RecipeModel recipeModel;
+  static route(RecipeModel recipeModel) => MaterialPageRoute(
+        builder: (context) => EditRecipe(
+          recipeModel: recipeModel,
+        ),
+      );
+  const EditRecipe({super.key, required this.recipeModel});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _RecipeCreationViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _EditRecipeState();
 }
 
-class _RecipeCreationViewState extends ConsumerState<RecipeCreationView> {
+class _EditRecipeState extends ConsumerState<EditRecipe> {
+  void setData() {
+    ref.read(ingredientsProvider.notifier).update(
+          (state) => widget.recipeModel.ingredients,
+        );
+    ref.read(titleProvider.notifier).update(
+          (state) => TextEditingController(text: widget.recipeModel.title),
+        );
+    ref.read(cookingTimeProvider.notifier).update(
+          (state) => TextEditingController(
+            text: widget.recipeModel.cookingTime,
+          ),
+        );
+    ref.read(descriptionProvider.notifier).update(
+          (state) => TextEditingController(
+            text: widget.recipeModel.description,
+          ),
+        );
+    ref.read(mainPictureProvider.notifier).update(
+          (state) => widget.recipeModel.illustrationPic,
+        );
+
+    ref.read(cookingStepsProvider.notifier).update(
+      (state) {
+        List<CookingStep> cookingSteps = [];
+        final cookingStepsPics = widget.recipeModel.cookingStepsPics;
+        final instructions = widget.recipeModel.cookingSteps;
+        for (int index = 0; index < instructions.length; index++) {
+          String attachment = cookingStepsPics.firstWhereOrNull(
+                  (element) => element.startsWith('${index}_')) ??
+              '';
+          cookingSteps.add(
+            CookingStep(
+              attachment: attachment,
+              instructions: TextEditingController(text: instructions[index]),
+            ),
+          );
+        }
+        return [...cookingSteps];
+      },
+    );
+  }
+
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    Future.delayed(Duration.zero).then((value) {
+      setData();
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +142,7 @@ class _RecipeCreationViewState extends ConsumerState<RecipeCreationView> {
       }
     });
     return Scaffold(
-      appBar: appBar(const Text('New recipe'), true, [
+      appBar: appBar(const Text('Edit recipe'), true, [
         TextButton(
           onPressed: () async {
             FocusScope.of(context).unfocus();
@@ -100,20 +155,27 @@ class _RecipeCreationViewState extends ConsumerState<RecipeCreationView> {
             } else {
               final validation = _formKey.currentState!.validate();
               if (validation) {
-                List<String> instructions = [];
+                List<String> cookingStepsDirections = [];
                 for (final instruction in cookingSteps) {
-                  instructions.add(instruction.instructions.text);
+                  cookingStepsDirections.add(instruction.instructions.text);
                 }
+
                 final attachments =
                     cookingSteps.map((e) => e.attachment).toList();
-                await ref.read(recipeCreationProvider.notifier).createRecipe(
-                      title: titleTextEditingController.text,
-                      description: descriptionTextEditingController.text,
-                      illustrationPic: mainPic,
-                      ingredients: ingredients,
-                      cookingTime: cookingTimeTextEditingController.text,
-                      cookingSteps: instructions,
-                      cookingStepsPics: attachments,
+                final recipe = RecipeModel(
+                  id: widget.recipeModel.id,
+                  uid: widget.recipeModel.uid,
+                  title: titleTextEditingController.text,
+                  description: descriptionTextEditingController.text,
+                  illustrationPic: mainPic,
+                  ingredients: ingredients,
+                  cookingTime: cookingTimeTextEditingController.text,
+                  cookingSteps: cookingStepsDirections,
+                  cookingStepsPics: attachments,
+                  likes: 0,
+                );
+                await ref.read(recipeCreationProvider.notifier).updateRecipe(
+                      recipeModel: recipe,
                       context: context,
                     );
               } else {
@@ -122,7 +184,7 @@ class _RecipeCreationViewState extends ConsumerState<RecipeCreationView> {
             }
           },
           child: Text(
-            'Publish',
+            'Update',
             style: context.h4,
           ),
         ),
@@ -180,33 +242,32 @@ class _RecipeCreationViewState extends ConsumerState<RecipeCreationView> {
                   child: GestureDetector(
                     onTap: () {
                       updateAttachment(
-                        assetPath: mainPic,
-                        context: context,
-                        onDelete: () {
-                          Navigator.pop(context);
-                          ref
-                              .read(recipeCreationProvider.notifier)
-                              .deleteAttachment(mainPic);
-                          ref
-                              .read(mainPictureProvider.notifier)
-                              .update((state) {
-                            return '';
+                          assetPath: mainPic,
+                          context: context,
+                          onDelete: () {
+                            Navigator.pop(context);
+                            ref
+                                .read(recipeCreationProvider.notifier)
+                                .deleteAttachment(mainPic);
+                            ref
+                                .read(mainPictureProvider.notifier)
+                                .update((state) {
+                              return '';
+                            });
+                          },
+                          onChange: () async {
+                            Navigator.pop(context);
+                            final image = await pickImage();
+                            final imageId = await ref
+                                .read(recipeCreationProvider.notifier)
+                                .uploadAttachment(
+                                  fileName: generateFileName('mainPic'),
+                                  filePath: image!.path,
+                                );
+                            ref.read(mainPictureProvider.notifier).update((_) {
+                              return imageId;
+                            });
                           });
-                        },
-                        onChange: () async {
-                          Navigator.pop(context);
-                          final image = await pickImage();
-                          final imageId = await ref
-                              .read(recipeCreationProvider.notifier)
-                              .uploadAttachment(
-                                fileName: generateFileName('mainPic'),
-                                filePath: image!.path,
-                              );
-                          ref.read(mainPictureProvider.notifier).update((_) {
-                            return imageId;
-                          });
-                        },
-                      );
                     },
                     child: NetworkImageWidget(
                       imageId: mainPic,

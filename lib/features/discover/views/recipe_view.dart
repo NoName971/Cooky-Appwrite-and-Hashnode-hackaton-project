@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/common/custom_image_icon.dart';
 import 'package:hackaton_v1/common/custom_list_tile.dart';
+import 'package:hackaton_v1/common/error_view.dart';
 import 'package:hackaton_v1/common/network_image_widget.dart';
 import 'package:hackaton_v1/common/text_style.dart';
 import 'package:hackaton_v1/core/extensions.dart';
 import 'package:hackaton_v1/features/create_recipe/views/image_preview.dart';
-import 'package:hackaton_v1/features/discover/controller/discovery_controller.dart';
+import 'package:hackaton_v1/controllers/discovery_controller.dart';
 import 'package:hackaton_v1/gen/assets.gen.dart';
 import 'package:hackaton_v1/main.dart';
 
@@ -53,7 +54,9 @@ class _RecipeViewState extends ConsumerState<RecipeView> {
 
     return RefreshIndicator(
       onRefresh: () async {
-        return ref.invalidate(currentRecipeProvider(widget.recipeId));
+        return ref.invalidate(
+          currentRecipeProvider(widget.recipeId),
+        );
       },
       child: Scaffold(
         appBar: AppBar(
@@ -284,7 +287,9 @@ class _RecipeViewState extends ConsumerState<RecipeView> {
           },
           error: (error, stackTrace) {
             logger.d(stackTrace);
-            return Text(error.toString());
+            return ErrorView(
+              provider: currentRecipeProvider(widget.recipeId),
+            );
           },
           loading: () => const Center(
             child: CircularProgressIndicator(),

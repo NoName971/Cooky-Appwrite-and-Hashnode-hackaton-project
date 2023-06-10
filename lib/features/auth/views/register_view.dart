@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../common/custom_button.dart';
 import '../../../common/custom_textfield.dart';
 import '../../../core/utils.dart';
-import '../controller/auth_controller.dart';
+import '../../../controllers/auth_controller.dart';
 
 class RegisterView extends ConsumerStatefulWidget {
   static route() =>

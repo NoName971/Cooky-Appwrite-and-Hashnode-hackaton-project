@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/constants/appwrite_constants.dart';
 import 'package:hackaton_v1/constants/ui_messages.dart';
 import 'package:hackaton_v1/core/providers.dart';
+import 'package:hackaton_v1/main.dart';
 import 'package:hackaton_v1/models/failure.dart';
 import 'package:appwrite/models.dart' as model;
 import 'package:hackaton_v1/models/recipe_model.dart';
@@ -99,7 +100,7 @@ class UserService implements IUserService {
     }
   }
 
-  Future<({Failure? failure, bool? isSucceded})> deleteRecipe({
+  Future<({Failure? failure, bool hasSucceded})> deleteRecipe({
     required String recipeId,
   }) async {
     try {
@@ -109,14 +110,14 @@ class UserService implements IUserService {
         documentId: recipeId,
       );
 
-      return (isSucceded: true, failure: null);
+      return (hasSucceded: true, failure: null);
     } on AppwriteException catch (e, stackTrace) {
       return (
         failure: Failure(e.message ?? UiMessages.unexpectedError, stackTrace),
-        isSucceded: null
+        hasSucceded: false
       );
     } catch (e, stackTrace) {
-      return (failure: Failure(e.toString(), stackTrace), isSucceded: null);
+      return (failure: Failure(e.toString(), stackTrace), hasSucceded: false);
     }
   }
 
@@ -176,14 +177,14 @@ class UserService implements IUserService {
     required String recipeId,
   }) async {
     final currentUser = await _authService.currentUser();
-    final like = await _databases.listDocuments(
+    final likes = await _databases.listDocuments(
       databaseId: AppwriteConstants.marketplaceDatabaseId,
       collectionId: AppwriteConstants.likesCollectionId,
       queries: [
         Query.equal('like', ['${currentUser!.$id}$recipeId']),
       ],
     );
-    return like.documents;
+    return likes.documents;
   }
 
   Future<({Like? like, Failure? failure})> dbCreateLike({
@@ -210,7 +211,7 @@ class UserService implements IUserService {
     }
   }
 
-  Future<({bool? isSucceded, Failure? failure})> dbRemoveLike({
+  Future<({bool hasSucceded, Failure? failure})> dbRemoveLike({
     required String likeId,
   }) async {
     try {
@@ -219,77 +220,19 @@ class UserService implements IUserService {
         collectionId: AppwriteConstants.likesCollectionId,
         documentId: likeId,
       );
-      return (isSucceded: true, failure: null);
+
+      return (hasSucceded: true, failure: null);
     } on AppwriteException catch (e, stackTrace) {
+      logger.d(e);
+
       return (
         failure: Failure(e.message ?? UiMessages.unexpectedError, stackTrace),
-        isSucceded: null
+        hasSucceded: false
       );
     } catch (e, stackTrace) {
-      return (failure: Failure(e.toString(), stackTrace), isSucceded: null);
+      logger.d(e);
+
+      return (failure: Failure(e.toString(), stackTrace), hasSucceded: false);
     }
   }
-
-  // @override
-  // Future<({Failure? failure, model.Document? favorite})> addFavorite({
-  //   required String recipeId,
-  // }) async {
-  //   try {
-  //     final uid = (await _authService.currentUser())!.$id;
-  //     final favorite = await _databases.createDocument(
-  //       databaseId: AppwriteConstants.marketplaceDatabaseId,
-  //       collectionId: AppwriteConstants.favoritesCollectionId,
-  //       documentId: ID.unique(),
-  //       data: {
-  //         'favorite': uid + recipeId,
-  //       },
-  //     );
-  //     logger.d(favorite);
-  //     return (failure: null, favorite: favorite);
-  //   } on AppwriteException catch (e, stackTrace) {
-  //     return (
-  //       failure: Failure(e.message ?? UiMessages.unexpectedError, stackTrace),
-  //       favorite: null
-  //     );
-  //   } catch (e, stackTrace) {
-  //     return (failure: Failure(e.toString(), stackTrace), favorite: null);
-  //   }
-  // }
-
-  // @override
-  // Future<({bool? isSucceded, Failure? failure})> removeFavorite({
-  //   required String favoriteId,
-  // }) async {
-  //   try {
-  //     await _databases.deleteDocument(
-  //       databaseId: AppwriteConstants.marketplaceDatabaseId,
-  //       collectionId: AppwriteConstants.favoritesCollectionId,
-  //       documentId: favoriteId,
-  //     );
-  //     return (failure: null, isSucceded: true);
-  //   } on AppwriteException catch (e, stackTrace) {
-  //     return (
-  //       failure: Failure(e.message ?? UiMessages.unexpectedError, stackTrace),
-  //       isSucceded: null
-  //     );
-  //   } catch (e, stackTrace) {
-  //     return (failure: Failure(e.toString(), stackTrace), isSucceded: null);
-  //   }
-  // }
-
-  // @override
-  // Future<List<Document>> getFavorite({
-  //   required String recipeId,
-  // }) async {
-  //   final uid = (await _authService.currentUser())!.$id;
-  //   final response = await _databases.listDocuments(
-  //     databaseId: AppwriteConstants.marketplaceDatabaseId,
-  //     collectionId: AppwriteConstants.favoritesCollectionId,
-  //     queries: [
-  //       Query.equal('favorite', ['$uid$recipeId']),
-  //     ],
-  //   );
-
-  //   return response.documents;
-  // }
 }

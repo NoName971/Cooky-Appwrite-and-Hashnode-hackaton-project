@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/common/error_view.dart';
 import 'package:hackaton_v1/common/loading_view.dart';
-import 'package:hackaton_v1/features/auth/controller/auth_controller.dart';
+import 'package:hackaton_v1/controllers/auth_controller.dart';
 import 'package:hackaton_v1/features/auth/views/login_view.dart';
 import 'package:hackaton_v1/features/home/views/home_view.dart';
 import 'package:hackaton_v1/services/dark_mode_service.dart';
@@ -59,7 +59,9 @@ class Hackaton extends ConsumerWidget {
             if (error is AppwriteException && error.code == 401) {
               return const LoginView();
             }
-            return ErrorView(error: error.toString());
+            return ErrorView(
+              provider: authControllerProvider,
+            );
           },
           loading: () => const LoadingView(),
         ),

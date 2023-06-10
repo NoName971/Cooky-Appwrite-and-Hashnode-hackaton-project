@@ -3,13 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/constants/ui_messages.dart';
 import 'package:hackaton_v1/features/discover/views/discovery_view.dart';
 import 'package:hackaton_v1/features/discover/views/recipe_view.dart';
+import 'package:hackaton_v1/main.dart';
 import 'package:hackaton_v1/models/recipe_model.dart';
 import 'package:hackaton_v1/services/recipe_service.dart';
 import 'package:hackaton_v1/services/user_service.dart';
-import '../../../core/utils.dart';
-import '../../../main.dart';
-import '../../../models/failure.dart';
-import '../../../models/like.dart';
+import '../core/utils.dart';
+import '../models/failure.dart';
+import '../models/like.dart';
 
 final discoveryProvider =
     StateNotifierProvider<DiscoveryViewController, DiscoberyControllerState>(
@@ -25,21 +25,22 @@ final discoveryProvider =
 
 final currentRecipeProvider = FutureProvider.autoDispose
     .family<({Failure? failure, RecipeModel? recipe}), String>(
-        (ref, recipeId) async {
-  final favorites = await ref.read(userServiceProvider).getFavorites();
-  final like = await ref.read(userServiceProvider).getLike(recipeId: recipeId);
-  if (like.isNotEmpty) {
-    ref.read(likeProvider.notifier).update(
-          (state) => Like.fromMap(like.first.data).id,
-        );
-    ref.read(isLikedProvider.notifier).update((state) => true);
-  }
-  logger.d(favorites);
-  ref.watch(favoritesIdsProvider.notifier).update((state) => [...favorites]);
+  (ref, recipeId) async {
+    final favorites = await ref.read(userServiceProvider).getFavorites();
+    final like =
+        await ref.read(userServiceProvider).getLike(recipeId: recipeId);
+    if (like.isNotEmpty) {
+      ref.read(likeProvider.notifier).update(
+            (state) => Like.fromMap(like.first.data).id,
+          );
+      ref.read(isLikedProvider.notifier).update((state) => true);
+    }
+    ref.watch(favoritesIdsProvider.notifier).update((state) => [...favorites]);
 
-  final recipeService = ref.watch(recipeServiceProvider);
-  return recipeService.getRecipe(recipeId: recipeId);
-});
+    final recipeService = ref.watch(recipeServiceProvider);
+    return recipeService.getRecipe(recipeId: recipeId);
+  },
+);
 
 class DiscoveryViewController extends StateNotifier<DiscoberyControllerState> {
   final RecipeService _recipeService;
@@ -91,17 +92,19 @@ class DiscoveryViewController extends StateNotifier<DiscoberyControllerState> {
           ref.read(recipesProvider.notifier).update((state) {
             return [...newRecipes];
           });
-        } else if (fetchMode == FetchMode.newer) {
-          List<RecipeModel> newRecipes = [];
-          final oldRecipes = ref.watch(recipesProvider);
-          for (final recipe in response.recipes!.documents) {
-            newRecipes.add(RecipeModel.fromMap(recipe.data));
-          }
-          state = state.copyWith(isLoading: false);
-          ref.read(recipesProvider.notifier).update((state) {
-            return [...newRecipes, ...oldRecipes];
-          });
-        } else if (fetchMode == FetchMode.older) {
+        }
+        //  else if (fetchMode == FetchMode.newer) {
+        //   List<RecipeModel> newRecipes = [];
+        //   final oldRecipes = ref.watch(recipesProvider);
+        //   for (final recipe in response.recipes!.documents) {
+        //     newRecipes.add(RecipeModel.fromMap(recipe.data));
+        //   }
+        //   state = state.copyWith(isLoading: false);
+        //   ref.read(recipesProvider.notifier).update((state) {
+        //     return [...newRecipes, ...oldRecipes];
+        //   });
+        // }
+        else if (fetchMode == FetchMode.older) {
           List<RecipeModel> newRecipes = [];
           final oldRecipes = ref.watch(recipesProvider);
           for (final recipe in response.recipes!.documents) {
@@ -179,16 +182,35 @@ class DiscoveryViewController extends StateNotifier<DiscoberyControllerState> {
     required BuildContext context,
     required WidgetRef ref,
   }) async {
+    logger.d('liking');
+
     final response = await _recipeService.getRecipe(recipeId: recipeId);
     if (response.failure == null) {
       final response2 = await _userService.dbCreateLike(recipeId: recipeId);
       if (response2.failure == null) {
         final likeId = response2.like!.id;
-        await _recipeService.updateRecipe(recipeId: recipeId, data: {
+        final like =
+            await _recipeService.updateRecipe(recipeId: recipeId, data: {
           'likes': response.recipe!.likes + 1,
         });
-        ref.read(likeProvider.notifier).update((state) => likeId);
-        ref.read(isLikedProvider.notifier).update((state) => !state);
+        if (like.hasSucceded) {
+          ref.read(likeProvider.notifier).update((state) => likeId);
+          ref.read(isLikedProvider.notifier).update((state) => !state);
+        } else {
+          if (context.mounted) {
+            showSnackBar(
+              context,
+              response.failure?.message ?? UiMessages.unexpectedError,
+            );
+          }
+        }
+      } else {
+        if (context.mounted) {
+          showSnackBar(
+            context,
+            response.failure?.message ?? UiMessages.unexpectedError,
+          );
+        }
       }
     } else {
       if (context.mounted) {
@@ -207,12 +229,37 @@ class DiscoveryViewController extends StateNotifier<DiscoberyControllerState> {
     required WidgetRef ref,
   }) async {
     final response = await _recipeService.getRecipe(recipeId: recipeId);
+    logger.d(response.recipe!.id);
+
     if (response.failure == null) {
-      await _userService.dbRemoveLike(likeId: likeId);
-      await _recipeService.updateRecipe(recipeId: recipeId, data: {
-        'likes': response.recipe!.likes - 1,
-      });
-      ref.read(isLikedProvider.notifier).update((state) => !state);
+      final response2 = await _userService.dbRemoveLike(likeId: likeId);
+
+      if (response2.hasSucceded) {
+        final removeLike = await _recipeService.updateRecipe(
+          recipeId: recipeId,
+          data: {
+            'likes': response.recipe!.likes - 1,
+          },
+        );
+
+        if (removeLike.hasSucceded) {
+          ref.read(isLikedProvider.notifier).update((state) => !state);
+        } else {
+          if (context.mounted) {
+            showSnackBar(
+              context,
+              response.failure?.message ?? UiMessages.unexpectedError,
+            );
+          }
+        }
+      } else {
+        if (context.mounted) {
+          showSnackBar(
+            context,
+            response.failure?.message ?? UiMessages.unexpectedError,
+          );
+        }
+      }
     } else {
       if (context.mounted) {
         showSnackBar(

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/common/custom_list_tile.dart';
-import 'package:hackaton_v1/common/text_style.dart';
-import 'package:hackaton_v1/features/profile/controller/profile_controller.dart';
+import 'package:hackaton_v1/controllers/profile_controller.dart';
 import '../../../common/appbar.dart';
 import '../../../core/utils.dart';
 import '../../../gen/assets.gen.dart';
@@ -33,54 +32,54 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
       appBar: appBar(const Text('Profile')),
       body: CustomScrollView(
         slivers: [
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                Container(
-                  height: 90,
-                  width: 90,
-                  padding: const EdgeInsets.all(16),
-                  margin: const EdgeInsets.only(top: 16, bottom: 10),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: context.colorScheme.primary,
-                  ),
-                  child: Center(
-                    child: FittedBox(
-                      child: Text(
-                        'N N',
-                        style: context.h2.copyWith(
-                          color: context.colorScheme.background,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Text(
-                  'No Name Dev',
-                  style: context.h4,
-                )
-              ],
-            ),
-          ),
-          const SliverToBoxAdapter(
-            child: SizedBox(
-              height: 20,
-            ),
-          ),
-          const SliverToBoxAdapter(
-            child: CustomListTile(
-              contentPadding: EdgeInsets.fromLTRB(16, 16, 32, 0),
-              title: Text('Edit profile'),
-              trailing: Icon(Icons.edit),
-            ),
-          ),
+          // SliverToBoxAdapter(
+          //   child: Column(
+          //     children: [
+          //       Container(
+          //         height: 90,
+          //         width: 90,
+          //         padding: const EdgeInsets.all(16),
+          //         margin: const EdgeInsets.only(top: 16, bottom: 10),
+          //         decoration: BoxDecoration(
+          //           shape: BoxShape.circle,
+          //           color: context.colorScheme.primary,
+          //         ),
+          //         child: Center(
+          //           child: FittedBox(
+          //             child: Text(
+          //               'N N',
+          //               style: context.h2.copyWith(
+          //                 color: context.colorScheme.background,
+          //               ),
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //       Text(
+          //         'No Name Dev',
+          //         style: context.h4,
+          //       )
+          //     ],
+          //   ),
+          // ),
+          // const SliverToBoxAdapter(
+          //   child: SizedBox(
+          //     height: 20,
+          //   ),
+          // ),
+          // const SliverToBoxAdapter(
+          //   child: CustomListTile(
+          //     contentPadding: EdgeInsets.fromLTRB(16, 16, 32, 0),
+          //     title: Text('Edit profile'),
+          //     trailing: Icon(Icons.edit),
+          //   ),
+          // ),
           SliverToBoxAdapter(
             child: CustomListTile(
               onTap: () {
                 Navigator.push(context, PasswordChangeView.route());
               },
-              contentPadding: const EdgeInsets.fromLTRB(16, 0, 32, 0),
+              contentPadding: const EdgeInsets.fromLTRB(16, 20, 32, 0),
               title: const Text('Update password'),
               trailing: const Icon(Icons.password),
             ),

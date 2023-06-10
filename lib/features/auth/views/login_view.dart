@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/common/custom_button.dart';
 import 'package:hackaton_v1/common/custom_textfield.dart';
 import 'package:hackaton_v1/core/utils.dart';
-import 'package:hackaton_v1/features/auth/controller/auth_controller.dart';
+import 'package:hackaton_v1/controllers/auth_controller.dart';
 import 'package:hackaton_v1/features/auth/views/register_view.dart';
 import 'package:hackaton_v1/features/discover/views/discovery_view.dart';
 import 'package:hackaton_v1/main.dart';
