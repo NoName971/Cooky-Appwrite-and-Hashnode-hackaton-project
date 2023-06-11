@@ -40,7 +40,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
         onDestinationSelected: (value) {
           ref.watch(indexProvider.notifier).update((state) => value);
         },
-        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         indicatorColor: colorScheme.primaryContainer,
         indicatorShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
@@ -82,46 +82,6 @@ class _HomeViewState extends ConsumerState<HomeView> {
           ),
         ],
       ),
-      //  BottomNavigationBar(
-      //   onTap: (int newIndex) {
-      //     ref.watch(indexProvider.notifier).update((state) => newIndex);
-      //   },
-      //   type: BottomNavigationBarType.fixed,
-      //   showSelectedLabels: false,
-      //   showUnselectedLabels: false,
-      //   items: [
-      //     BottomNavigationBarItem(
-      //         icon: CustomImageIcon(
-      //           color: colorScheme.onBackground,
-      //           iconPath: index == 0
-      //               ? Assets.icons.homeFilled.path
-      //               : Assets.icons.home.path,
-      //         ),
-      //         label: 'Home'),
-      //     BottomNavigationBarItem(
-      //         icon: CustomImageIcon(
-      //           color: colorScheme.onBackground,
-      //           iconPath: Assets.icons.search.path,
-      //         ),
-      //         label: 'Search'),
-      //     BottomNavigationBarItem(
-      //         icon: CustomImageIcon(
-      //           color: colorScheme.onBackground,
-      //           iconPath: index == 2
-      //               ? Assets.icons.favoriteFilled.path
-      //               : Assets.icons.favorite.path,
-      //         ),
-      //         label: 'Favorites'),
-      //     BottomNavigationBarItem(
-      //         icon: CustomImageIcon(
-      //           color: colorScheme.onBackground,
-      //           iconPath: index == 3
-      //               ? Assets.icons.personFilled.path
-      //               : Assets.icons.person.path,
-      //         ),
-      //         label: 'Profile'),
-      //   ],
-      // ),
       body: LazyLoadIndexedStack(
         index: index,
         children: UiConstants.bottomNavigationPages,

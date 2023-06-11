@@ -194,6 +194,13 @@ class $AssetsIconsGen {
   /// File path: assets/icons/info.png
   AssetGenImage get info => const AssetGenImage('assets/icons/info.png');
 
+  /// File path: assets/icons/kitchen.png
+  AssetGenImage get kitchen => const AssetGenImage('assets/icons/kitchen.png');
+
+  /// File path: assets/icons/kitchen_filled.png
+  AssetGenImage get kitchenFilled =>
+      const AssetGenImage('assets/icons/kitchen_filled.png');
+
   /// File path: assets/icons/light_mode.png
   AssetGenImage get lightMode =>
       const AssetGenImage('assets/icons/light_mode.png');
@@ -351,6 +358,8 @@ class $AssetsIconsGen {
         hotPot,
         hotSoup,
         info,
+        kitchen,
+        kitchenFilled,
         lightMode,
         location,
         logout,

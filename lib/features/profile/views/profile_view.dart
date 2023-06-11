@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/common/custom_list_tile.dart';
 import 'package:hackaton_v1/controllers/profile_controller.dart';
 import '../../../common/appbar.dart';
-import '../../../core/utils.dart';
+import '../../../helpers/utils.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../services/dark_mode_service.dart';
 import 'password_update_view.dart';

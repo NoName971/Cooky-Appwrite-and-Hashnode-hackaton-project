@@ -2,7 +2,7 @@ import 'package:appwrite/appwrite.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/constants/appwrite_constants.dart';
 import 'package:hackaton_v1/constants/ui_messages.dart';
-import 'package:hackaton_v1/core/providers.dart';
+import 'package:hackaton_v1/constants/appwrite_providers.dart';
 import 'package:hackaton_v1/main.dart';
 import 'package:hackaton_v1/models/failure.dart';
 import 'package:appwrite/models.dart' as model;

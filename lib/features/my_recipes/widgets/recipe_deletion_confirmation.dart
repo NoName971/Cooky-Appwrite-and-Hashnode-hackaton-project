@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hackaton_v1/common/custom_button.dart';
 import 'package:hackaton_v1/common/text_style.dart';
-import 'package:hackaton_v1/core/extensions.dart';
+import 'package:hackaton_v1/helpers/extensions.dart';
 
 class RecipeDeletionConfirmationModal extends StatelessWidget {
   final void Function()? onDelete;

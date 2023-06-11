@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hackaton_v1/common/network_image_widget.dart';
 import 'package:hackaton_v1/common/text_style.dart';
-import 'package:hackaton_v1/core/extensions.dart';
+import 'package:hackaton_v1/helpers/extensions.dart';
 
 import '../../../common/custom_image_icon.dart';
 import '../../../common/custom_list_tile.dart';

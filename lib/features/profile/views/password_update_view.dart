@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/common/appbar.dart';
 import 'package:hackaton_v1/common/custom_textfield.dart';
-import 'package:hackaton_v1/core/extensions.dart';
+import 'package:hackaton_v1/helpers/extensions.dart';
 import 'package:hackaton_v1/features/create_recipe/widgets/textfield_label_widget.dart';
 import 'package:hackaton_v1/controllers/profile_controller.dart';
 
 import '../../../common/custom_button.dart';
-import '../../../core/utils.dart';
+import '../../../helpers/utils.dart';
 
 class PasswordChangeView extends ConsumerStatefulWidget {
   static route() =>

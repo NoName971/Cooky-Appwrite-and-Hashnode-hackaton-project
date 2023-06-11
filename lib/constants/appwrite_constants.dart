@@ -1,12 +1,20 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+final envProjectId = dotenv.env['PROJECT_ID'];
+final envUsersCollectionId = dotenv.env['USERS_COLLECTION_ID'];
+final envMarketplaceDatabaseId = dotenv.env['MAIN_DATABASE_ID'];
+final envRecipeCollectionId = dotenv.env['RECIPES_COLLECTION_ID'];
+final envRecipesBucketId = dotenv.env['RECIPES_BUCKET_ID'];
+final envLikesCollectionId = dotenv.env['LIKES_COLLECTION_ID'];
+
 class AppwriteConstants {
-  static const String projectId = '645f8ebc6bc0907f7922';
+  static String? projectId = envProjectId;
   static const String apiEndpoint = 'https://cloud.appwrite.io/v1';
-  static const String usersCollectionId = '646885e20505c74a8553';
-  static const String marketplaceDatabaseId = '646288d51d22ac486c62';
-  static const String recipeCollectionId = '6462890c9dca58ce3a71';
-  static const String recipesBucketId = '64708527e725896898cb';
-  static const String favoritesCollectionId = '6478c3b8da73d1ee07dd';
-  static const String likesCollectionId = '647482f66af15c81e658';
+  static String usersCollectionId = envUsersCollectionId ?? '';
+  static String marketplaceDatabaseId = envMarketplaceDatabaseId ?? '';
+  static String recipeCollectionId = envRecipeCollectionId ?? '';
+  static String recipesBucketId = envRecipesBucketId ?? '';
+  static String likesCollectionId = envLikesCollectionId ?? '';
 
   static imageUrl(String imageId) =>
       '$apiEndpoint/storage/buckets/$recipesBucketId/files/$imageId/view?project=$projectId';

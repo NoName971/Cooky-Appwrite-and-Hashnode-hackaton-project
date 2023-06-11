@@ -6,7 +6,7 @@ import 'package:hackaton_v1/common/custom_list_tile.dart';
 import 'package:hackaton_v1/common/error_view.dart';
 import 'package:hackaton_v1/common/network_image_widget.dart';
 import 'package:hackaton_v1/common/text_style.dart';
-import 'package:hackaton_v1/core/extensions.dart';
+import 'package:hackaton_v1/helpers/extensions.dart';
 import 'package:hackaton_v1/features/create_recipe/views/image_preview.dart';
 import 'package:hackaton_v1/controllers/discovery_controller.dart';
 import 'package:hackaton_v1/gen/assets.gen.dart';

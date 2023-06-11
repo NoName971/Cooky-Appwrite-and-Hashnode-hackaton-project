@@ -5,7 +5,7 @@ import 'package:hackaton_v1/main.dart';
 import 'package:hackaton_v1/models/recipe_model.dart';
 import 'package:hackaton_v1/services/storage_service.dart';
 import '../constants/ui_messages.dart';
-import '../core/utils.dart';
+import '../helpers/utils.dart';
 import '../services/recipe_service.dart';
 import '../services/user_service.dart';
 import '../features/discover/views/recipe_view.dart';

@@ -28,6 +28,7 @@ dependencies:
   uuid:
   shared_preferences:
   intl:
+  flutter_dotenv:
   lazy_load_indexed_stack:
 
 dev_dependencies:
@@ -46,6 +47,7 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/fonts/
+    - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/constants/ui_messages.dart';
-import 'package:hackaton_v1/core/utils.dart';
+import 'package:hackaton_v1/helpers/utils.dart';
 import 'package:hackaton_v1/features/home/views/home_view.dart';
 import 'package:hackaton_v1/main.dart';
 import 'package:hackaton_v1/models/user_model.dart';
@@ -80,7 +80,7 @@ class AuthController extends StateNotifier<bool> {
       password: password,
     );
     state = !state;
-    if (response.session != null) {
+    if (response.hasSucceded) {
       if (context.mounted) {
         Navigator.pushAndRemoveUntil(
           context,

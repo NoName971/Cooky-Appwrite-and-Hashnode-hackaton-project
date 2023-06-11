@@ -1,8 +1,8 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/constants/appwrite_constants.dart';
-import 'package:hackaton_v1/core/providers.dart';
-import 'package:hackaton_v1/core/utils.dart';
+import 'package:hackaton_v1/constants/appwrite_providers.dart';
+import 'package:hackaton_v1/helpers/utils.dart';
 import 'package:hackaton_v1/main.dart';
 import 'package:uuid/uuid.dart';
 

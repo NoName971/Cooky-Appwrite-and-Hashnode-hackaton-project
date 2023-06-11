@@ -7,7 +7,7 @@ import 'package:hackaton_v1/main.dart';
 import 'package:hackaton_v1/models/recipe_model.dart';
 import 'package:hackaton_v1/services/recipe_service.dart';
 import 'package:hackaton_v1/services/user_service.dart';
-import '../core/utils.dart';
+import '../helpers/utils.dart';
 import '../models/failure.dart';
 import '../models/like.dart';
 

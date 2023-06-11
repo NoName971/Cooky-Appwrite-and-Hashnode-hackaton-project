@@ -4,7 +4,7 @@ import 'package:focus_detector/focus_detector.dart';
 import 'package:hackaton_v1/common/custom_button.dart';
 import 'package:hackaton_v1/common/custom_list_tile.dart';
 import 'package:hackaton_v1/common/text_style.dart';
-import 'package:hackaton_v1/core/utils.dart';
+import 'package:hackaton_v1/helpers/utils.dart';
 import 'package:hackaton_v1/controllers/my_recipes_controller.dart';
 import 'package:hackaton_v1/features/my_recipes/views/edit_recipe.dart';
 import 'package:hackaton_v1/models/recipe_model.dart';

@@ -2,7 +2,7 @@ import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/constants/ui_messages.dart';
-import 'package:hackaton_v1/core/utils.dart';
+import 'package:hackaton_v1/helpers/utils.dart';
 import 'package:hackaton_v1/features/search/views/search_view.dart';
 import 'package:hackaton_v1/models/recipe_model.dart';
 import 'package:hackaton_v1/services/recipe_service.dart';

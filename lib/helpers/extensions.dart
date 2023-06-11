@@ -1,13 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-
-extension ContextExtensions on BuildContext {
-  executeIfMounted(callback) {
-    if (mounted) {
-      callback();
-    }
-  }
-}
 
 extension PaddingExtension on Widget {
   addHorizontalPadding(double padding) {
@@ -32,14 +23,5 @@ extension PaddingExtension on Widget {
       ),
       child: this,
     );
-  }
-}
-
-extension StringExtensions on String {
-  convertToDate() {
-    return DateFormat.yMMMMEEEEd('en_US')
-        .add_Hm()
-        .format(DateTime.parse(this))
-        .toString();
   }
 }
