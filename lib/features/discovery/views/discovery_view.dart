@@ -3,13 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/common/custom_button.dart';
 import 'package:hackaton_v1/common/logo_widget.dart';
+import 'package:hackaton_v1/common/text_style.dart';
 import 'package:hackaton_v1/controllers/discovery_controller.dart';
 import 'package:hackaton_v1/features/discovery/views/recipe_view.dart';
 import 'package:hackaton_v1/features/discovery/widgets/meal_card_large.dart';
+import 'package:hackaton_v1/features/discovery/widgets/top_recipes_length_indicator.dart';
 import 'package:hackaton_v1/models/recipe_model.dart';
 import 'package:focus_detector/focus_detector.dart';
 
 final recipesProvider = StateProvider.autoDispose<List<RecipeModel>>((ref) {
+  return [];
+});
+
+final topRecipesProvider = StateProvider.autoDispose<List<RecipeModel>>((ref) {
   return [];
 });
 
@@ -23,17 +29,19 @@ class DiscoveryView extends ConsumerStatefulWidget {
 class _DiscoveryViewState extends ConsumerState<DiscoveryView> {
   @override
   void initState() {
-    Future.delayed(Duration.zero).then((value) async {
-      ref.read(discoveryProvider.notifier).getRecipes(
-        ref: ref,
-        fetchMode: FetchMode.normal,
-        context: context,
-        queries: [
-          Query.orderDesc('\$createdAt'),
-          Query.limit(10),
-        ],
-      );
-    });
+    Future.delayed(Duration.zero).then(
+      (value) async {
+        ref.read(discoveryProvider.notifier).getRecipes(
+          ref: ref,
+          fetchMode: FetchMode.normal,
+          context: context,
+          queries: [
+            // Query.orderDesc('\$createdAt'),
+            Query.limit(5),
+          ],
+        );
+      },
+    );
 
     super.initState();
   }
@@ -42,6 +50,7 @@ class _DiscoveryViewState extends ConsumerState<DiscoveryView> {
   @override
   Widget build(BuildContext context) {
     final recipes = ref.watch(recipesProvider);
+    final topRecipes = ref.watch(topRecipesProvider);
     final discoveryController = ref.watch(discoveryProvider);
     final isLoading = ref.watch(discoveryProvider).isLoading;
 
@@ -94,14 +103,55 @@ class _DiscoveryViewState extends ConsumerState<DiscoveryView> {
             child: CustomScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               slivers: [
-                const SliverToBoxAdapter(
-                  child: SizedBox(height: 20),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 16),
+                    child: Text(
+                      'Top recipes',
+                      style: context.h3,
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 250,
+                    child: PageView(controller: pageController, children: [
+                      for (final topRecipe in topRecipes)
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              RecipeView(recipeId: topRecipe.id).route(),
+                            );
+                          },
+                          child: MealCardLargeWidget(recipe: topRecipe),
+                        ),
+                    ]),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: TopRecipesLengthIndicator(
+                    pageController: pageController,
+                    topRecipes: topRecipes,
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 16,
+                    ),
+                    child: Text(
+                      'Latest recipes',
+                      style: context.h3,
+                    ),
+                  ),
                 ),
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
                       final recipe = recipes[index];
-
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 16),
                         child: GestureDetector(

@@ -1,3 +1,4 @@
+import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/constants/ui_messages.dart';
@@ -91,6 +92,22 @@ class DiscoveryViewController extends StateNotifier<DiscoberyControllerState> {
       }
 
       final response = await _recipeService.getRecipes(queries: queries);
+      final topRecipes = await _recipeService.getRecipes(queries: [
+        Query.orderDesc('likes'),
+        Query.limit(5),
+      ]);
+      if (topRecipes.recipes!.documents.isNotEmpty) {
+        ref.read(topRecipesProvider.notifier).update(
+          (state) {
+            return [
+              ...topRecipes.recipes!.documents
+                  .map((e) => RecipeModel.fromMap(e.data))
+                  .toList()
+            ];
+          },
+        );
+      }
+
       if (response.failure != null) {
         state = state.copyWith(
           isLoading: false,
@@ -201,8 +218,6 @@ class DiscoveryViewController extends StateNotifier<DiscoberyControllerState> {
     required BuildContext context,
     required WidgetRef ref,
   }) async {
-    logger.d('liking');
-
     final response = await _recipeService.getRecipe(recipeId: recipeId);
     if (response.failure == null) {
       final response2 = await _userService.dbCreateLike(recipeId: recipeId);

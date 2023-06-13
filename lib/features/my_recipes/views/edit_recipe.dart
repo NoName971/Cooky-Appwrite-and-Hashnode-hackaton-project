@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,7 +9,6 @@ import 'package:hackaton_v1/common/custom_textfield.dart';
 import 'package:hackaton_v1/common/network_image_widget.dart';
 import 'package:hackaton_v1/common/text_style.dart';
 import 'package:hackaton_v1/controllers/recipe_creation_controller.dart';
-import 'package:hackaton_v1/features/my_recipes/views/my_recipes.dart';
 import 'package:hackaton_v1/helpers/extensions.dart';
 import 'package:hackaton_v1/helpers/utils.dart';
 import 'package:hackaton_v1/features/create_recipe/views/image_preview.dart';
