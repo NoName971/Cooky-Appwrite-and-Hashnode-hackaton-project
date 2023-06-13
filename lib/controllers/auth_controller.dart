@@ -59,7 +59,6 @@ class AuthController extends StateNotifier<bool> {
         uid: response.user!.$id,
       );
       final userData = await _userService.saveUserData(userModel: userModel);
-      logger.d(response.user!.email);
       state = false;
       if (userData.userData != null) {
         if (context.mounted) {

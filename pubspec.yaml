@@ -29,6 +29,7 @@ dependencies:
   shared_preferences:
   intl:
   flutter_dotenv:
+  duration_picker:
   lazy_load_indexed_stack:
 
 dev_dependencies:

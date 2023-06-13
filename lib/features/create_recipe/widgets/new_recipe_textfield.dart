@@ -13,6 +13,8 @@ class NewRecipeTextField extends StatefulWidget {
     this.maxLines,
     this.maxLength = 100,
     this.validator,
+    this.onTap,
+    this.readOnly = false,
   });
 
   final TextTheme textTheme;
@@ -22,6 +24,8 @@ class NewRecipeTextField extends StatefulWidget {
   final dynamic maxLines;
   final int maxLength;
   final String? Function(String?)? validator;
+  final void Function()? onTap;
+  final bool readOnly;
 
   @override
   State<NewRecipeTextField> createState() => _NewRecipeTextFieldState();
@@ -41,6 +45,8 @@ class _NewRecipeTextFieldState extends State<NewRecipeTextField> {
           height: 8,
         ),
         CustomTextField(
+          readOnly: widget.readOnly,
+          onTap: widget.onTap,
           maxLength: widget.maxLength,
           controller: widget.textEditingController,
           hintText: widget.hintText,

@@ -1,3 +1,4 @@
+import 'package:duration_picker/duration_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -255,6 +256,16 @@ class _RecipeCreationViewState extends ConsumerState<RecipeCreationView> {
                   height: 16,
                 ),
                 NewRecipeTextField(
+                  readOnly: true,
+                  onTap: () async {
+                    var resultingDuration = await showDurationPicker(
+                      snapToMins: 5,
+                      context: context,
+                      initialTime: const Duration(minutes: 30),
+                    );
+                    cookingTimeTextEditingController.text =
+                        '${resultingDuration!.inMinutes} min';
+                  },
                   maxLength: 10,
                   validator: (value) {
                     if (value == null || value.length < 3) {
