@@ -106,6 +106,7 @@ class DiscoveryViewController extends StateNotifier<DiscoberyControllerState> {
           }
           state = state.copyWith(
             isLoading: false,
+            canFetchMore: true,
           );
           ref.read(recipesProvider.notifier).update((state) {
             return [...newRecipes];
@@ -133,7 +134,7 @@ class DiscoveryViewController extends StateNotifier<DiscoberyControllerState> {
             return [...oldRecipes, ...newRecipes];
           });
           state = state.copyWith(
-            canFetchMore: false,
+            canFetchMore: newRecipes.length < 10 ? false : true,
             isLoading: false,
             isFetchingOlder: false,
           );

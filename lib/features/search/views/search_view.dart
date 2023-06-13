@@ -12,11 +12,12 @@ import '../../../common/network_image_widget.dart';
 import '../../../helpers/utils.dart';
 import '../../discovery/views/recipe_view.dart';
 
-final searchResultsProvider = StateProvider<List<RecipeModel>>((ref) {
+final searchResultsProvider =
+    StateProvider.autoDispose<List<RecipeModel>>((ref) {
   return [];
 });
 
-final searchedOnceProvider = StateProvider<bool>((ref) {
+final searchedOnceProvider = StateProvider.autoDispose<bool>((ref) {
   return false;
 });
 
@@ -54,9 +55,6 @@ class _SearchViewState extends ConsumerState<SearchView> {
       body: FocusDetector(
         onVisibilityLost: () {
           FocusScope.of(context).unfocus();
-          ref.read(searchedOnceProvider.notifier).update((state) => false);
-          ref.read(searchResultsProvider.notifier).update((state) => []);
-          textEditingController.clear();
         },
         child: Form(
           key: _formKey,

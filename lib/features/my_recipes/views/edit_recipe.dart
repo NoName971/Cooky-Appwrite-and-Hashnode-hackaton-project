@@ -242,32 +242,30 @@ class _EditRecipeState extends ConsumerState<EditRecipe> {
                   child: GestureDetector(
                     onTap: () {
                       updateAttachment(
-                          assetPath: mainPic,
-                          context: context,
-                          onDelete: () {
-                            Navigator.pop(context);
-                            ref
-                                .read(recipeCreationProvider.notifier)
-                                .deleteAttachment(mainPic);
-                            ref
-                                .read(mainPictureProvider.notifier)
-                                .update((state) {
-                              return '';
-                            });
-                          },
-                          onChange: () async {
-                            Navigator.pop(context);
-                            final image = await pickImage();
-                            final imageId = await ref
-                                .read(recipeCreationProvider.notifier)
-                                .uploadAttachment(
-                                  fileName: generateFileName('mainPic'),
-                                  filePath: image!.path,
-                                );
-                            ref.read(mainPictureProvider.notifier).update((_) {
-                              return imageId;
-                            });
+                        assetPath: mainPic,
+                        context: context,
+                        onDelete: () {
+                          Navigator.pop(context);
+                          ref
+                              .read(mainPictureProvider.notifier)
+                              .update((state) {
+                            return '';
                           });
+                        },
+                        onChange: () async {
+                          Navigator.pop(context);
+                          final image = await pickImage();
+                          final imageId = await ref
+                              .read(recipeCreationProvider.notifier)
+                              .uploadAttachment(
+                                fileName: generateFileName('mainPic'),
+                                filePath: image!.path,
+                              );
+                          ref.read(mainPictureProvider.notifier).update((_) {
+                            return imageId;
+                          });
+                        },
+                      );
                     },
                     child: NetworkImageWidget(
                       imageId: mainPic,

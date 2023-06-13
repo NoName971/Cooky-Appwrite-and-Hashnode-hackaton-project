@@ -76,6 +76,12 @@ class RecipeModel {
     result.addAll({'cookingTime': cookingTime});
     result.addAll({'cookingSteps': cookingSteps});
     result.addAll({'cookingStepsPics': cookingStepsPics});
+    /* 
+   For testing purposes
+   result.addAll({'views': views});
+   result.addAll({'likes': likes});
+    */
+
     if (createdAt != null) {
       result.addAll({'createdAt': createdAt});
     }
@@ -151,3 +157,39 @@ class RecipeModel {
         queryableString.hashCode;
   }
 }
+
+class Recipe {
+  final String id;
+  final String uid;
+  final String title;
+  final String description;
+  final String illustrationPic;
+  final List<String> ingredients;
+  final int cookingTime;
+  final List<String> cookingSteps;
+  final List<String> cookingStepsPics;
+  final int likes;
+  final int views;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final String queryableString;
+
+  Recipe({
+    required this.id,
+    required this.uid,
+    required this.title,
+    required this.description,
+    required this.illustrationPic,
+    required this.ingredients,
+    required this.cookingTime,
+    required this.cookingSteps,
+    required this.cookingStepsPics,
+    required this.likes,
+    this.views = 0,
+    this.createdAt,
+    this.updatedAt,
+    required this.queryableString,
+  });
+}
+
+// Example usage:
