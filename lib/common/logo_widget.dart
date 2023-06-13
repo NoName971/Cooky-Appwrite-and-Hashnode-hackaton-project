@@ -9,7 +9,7 @@ class LogoLargeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      'Cooky 👨🏿‍🍳',
+      'Cooky',
       style: context.h1,
     );
   }
@@ -23,7 +23,7 @@ class LogoSmallWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      'Cooky 👨🏿‍🍳',
+      'Cooky',
       style: context.h3,
     );
   }
