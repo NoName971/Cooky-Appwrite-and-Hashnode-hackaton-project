@@ -21,6 +21,7 @@ final discoveryProvider =
   return DiscoveryViewController(
     userService: userService,
     recipeService: recipeService,
+    ref: ref,
   );
 });
 
@@ -63,12 +64,15 @@ final currentRecipeProvider = FutureProvider.autoDispose
 class DiscoveryViewController extends StateNotifier<DiscoberyControllerState> {
   final RecipeService _recipeService;
   final UserService _userService;
+  final Ref _ref;
 
   DiscoveryViewController({
     required RecipeService recipeService,
     required UserService userService,
+    required Ref ref,
   })  : _recipeService = recipeService,
         _userService = userService,
+        _ref = ref,
         super(
           const DiscoberyControllerState(),
         );
@@ -77,7 +81,6 @@ class DiscoveryViewController extends StateNotifier<DiscoberyControllerState> {
     required BuildContext context,
     required List<String> queries,
     required FetchMode fetchMode,
-    required WidgetRef ref,
   }) async {
     try {
       state = state.copyWith(
@@ -96,7 +99,7 @@ class DiscoveryViewController extends StateNotifier<DiscoberyControllerState> {
         Query.limit(5),
       ]);
       if (topRecipes.recipes!.documents.isNotEmpty) {
-        ref.read(topRecipesProvider.notifier).update(
+        _ref.read(topRecipesProvider.notifier).update(
           (state) {
             return [
               ...topRecipes.recipes!.documents
@@ -124,7 +127,7 @@ class DiscoveryViewController extends StateNotifier<DiscoberyControllerState> {
             isLoading: false,
             canFetchMore: true,
           );
-          ref.read(recipesProvider.notifier).update((state) {
+          _ref.read(recipesProvider.notifier).update((state) {
             return [...newRecipes];
           });
         }
@@ -135,18 +138,18 @@ class DiscoveryViewController extends StateNotifier<DiscoberyControllerState> {
         //     newRecipes.add(RecipeModel.fromMap(recipe.data));
         //   }
         //   state = state.copyWith(isLoading: false);
-        //   ref.read(recipesProvider.notifier).update((state) {
+        //   _ref.read(recipesProvider.notifier).update((state) {
         //     return [...newRecipes, ...oldRecipes];
         //   });
         // }
         else if (fetchMode == FetchMode.older) {
           List<RecipeModel> newRecipes = [];
-          final oldRecipes = ref.watch(recipesProvider);
+          final oldRecipes = _ref.read(recipesProvider);
           for (final recipe in response.recipes!.documents) {
             newRecipes.add(RecipeModel.fromMap(recipe.data));
           }
 
-          ref.read(recipesProvider.notifier).update((state) {
+          _ref.read(recipesProvider.notifier).update((state) {
             return [...oldRecipes, ...newRecipes];
           });
           state = state.copyWith(
@@ -227,8 +230,8 @@ class DiscoveryViewController extends StateNotifier<DiscoberyControllerState> {
           'likes': response.recipe!.likes + 1,
         });
         if (like.hasSucceded) {
-          ref.read(likeProvider.notifier).update((state) => likeId);
-          ref.read(isLikedProvider.notifier).update((state) => !state);
+          _ref.read(likeProvider.notifier).update((state) => likeId);
+          _ref.read(isLikedProvider.notifier).update((state) => !state);
         } else {
           if (context.mounted) {
             showSnackBar(
@@ -275,7 +278,7 @@ class DiscoveryViewController extends StateNotifier<DiscoberyControllerState> {
         );
 
         if (removeLike.hasSucceded) {
-          ref.read(isLikedProvider.notifier).update((state) => !state);
+          _ref.read(isLikedProvider.notifier).update((state) => !state);
         } else {
           if (context.mounted) {
             showSnackBar(

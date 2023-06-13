@@ -74,7 +74,6 @@ class _FullNameUpdateState extends ConsumerState<FullNameUpdate> {
                         ref.read(profileProvider.notifier).updateFullName(
                               context: context,
                               name: newFullNameController.text,
-                              ref: ref,
                             );
                       }
                     }

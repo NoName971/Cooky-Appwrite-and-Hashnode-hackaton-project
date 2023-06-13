@@ -10,21 +10,27 @@ import 'package:hackaton_v1/services/recipe_service.dart';
 final searchProvider = StateNotifierProvider<SearchController, bool>(
   (ref) {
     final recipeService = ref.watch(recipeServiceProvider);
-    return SearchController(recipeService: recipeService);
+    return SearchController(
+      recipeService: recipeService,
+      ref: ref,
+    );
   },
 );
 
 class SearchController extends StateNotifier<bool> {
   final RecipeService _recipeService;
+  final Ref _ref;
 
-  SearchController({required RecipeService recipeService})
-      : _recipeService = recipeService,
+  SearchController({
+    required RecipeService recipeService,
+    required Ref ref,
+  })  : _recipeService = recipeService,
+        _ref = ref,
         super(false);
 
   Future<void> searchRecipes({
     required String query,
     required BuildContext context,
-    required WidgetRef ref,
   }) async {
     state = !state;
     final List<RecipeModel> recipes = [];
@@ -48,10 +54,10 @@ class SearchController extends StateNotifier<bool> {
       for (final recipe in response.recipes?.documents ?? []) {
         recipes.add(RecipeModel.fromMap(recipe.data));
       }
-      if (!ref.read(searchedOnceProvider)) {
-        ref.read(searchedOnceProvider.notifier).update((state) => true);
+      if (!_ref.read(searchedOnceProvider)) {
+        _ref.read(searchedOnceProvider.notifier).update((state) => true);
       }
-      ref.read(searchResultsProvider.notifier).update((state) => [...recipes]);
+      _ref.read(searchResultsProvider.notifier).update((state) => [...recipes]);
     }
   }
 }

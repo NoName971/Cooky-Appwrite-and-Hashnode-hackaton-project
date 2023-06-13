@@ -32,7 +32,6 @@ class _DiscoveryViewState extends ConsumerState<DiscoveryView> {
     Future.delayed(Duration.zero).then(
       (value) async {
         ref.read(discoveryProvider.notifier).getRecipes(
-          ref: ref,
           fetchMode: FetchMode.normal,
           context: context,
           queries: [
@@ -77,7 +76,6 @@ class _DiscoveryViewState extends ConsumerState<DiscoveryView> {
           notificationPredicate: !isLoading ? (_) => true : (_) => false,
           onRefresh: () async {
             ref.read(discoveryProvider.notifier).getRecipes(
-              ref: ref,
               fetchMode: FetchMode.normal,
               context: context,
               queries: [
@@ -90,7 +88,6 @@ class _DiscoveryViewState extends ConsumerState<DiscoveryView> {
             onVisibilityGained: () async {
               if (!isLoading) {
                 await ref.read(discoveryProvider.notifier).getRecipes(
-                  ref: ref,
                   fetchMode: FetchMode.normal,
                   context: context,
                   queries: [
@@ -210,7 +207,6 @@ class _DiscoveryViewState extends ConsumerState<DiscoveryView> {
                         child: const Text('Load more'),
                         onPressed: () {
                           ref.read(discoveryProvider.notifier).getRecipes(
-                            ref: ref,
                             fetchMode: FetchMode.older,
                             context: context,
                             queries: [

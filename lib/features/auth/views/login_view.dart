@@ -100,7 +100,6 @@ class _LoginViewState extends ConsumerState<LoginView> {
                   onPressed: () {
                     FocusScope.of(context).unfocus();
                     ref.read(authControllerProvider.notifier).login(
-                          ref: ref,
                           email: emailController.text,
                           password: passwordController.text,
                           context: context,

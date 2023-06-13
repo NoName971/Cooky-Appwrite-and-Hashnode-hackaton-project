@@ -28,7 +28,6 @@ class _MyRecipesState extends ConsumerState<MyRecipes> {
     ref.read(myRecipesProvider.notifier).removeFavorite(
           recipeId: recipeId,
           context: context,
-          ref: ref,
         );
   }
 
@@ -37,7 +36,6 @@ class _MyRecipesState extends ConsumerState<MyRecipes> {
     ref.read(myRecipesProvider.notifier).deleteRecipe(
           recipeId: recipeId,
           context: context,
-          ref: ref,
         );
   }
 
@@ -177,7 +175,7 @@ class _MyRecipesState extends ConsumerState<MyRecipes> {
                   if (!isLoading) {
                     ref
                         .read(myRecipesProvider.notifier)
-                        .getUserRecipes(context: context, ref: ref);
+                        .getUserRecipes(context: context);
                   }
                 },
                 child: CustomScrollView(
@@ -220,8 +218,6 @@ class _MyRecipesState extends ConsumerState<MyRecipes> {
   }
 
   Future<void> getUserRecipes(BuildContext context) async {
-    await ref
-        .read(myRecipesProvider.notifier)
-        .getUserRecipes(context: context, ref: ref);
+    await ref.read(myRecipesProvider.notifier).getUserRecipes(context: context);
   }
 }

@@ -15,7 +15,7 @@ import 'package:logger/logger.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 final globalCurrentUserProvider = StateProvider(
-  (ref) => UserModel(email: 'email', name: 'name', uid: 'uid'),
+  (ref) => UserModel(email: '', name: '', uid: ''),
 );
 
 Future main() async {
@@ -49,12 +49,12 @@ class Hackaton extends ConsumerWidget {
         themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
         theme: FlexThemeData.light(
           useMaterial3: true,
-          scheme: FlexScheme.rosewood,
+          scheme: FlexScheme.mandyRed,
           fontFamily: 'DMSans',
         ),
         darkTheme: FlexThemeData.dark(
           useMaterial3: true,
-          scheme: FlexScheme.rosewood,
+          scheme: FlexScheme.mandyRed,
           fontFamily: 'DMSans',
         ),
         home: future.when(

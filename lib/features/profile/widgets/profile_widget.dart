@@ -25,12 +25,10 @@ class ProfileWidget extends StatelessWidget {
             color: context.colorScheme.primary,
           ),
           child: Center(
-            child: FittedBox(
-              child: Text(
-                getInitials(currentUser.name),
-                style: context.h2.copyWith(
-                  color: context.colorScheme.background,
-                ),
+            child: Text(
+              getInitials(currentUser.name),
+              style: context.h2.copyWith(
+                color: context.colorScheme.background,
               ),
             ),
           ),

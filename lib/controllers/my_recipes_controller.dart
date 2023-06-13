@@ -16,6 +16,7 @@ final myRecipesProvider =
   final storageService = ref.watch(storageServiceProvider);
 
   return FavoriteController(
+    ref: ref,
     recipeService: recipeService,
     userService: userService,
     storageService: storageService,
@@ -26,20 +27,22 @@ class FavoriteController extends StateNotifier<bool> {
   final RecipeService _recipeService;
   final UserService _userService;
   final StorageService _storageService;
+  final Ref _ref;
 
   FavoriteController({
     required RecipeService recipeService,
     required UserService userService,
     required StorageService storageService,
+    required Ref ref,
   })  : _recipeService = recipeService,
         _storageService = storageService,
         _userService = userService,
+        _ref = ref,
         super(false);
 
   Future<void> addFavorite({
     required String recipeId,
     required BuildContext context,
-    required WidgetRef ref,
   }) async {
     state = !state;
 
@@ -54,7 +57,7 @@ class FavoriteController extends StateNotifier<bool> {
         );
       }
     } else {
-      ref
+      _ref
           .read(favoritesIdsProvider.notifier)
           .update((state) => [...response.favorites!]);
     }
@@ -63,7 +66,6 @@ class FavoriteController extends StateNotifier<bool> {
   Future<void> removeFavorite({
     required String recipeId,
     required BuildContext context,
-    required WidgetRef ref,
   }) async {
     state = !state;
     final response = await _userService.removeFavorite(recipeId: recipeId);
@@ -82,7 +84,7 @@ class FavoriteController extends StateNotifier<bool> {
         final recipe = await _recipeService.getRecipe(recipeId: recipeId);
         favoritesRecipes.add(recipe.recipe!);
       }
-      ref
+      _ref
           .read(favoritesRecipesProvider.notifier)
           .update((state) => [...favoritesRecipes]);
       if (context.mounted) {
@@ -94,7 +96,6 @@ class FavoriteController extends StateNotifier<bool> {
   Future<void> deleteRecipe({
     required String recipeId,
     required BuildContext context,
-    required WidgetRef ref,
   }) async {
     state = !state;
     final response = await _userService.deleteRecipe(recipeId: recipeId);
@@ -108,12 +109,12 @@ class FavoriteController extends StateNotifier<bool> {
         );
       }
     } else {
-      final recipes = ref.read(userRecipesProvider)
+      final recipes = _ref.read(userRecipesProvider)
         ..removeWhere(
           (element) => element.id == recipeId,
         );
 
-      ref.read(userRecipesProvider.notifier).update((state) => [...recipes]);
+      _ref.read(userRecipesProvider.notifier).update((state) => [...recipes]);
 
       if (context.mounted) {
         showSnackBar(context, 'Deleted successfully');
@@ -123,7 +124,6 @@ class FavoriteController extends StateNotifier<bool> {
 
   Future<void> getUserRecipes({
     required BuildContext context,
-    required WidgetRef ref,
   }) async {
     try {
       state = !state;
@@ -140,10 +140,10 @@ class FavoriteController extends StateNotifier<bool> {
         }
       }
       state = !state;
-      ref
+      _ref
           .read(favoritesRecipesProvider.notifier)
           .update((state) => [...favoritesRecipes]);
-      ref
+      _ref
           .read(userRecipesProvider.notifier)
           .update((state) => [...userRecipes]);
     } catch (e) {

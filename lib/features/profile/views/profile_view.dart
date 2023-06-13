@@ -85,7 +85,6 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                 await ref
                     .read(profileProvider.notifier)
                     .logout(context: context);
-                ref.invalidate(globalCurrentUserProvider);
               },
               contentPadding: const EdgeInsets.fromLTRB(16, 0, 32, 16),
               title: const Text('Logout'),

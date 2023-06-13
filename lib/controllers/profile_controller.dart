@@ -11,6 +11,7 @@ final profileProvider = StateNotifierProvider<ProfileController, bool>((ref) {
   final authService = ref.watch(authServiceProvider);
   final userService = ref.watch(userServiceProvider);
   return ProfileController(
+    ref: ref,
     authService: authService,
     userService: userService,
   );
@@ -19,11 +20,14 @@ final profileProvider = StateNotifierProvider<ProfileController, bool>((ref) {
 class ProfileController extends StateNotifier<bool> {
   final AuthService _authService;
   final UserService _userService;
+  final Ref _ref;
   ProfileController({
     required AuthService authService,
     required UserService userService,
+    required Ref ref,
   })  : _authService = authService,
         _userService = userService,
+        _ref = ref,
         super(false);
 
   Future<void> logout({
@@ -32,7 +36,7 @@ class ProfileController extends StateNotifier<bool> {
     state = !state;
     final response = await _authService.logout();
     state = !state;
-    if (response.failure != null) {
+    if (!response.hasSucceded) {
       if (context.mounted) {
         showSnackBar(
           context,
@@ -46,6 +50,7 @@ class ProfileController extends StateNotifier<bool> {
           LoginView.route(),
           (route) => false,
         );
+        _ref.invalidate(globalCurrentUserProvider);
         showSnackBar(context, 'Logged out');
       }
     }
@@ -82,7 +87,6 @@ class ProfileController extends StateNotifier<bool> {
   Future<void> updateFullName({
     required String name,
     required BuildContext context,
-    required WidgetRef ref,
   }) async {
     try {
       state = !state;
@@ -97,7 +101,7 @@ class ProfileController extends StateNotifier<bool> {
         );
         state = !state;
         if (response2.hasSucceded) {
-          ref.read(globalCurrentUserProvider.notifier).update(
+          _ref.read(globalCurrentUserProvider.notifier).update(
                 (state) => state.copyWith(name: name),
               );
 

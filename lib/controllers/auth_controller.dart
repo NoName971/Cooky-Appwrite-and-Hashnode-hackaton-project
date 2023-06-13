@@ -14,7 +14,11 @@ final authControllerProvider =
   final authService = ref.watch(authServiceProvider);
   final userService = ref.watch(userServiceProvider);
 
-  return AuthController(authService: authService, userService: userService);
+  return AuthController(
+    authService: authService,
+    userService: userService,
+    ref: ref,
+  );
 });
 
 final currentAccountProvider = FutureProvider((ref) async {
@@ -33,11 +37,14 @@ final currentAccountProvider = FutureProvider((ref) async {
 class AuthController extends StateNotifier<bool> {
   final AuthService _authService;
   final UserService _userService;
+  final Ref _ref;
   AuthController({
     required AuthService authService,
     required UserService userService,
+    required Ref ref,
   })  : _authService = authService,
         _userService = userService,
+        _ref = ref,
         super(false);
 
   void register({
@@ -82,7 +89,6 @@ class AuthController extends StateNotifier<bool> {
     required String email,
     required String password,
     required BuildContext context,
-    required WidgetRef ref,
   }) async {
     state = !state;
     final response = await _authService.login(
@@ -92,7 +98,7 @@ class AuthController extends StateNotifier<bool> {
     state = !state;
     if (response.hasSucceded) {
       final currentUser = await getCurrentUser();
-      ref.read(globalCurrentUserProvider.notifier).update(
+      _ref.read(globalCurrentUserProvider.notifier).update(
             (state) => state.copyWith(
               email: currentUser!.email,
               name: currentUser.name,

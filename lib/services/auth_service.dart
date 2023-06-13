@@ -78,7 +78,7 @@ class AuthService implements IAuthService {
   }
 
   @override
-  Future<({Failure? failure, bool? hasSucceded})> logout() async {
+  Future<({Failure? failure, bool hasSucceded})> logout() async {
     try {
       final session = await _account.getSession(sessionId: 'current');
       await _account.deleteSession(sessionId: session.$id);

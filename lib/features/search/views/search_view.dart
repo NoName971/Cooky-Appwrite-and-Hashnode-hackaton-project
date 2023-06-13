@@ -75,7 +75,6 @@ class _SearchViewState extends ConsumerState<SearchView> {
                       if (validation) {
                         FocusScope.of(context).unfocus();
                         ref.read(searchProvider.notifier).searchRecipes(
-                              ref: ref,
                               query: textEditingController.text,
                               context: context,
                             );
