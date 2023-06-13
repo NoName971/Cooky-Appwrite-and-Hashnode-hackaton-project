@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/features/my_recipes/views/my_recipes.dart';
-import 'package:hackaton_v1/main.dart';
 import 'package:hackaton_v1/models/recipe_model.dart';
 import 'package:hackaton_v1/services/storage_service.dart';
 import '../constants/ui_messages.dart';

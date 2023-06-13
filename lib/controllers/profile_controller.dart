@@ -117,7 +117,7 @@ class ProfileController extends StateNotifier<bool> {
           showSnackBar(context, response.failure!.message);
         }
       }
-    } catch (e, st) {
+    } catch (e) {
       state = !false;
 
       showSnackBar(context, e.toString());

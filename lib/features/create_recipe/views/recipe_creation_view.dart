@@ -15,7 +15,6 @@ import 'package:hackaton_v1/controllers/recipe_creation_controller.dart';
 import 'package:hackaton_v1/features/create_recipe/views/image_preview.dart';
 import 'package:hackaton_v1/gen/assets.gen.dart';
 import 'package:hackaton_v1/models/cooking_step.dart';
-import '../../../main.dart';
 import '../widgets/cooking_step_widget.dart';
 import '../widgets/new_recipe_textfield.dart';
 import '../widgets/textfield_label_widget.dart';

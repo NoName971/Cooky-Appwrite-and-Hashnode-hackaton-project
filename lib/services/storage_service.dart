@@ -17,23 +17,6 @@ class StorageService implements IStorageService {
   StorageService({required Storage storage}) : _storage = storage;
 
   @override
-  Future<List<String>> uploadFiles(List<String> filesPaths) async {
-    List<String> fileLinks = [];
-
-    for (final filePath in filesPaths) {
-      final uploadedFile = await _storage.createFile(
-        bucketId: AppwriteConstants.recipesBucketId,
-        fileId: ID.unique(),
-        file: InputFile.fromPath(path: filePath),
-      );
-
-      fileLinks.add(AppwriteConstants.imageUrl(uploadedFile.$id));
-    }
-
-    return fileLinks;
-  }
-
-  @override
   Future<String> uploadFile(
     String path,
     String? fileName,

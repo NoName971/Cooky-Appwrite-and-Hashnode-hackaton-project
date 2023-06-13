@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/constants/appwrite_constants.dart';
 import 'package:hackaton_v1/constants/ui_messages.dart';
 import 'package:hackaton_v1/constants/appwrite_providers.dart';
-import 'package:hackaton_v1/main.dart';
 import 'package:hackaton_v1/models/failure.dart';
 import 'package:appwrite/models.dart' as model;
 import 'package:hackaton_v1/models/recipe_model.dart';
@@ -100,6 +99,7 @@ class UserService implements IUserService {
     }
   }
 
+  @override
   Future<({Failure? failure, bool hasSucceded})> deleteRecipe({
     required String recipeId,
   }) async {
@@ -156,6 +156,7 @@ class UserService implements IUserService {
     }
   }
 
+  @override
   Future<List<RecipeModel>> getUserRecipes() async {
     final user = await _authService.getCurrentUser();
     bool allFetched = false;
@@ -183,6 +184,7 @@ class UserService implements IUserService {
     return userRecipes;
   }
 
+  @override
   Future<List<model.Document>> getLike({
     required String recipeId,
   }) async {
@@ -197,6 +199,7 @@ class UserService implements IUserService {
     return likes.documents;
   }
 
+  @override
   Future<({Like? like, Failure? failure})> dbCreateLike({
     required String recipeId,
   }) async {
@@ -221,6 +224,7 @@ class UserService implements IUserService {
     }
   }
 
+  @override
   Future<({bool hasSucceded, Failure? failure})> dbRemoveLike({
     required String likeId,
   }) async {
@@ -242,6 +246,7 @@ class UserService implements IUserService {
     }
   }
 
+  @override
   Future<({bool hasSucceded, Failure? failure})> updateUserData({
     required Map data,
     required String uid,

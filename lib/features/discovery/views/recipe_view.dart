@@ -10,7 +10,6 @@ import 'package:hackaton_v1/features/create_recipe/views/image_preview.dart';
 import 'package:hackaton_v1/controllers/discovery_controller.dart';
 import 'package:hackaton_v1/gen/assets.gen.dart';
 import 'package:hackaton_v1/helpers/utils.dart';
-import 'package:hackaton_v1/main.dart';
 
 final attachmentNameProvider = StateProvider.autoDispose<List>((ref) {
   return [];

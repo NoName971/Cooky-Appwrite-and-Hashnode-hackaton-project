@@ -6,9 +6,12 @@ abstract class IRecipeService {
   Future<({Failure? failure, model.DocumentList? recipes})> getRecipes({
     required List<String> queries,
   });
-  // Future<({Failure? failure, model.Document? recipe})> getRecipe({
-  //   required String recipeId,
-  // });
+
+  Future<({bool hasSucceded, Failure? failure})> updateRecipe({
+    required String recipeId,
+    required Map data,
+  });
+
   Future<({RecipeModel? recipe, Failure? failure})> getRecipe({
     required String recipeId,
   });

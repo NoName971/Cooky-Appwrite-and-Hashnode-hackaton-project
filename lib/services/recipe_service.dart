@@ -108,6 +108,7 @@ class RecipeService extends IRecipeService {
     }
   }
 
+  @override
   Future<({bool hasSucceded, Failure? failure})> updateRecipe({
     required String recipeId,
     required Map data,
