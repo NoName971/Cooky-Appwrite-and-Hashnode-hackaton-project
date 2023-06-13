@@ -1,3 +1,4 @@
+import 'package:duration_picker/duration_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -102,19 +103,6 @@ class _EditRecipeState extends ConsumerState<EditRecipe> {
           );
         }
 
-        logger.d('${cookingStepsPics.length} and ${instructions.length}');
-
-        // for (int index = 0; index < instructions.length; index++) {
-        //   String attachment = cookingStepsPics.firstWhereOrNull(
-        //           (element) => element.startsWith('${index}_')) ??
-        //       '';
-        //   cookingSteps.add(
-        //     CookingStep(
-        //       attachment: attachment,
-        //       instructions: TextEditingController(text: instructions[index]),
-        //     ),
-        //   );
-        // }
         return [...cookingSteps];
       },
     );
@@ -361,11 +349,21 @@ class _EditRecipeState extends ConsumerState<EditRecipe> {
                   ),
                   NewRecipeTextField(
                     maxLength: 10,
+                    readOnly: true,
                     validator: (value) {
                       if (value == null || value.length < 3) {
-                        return '3 characters minimum';
+                        return 'This field is required';
                       }
                       return null;
+                    },
+                    onTap: () async {
+                      var resultingDuration = await showDurationPicker(
+                        snapToMins: 5,
+                        context: context,
+                        initialTime: const Duration(minutes: 30),
+                      );
+                      cookingTimeTextEditingController.text =
+                          '${resultingDuration!.inMinutes} min';
                     },
                     textTheme: textTheme,
                     textEditingController: cookingTimeTextEditingController,
@@ -446,7 +444,6 @@ class _EditRecipeState extends ConsumerState<EditRecipe> {
                       if (newIndex > oldIndex) {
                         newIndex -= 1;
                       }
-                      logger.d(newIndex > oldIndex);
                       CookingStep currentStep =
                           cookingSteps.elementAt(oldIndex);
                       cookingSteps

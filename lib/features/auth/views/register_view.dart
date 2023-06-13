@@ -1,12 +1,17 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hackaton_v1/common/custom_image_icon.dart';
+import 'package:hackaton_v1/common/text_style.dart';
+import 'package:hackaton_v1/gen/assets.gen.dart';
 import '../../../common/custom_button.dart';
 import '../../../common/custom_textfield.dart';
 import '../../../helpers/utils.dart';
 import '../../../controllers/auth_controller.dart';
 
-final isPasswordVisible = StateProvider((ref) => false);
+final obscureTextProvider = StateProvider.autoDispose((ref) {
+  return true;
+});
 
 class RegisterView extends ConsumerStatefulWidget {
   static route() =>
@@ -33,7 +38,8 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final obscureText = ref.watch(obscureTextProvider);
+
     ref.listen(authControllerProvider.select((value) => value),
         (previous, next) {
       if (next) {
@@ -73,6 +79,19 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                       height: 16,
                     ),
                     CustomTextField(
+                      obscureText: obscureText,
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          ref.read(obscureTextProvider.notifier).update(
+                                (state) => !state,
+                              );
+                        },
+                        icon: CustomImageIcon(
+                          iconPath: obscureText
+                              ? Assets.icons.hide.path
+                              : Assets.icons.show.path,
+                        ),
+                      ),
                       controller: passwordController,
                       label: const Text('Password'),
                     ),
@@ -117,7 +136,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                           TextSpan(
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
-                                color: colorScheme.onBackground),
+                                color: context.colorScheme.onBackground),
                             text: 'Have an account?',
                           ),
                           TextSpan(
@@ -125,7 +144,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                             style: TextStyle(
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.w600,
-                              color: colorScheme.primary,
+                              color: context.colorScheme.primary,
                             ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () => Navigator.pop(context),

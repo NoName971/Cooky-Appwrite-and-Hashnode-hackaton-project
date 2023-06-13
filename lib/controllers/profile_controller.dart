@@ -120,7 +120,6 @@ class ProfileController extends StateNotifier<bool> {
     } catch (e, st) {
       state = !false;
 
-      logger.d(st);
       showSnackBar(context, e.toString());
     }
   }

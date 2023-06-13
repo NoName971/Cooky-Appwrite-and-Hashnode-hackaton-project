@@ -263,7 +263,6 @@ class DiscoveryViewController extends StateNotifier<DiscoberyControllerState> {
     required WidgetRef ref,
   }) async {
     final response = await _recipeService.getRecipe(recipeId: recipeId);
-    logger.d(response.recipe!.id);
 
     if (response.failure == null) {
       final response2 = await _userService.dbRemoveLike(likeId: likeId);

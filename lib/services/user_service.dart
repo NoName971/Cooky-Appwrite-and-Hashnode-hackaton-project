@@ -180,7 +180,6 @@ class UserService implements IUserService {
         allFetched = false;
       }
     }
-    logger.d(userRecipes.length);
     return userRecipes;
   }
 
@@ -234,15 +233,11 @@ class UserService implements IUserService {
 
       return (hasSucceded: true, failure: null);
     } on AppwriteException catch (e, stackTrace) {
-      logger.d(e);
-
       return (
         failure: Failure(e.message ?? UiMessages.unexpectedError, stackTrace),
         hasSucceded: false
       );
     } catch (e, stackTrace) {
-      logger.d(e);
-
       return (failure: Failure(e.toString(), stackTrace), hasSucceded: false);
     }
   }

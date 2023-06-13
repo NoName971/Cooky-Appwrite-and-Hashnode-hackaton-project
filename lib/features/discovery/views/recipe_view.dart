@@ -91,7 +91,6 @@ class _RecipeViewState extends ConsumerState<RecipeView> {
               child: IconButton(
                 onPressed: () {
                   if (isLiked) {
-                    logger.d(like);
                     ref.read(discoveryProvider.notifier).removeLike(
                           recipeId: widget.recipeId,
                           context: context,
@@ -170,9 +169,10 @@ class _RecipeViewState extends ConsumerState<RecipeView> {
                                 ),
                                 TextSpan(
                                   text: ' ${recipe.userName}',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontWeight: FontWeight.w600,
+                                    color: context.colorScheme.onBackground,
                                   ),
                                 )
                               ],
@@ -280,8 +280,6 @@ class _RecipeViewState extends ConsumerState<RecipeView> {
                                 child: GestureDetector(
                                   behavior: HitTestBehavior.opaque,
                                   onTap: () {
-                                    logger.d(recipe.cookingStepsPics);
-
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -319,8 +317,6 @@ class _RecipeViewState extends ConsumerState<RecipeView> {
             return const SizedBox.shrink();
           },
           error: (error, stackTrace) {
-            logger.d(error);
-            logger.d(stackTrace);
             return ErrorView(
               provider: currentRecipeProvider(widget.recipeId),
             );

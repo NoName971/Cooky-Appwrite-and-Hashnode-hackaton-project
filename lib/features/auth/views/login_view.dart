@@ -3,11 +3,18 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/common/custom_button.dart';
+import 'package:hackaton_v1/common/custom_image_icon.dart';
 import 'package:hackaton_v1/common/custom_textfield.dart';
 import 'package:hackaton_v1/common/logo_widget.dart';
+import 'package:hackaton_v1/common/text_style.dart';
+import 'package:hackaton_v1/gen/assets.gen.dart';
 import 'package:hackaton_v1/helpers/utils.dart';
 import 'package:hackaton_v1/controllers/auth_controller.dart';
 import 'package:hackaton_v1/features/auth/views/register_view.dart';
+
+final obscureTextProvider = StateProvider.autoDispose((ref) {
+  return true;
+});
 
 class LoginView extends ConsumerStatefulWidget {
   static route() => MaterialPageRoute(builder: (context) => const LoginView());
@@ -30,7 +37,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final obscureText = ref.watch(obscureTextProvider);
     ref.listen(authControllerProvider.select((value) => value),
         (previous, next) {
       if (next) {
@@ -69,8 +76,21 @@ class _LoginViewState extends ConsumerState<LoginView> {
                       height: 16,
                     ),
                     CustomTextField(
+                      obscureText: obscureText,
                       controller: passwordController,
                       label: const Text('Password'),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          ref.read(obscureTextProvider.notifier).update(
+                                (state) => !state,
+                              );
+                        },
+                        icon: CustomImageIcon(
+                          iconPath: obscureText
+                              ? Assets.icons.hide.path
+                              : Assets.icons.show.path,
+                        ),
+                      ),
                     ),
                     const SizedBox(
                       height: 20,
@@ -99,15 +119,15 @@ class _LoginViewState extends ConsumerState<LoginView> {
                           TextSpan(
                             style: TextStyle(
                                 fontFamily: 'DMSans',
-                                color: colorScheme.onBackground),
+                                color: context.colorScheme.onBackground),
                             text: 'Don\'t have an account?',
                           ),
                           TextSpan(
                             text: ' Register',
                             style: TextStyle(
-                              fontFamily: 'Montserrat',
+                              fontFamily: 'DMSans',
                               fontWeight: FontWeight.w600,
-                              color: colorScheme.primary,
+                              color: context.colorScheme.primary,
                             ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {

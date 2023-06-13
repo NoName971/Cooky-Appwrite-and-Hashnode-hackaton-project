@@ -306,7 +306,7 @@ class _RecipeCreationViewState extends ConsumerState<RecipeCreationView> {
                     maxLength: 10,
                     validator: (value) {
                       if (value == null || value.length < 3) {
-                        return '3 characters minimum';
+                        return 'This field is required';
                       }
                       return null;
                     },
@@ -389,7 +389,6 @@ class _RecipeCreationViewState extends ConsumerState<RecipeCreationView> {
                       if (newIndex > oldIndex) {
                         newIndex -= 1;
                       }
-                      logger.d(newIndex > oldIndex);
                       CookingStep currentStep =
                           cookingSteps.elementAt(oldIndex);
                       cookingSteps

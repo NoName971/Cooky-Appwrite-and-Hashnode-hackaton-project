@@ -141,7 +141,6 @@ class FavoriteController extends StateNotifier<bool> {
         }
       }
       state = !state;
-      logger.d(userRecipes.length);
       ref
           .read(favoritesRecipesProvider.notifier)
           .update((state) => [...favoritesRecipes]);
