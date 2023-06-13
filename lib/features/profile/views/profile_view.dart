@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/common/custom_list_tile.dart';
-import 'package:hackaton_v1/common/text_style.dart';
 import 'package:hackaton_v1/controllers/profile_controller.dart';
 import 'package:hackaton_v1/features/profile/views/full_name_update.dart';
-import 'package:hackaton_v1/helpers/extensions.dart';
+import 'package:hackaton_v1/features/profile/widgets/profile_widget.dart';
 import 'package:hackaton_v1/main.dart';
-import 'package:hackaton_v1/models/user_model.dart';
-import '../../../common/appbar.dart';
 import '../../../helpers/utils.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../services/dark_mode_service.dart';
@@ -35,11 +32,11 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
       }
     });
     return Scaffold(
-      appBar: appBar(const Text('Profile')),
+      appBar: AppBar(),
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
-            child: ProfileWIdget(currentUser: currentUser),
+            child: ProfileWidget(currentUser: currentUser),
           ),
           const SliverToBoxAdapter(
             child: SizedBox(
@@ -97,50 +94,6 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
           )
         ],
       ),
-    );
-  }
-}
-
-class ProfileWIdget extends StatelessWidget {
-  const ProfileWIdget({
-    super.key,
-    required this.currentUser,
-  });
-
-  final UserModel currentUser;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          height: 90,
-          width: 90,
-          padding: const EdgeInsets.all(16),
-          margin: const EdgeInsets.only(top: 16, bottom: 10),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: context.colorScheme.primary,
-          ),
-          child: Center(
-            child: FittedBox(
-              child: Text(
-                getInitials(currentUser.name),
-                style: context.h2.copyWith(
-                  color: context.colorScheme.background,
-                ),
-              ),
-            ),
-          ),
-        ),
-        Text(
-          currentUser.name,
-          style: context.h4,
-        ),
-        Text(
-          currentUser.email,
-        )
-      ],
     );
   }
 }

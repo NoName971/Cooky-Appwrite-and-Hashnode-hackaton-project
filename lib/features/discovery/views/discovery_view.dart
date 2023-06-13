@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/common/custom_button.dart';
 import 'package:hackaton_v1/common/logo_widget.dart';
-import 'package:hackaton_v1/constants/mock.dart';
 import 'package:hackaton_v1/controllers/discovery_controller.dart';
 import 'package:hackaton_v1/features/discovery/views/recipe_view.dart';
 import 'package:hackaton_v1/features/discovery/widgets/meal_card_large.dart';
 import 'package:hackaton_v1/models/recipe_model.dart';
 import 'package:focus_detector/focus_detector.dart';
-import 'package:hackaton_v1/services/recipe_service.dart';
 
 final recipesProvider = StateProvider.autoDispose<List<RecipeModel>>((ref) {
   return [];

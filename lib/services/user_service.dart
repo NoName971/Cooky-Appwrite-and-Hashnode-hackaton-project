@@ -158,18 +158,29 @@ class UserService implements IUserService {
 
   Future<List<RecipeModel>> getUserRecipes() async {
     final user = await _authService.getCurrentUser();
-    final response = await _databases.listDocuments(
+    bool allFetched = false;
+    final List<RecipeModel> userRecipes = [];
+    while (!allFetched) {
+      final response = await _databases.listDocuments(
         databaseId: AppwriteConstants.mainDatabaseId,
         collectionId: AppwriteConstants.recipeCollectionId,
         queries: [
           Query.equal('uid', user!.$id),
-        ]);
+          Query.limit(25),
+          Query.offset(userRecipes.length)
+        ],
+      );
 
-    final List<RecipeModel> userRecipes = [];
-
-    for (final recipe in response.documents) {
-      userRecipes.add(RecipeModel.fromMap(recipe.data));
+      for (final recipe in response.documents) {
+        userRecipes.add(RecipeModel.fromMap(recipe.data));
+      }
+      if (response.documents.length < 25) {
+        allFetched = true;
+      } else {
+        allFetched = false;
+      }
     }
+    logger.d(userRecipes.length);
     return userRecipes;
   }
 
