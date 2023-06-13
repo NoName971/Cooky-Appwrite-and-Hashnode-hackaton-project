@@ -4,12 +4,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/common/custom_button.dart';
 import 'package:hackaton_v1/common/logo_widget.dart';
 import 'package:hackaton_v1/common/text_style.dart';
+import 'package:hackaton_v1/constants/mock.dart';
 import 'package:hackaton_v1/controllers/discovery_controller.dart';
+import 'package:hackaton_v1/controllers/my_recipes_controller.dart';
+import 'package:hackaton_v1/controllers/recipe_creation_controller.dart';
 import 'package:hackaton_v1/features/discovery/views/recipe_view.dart';
 import 'package:hackaton_v1/features/discovery/widgets/meal_card_large.dart';
 import 'package:hackaton_v1/features/discovery/widgets/top_recipes_length_indicator.dart';
 import 'package:hackaton_v1/models/recipe_model.dart';
 import 'package:focus_detector/focus_detector.dart';
+import 'package:hackaton_v1/services/recipe_service.dart';
 
 final recipesProvider = StateProvider.autoDispose<List<RecipeModel>>((ref) {
   return [];
@@ -36,8 +40,8 @@ class _DiscoveryViewState extends ConsumerState<DiscoveryView> {
           fetchMode: FetchMode.normal,
           context: context,
           queries: [
-            // Query.orderDesc('\$createdAt'),
-            Query.limit(5),
+            Query.orderDesc('\$createdAt'),
+            Query.limit(10),
           ],
         );
       },
@@ -103,48 +107,60 @@ class _DiscoveryViewState extends ConsumerState<DiscoveryView> {
             child: CustomScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               slivers: [
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 16),
-                    child: Text(
-                      'Top recipes',
-                      style: context.h3,
+                SliverVisibility(
+                  visible: topRecipes.isNotEmpty,
+                  sliver: SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 16),
+                      child: Text(
+                        'Top recipes',
+                        style: context.h3,
+                      ),
                     ),
                   ),
                 ),
-                SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 250,
-                    child: PageView(controller: pageController, children: [
-                      for (final topRecipe in topRecipes)
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              RecipeView(recipeId: topRecipe.id).route(),
-                            );
-                          },
-                          child: MealCardLargeWidget(recipe: topRecipe),
-                        ),
-                    ]),
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: TopRecipesLengthIndicator(
-                    pageController: pageController,
-                    topRecipes: topRecipes,
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 16,
+                SliverVisibility(
+                  visible: topRecipes.isNotEmpty,
+                  sliver: SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 250,
+                      child: PageView(controller: pageController, children: [
+                        for (final topRecipe in topRecipes)
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                RecipeView(recipeId: topRecipe.id).route(),
+                              );
+                            },
+                            child: MealCardLargeWidget(recipe: topRecipe),
+                          ),
+                      ]),
                     ),
-                    child: Text(
-                      'Latest recipes',
-                      style: context.h3,
+                  ),
+                ),
+                SliverVisibility(
+                  visible: topRecipes.isNotEmpty,
+                  sliver: SliverToBoxAdapter(
+                    child: TopRecipesLengthIndicator(
+                      pageController: pageController,
+                      topRecipes: topRecipes,
+                    ),
+                  ),
+                ),
+                SliverVisibility(
+                  visible: recipes.isNotEmpty,
+                  sliver: SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 16,
+                      ),
+                      child: Text(
+                        'Latest recipes',
+                        style: context.h3,
+                      ),
                     ),
                   ),
                 ),

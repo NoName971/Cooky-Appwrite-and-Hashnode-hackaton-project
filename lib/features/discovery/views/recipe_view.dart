@@ -158,6 +158,29 @@ class _RecipeViewState extends ConsumerState<RecipeView> {
                           const SizedBox(
                             height: 10,
                           ),
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  style: TextStyle(
+                                    fontFamily: 'DMSans',
+                                    color: context.colorScheme.onBackground,
+                                  ),
+                                  text: 'By',
+                                ),
+                                TextSpan(
+                                  text: ' ${recipe.userName}',
+                                  style: const TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
                           Text(
                             recipe.createdAt!.readableDateFormat(),
                             style: context.p3Regular,

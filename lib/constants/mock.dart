@@ -4,6 +4,7 @@ import 'package:hackaton_v1/models/recipe_model.dart';
 List<RecipeModel> mock = [
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Spicy Chicken Stir-Fry",
     description:
@@ -36,6 +37,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Classic Margherita Pizza",
     description:
@@ -79,6 +81,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Creamy Garlic Parmesan Pasta",
     description:
@@ -117,6 +120,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Baked Lemon Herb Salmon",
     description:
@@ -144,6 +148,7 @@ List<RecipeModel> mock = [
       "6488689a2f8a4ea4a6fe",
       "6488689a2f8a4ea4a6fe",
       "6488689a2f8a4ea4a6fe",
+      "",
       ""
     ],
     likes: 90,
@@ -153,6 +158,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Mushroom Risotto",
     description:
@@ -196,6 +202,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Homemade Chicken Noodle Soup",
     description:
@@ -238,6 +245,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Beef Stir-Fry with Vegetables",
     description:
@@ -282,6 +290,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Caprese Salad",
     description:
@@ -319,6 +328,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Pasta Carbonara",
     description:
@@ -361,6 +371,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Greek Salad",
     description:
@@ -404,6 +415,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Spinach and Feta Stuffed Chicken Breast",
     description:
@@ -446,6 +458,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Mediterranean Quinoa Salad",
     description:
@@ -487,6 +500,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Honey Mustard Baked Salmon",
     description:
@@ -526,6 +540,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Vegetable Curry",
     description:
@@ -571,6 +586,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Caprese Skewers",
     description:
@@ -606,6 +622,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Teriyaki Chicken Stir-Fry",
     description:
@@ -657,6 +674,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Creamy Garlic Mashed Potatoes",
     description:
@@ -690,8 +708,8 @@ List<RecipeModel> mock = [
       "6488689a2f8a4ea4a6fe",
       "6488689a2f8a4ea4a6fe",
       "6488689a2f8a4ea4a6fe",
-      ""
-          "6488689a2f8a4ea4a6fe",
+      "",
+      "6488689a2f8a4ea4a6fe",
       "6488689a2f8a4ea4a6fe",
       "6488689a2f8a4ea4a6fe",
     ],
@@ -702,6 +720,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Shrimp Scampi",
     description:
@@ -748,6 +767,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Homemade Pizza",
     description:
@@ -794,6 +814,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Chicken Fajitas",
     description:
@@ -843,6 +864,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Stuffed Bell Peppers",
     description:
@@ -894,6 +916,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Beef Stir-Fry",
     description:
@@ -944,6 +967,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Chicken Parmesan",
     description:
@@ -997,6 +1021,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Vegetable Stir-Fry",
     description:
@@ -1044,6 +1069,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Pasta Carbonara",
     description:
@@ -1086,6 +1112,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Caprese Salad",
     description:
@@ -1121,6 +1148,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Shrimp Scampi",
     description:
@@ -1165,6 +1193,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Mediterranean Quinoa Salad",
     description:
@@ -1205,6 +1234,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Teriyaki Salmon",
     description:
@@ -1247,6 +1277,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Greek Gyro",
     description:
@@ -1295,6 +1326,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Chicken Parmesan",
     description:
@@ -1342,6 +1374,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Vegetable Curry",
     description:
@@ -1390,6 +1423,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Beef Stir-Fry",
     description:
@@ -1437,6 +1471,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Caprese Salad",
     description:
@@ -1474,6 +1509,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Homemade Pizza",
     description:
@@ -1520,6 +1556,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Mango Salsa",
     description:
@@ -1557,6 +1594,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Chicken Caesar Salad",
     description:
@@ -1599,6 +1637,7 @@ List<RecipeModel> mock = [
   ),
   RecipeModel(
     id: ID.unique(),
+    userName: 'No Name Dev',
     uid: "646894e6efbdf9f5961e",
     title: "( Demo ) Chocolate Chip Cookies",
     description:

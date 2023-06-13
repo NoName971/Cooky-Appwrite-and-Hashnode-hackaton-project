@@ -98,22 +98,23 @@ class _LoginViewState extends ConsumerState<LoginView> {
                         children: <TextSpan>[
                           TextSpan(
                             style: TextStyle(
-                                fontFamily: 'Montserrat',
+                                fontFamily: 'DMSans',
                                 color: colorScheme.onBackground),
                             text: 'Don\'t have an account?',
                           ),
                           TextSpan(
-                              text: ' Register',
-                              style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w600,
-                                color: colorScheme.primary,
-                              ),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  FocusScope.of(context).unfocus();
-                                  Navigator.push(context, RegisterView.route());
-                                }),
+                            text: ' Register',
+                            style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w600,
+                              color: colorScheme.primary,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                FocusScope.of(context).unfocus();
+                                Navigator.push(context, RegisterView.route());
+                              },
+                          ),
                         ],
                       ),
                     ),

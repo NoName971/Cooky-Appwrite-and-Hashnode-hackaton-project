@@ -15,6 +15,7 @@ class RecipeModel {
   final String? updatedAt;
   final String? queryableString;
   final int views;
+  final String userName;
 
   RecipeModel({
     required this.id,
@@ -31,23 +32,24 @@ class RecipeModel {
     this.createdAt,
     this.updatedAt,
     this.queryableString,
+    required this.userName,
   });
 
-  RecipeModel copyWith({
-    String? id,
-    String? uid,
-    String? title,
-    String? description,
-    String? illustrationPic,
-    List<String>? ingredients,
-    String? cookingTime,
-    List<String>? cookingSteps,
-    List<String>? cookingStepsPics,
-    int? likes,
-    String? createdAt,
-    String? updatedAt,
-    String? queryableString,
-  }) {
+  RecipeModel copyWith(
+      {String? id,
+      String? uid,
+      String? title,
+      String? description,
+      String? illustrationPic,
+      List<String>? ingredients,
+      String? cookingTime,
+      List<String>? cookingSteps,
+      List<String>? cookingStepsPics,
+      int? likes,
+      String? createdAt,
+      String? updatedAt,
+      String? queryableString,
+      String? userName}) {
     return RecipeModel(
       id: id ?? this.id,
       uid: uid ?? this.uid,
@@ -62,6 +64,7 @@ class RecipeModel {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       queryableString: queryableString ?? this.queryableString,
+      userName: userName ?? this.userName,
     );
   }
 
@@ -76,11 +79,11 @@ class RecipeModel {
     result.addAll({'cookingTime': cookingTime});
     result.addAll({'cookingSteps': cookingSteps});
     result.addAll({'cookingStepsPics': cookingStepsPics});
-    /* 
-   For testing purposes
-   result.addAll({'views': views});
-   result.addAll({'likes': likes});
-    */
+    result.addAll({'userName': userName});
+
+    //For testing purposes
+    // result.addAll({'views': views});
+    // result.addAll({'likes': likes});
 
     if (createdAt != null) {
       result.addAll({'createdAt': createdAt});
@@ -111,6 +114,7 @@ class RecipeModel {
       createdAt: map['\$createdAt'],
       updatedAt: map['\$updatedAt'],
       queryableString: map['queryableString'],
+      userName: map['userName'],
     );
   }
 

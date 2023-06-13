@@ -174,6 +174,7 @@ class _EditRecipeState extends ConsumerState<EditRecipe> {
                 final attachments =
                     cookingSteps.map((e) => e.attachment).toList();
                 final recipe = RecipeModel(
+                  userName: ref.watch(globalCurrentUserProvider).name,
                   id: widget.recipeModel.id,
                   uid: widget.recipeModel.uid,
                   title: titleTextEditingController.text,

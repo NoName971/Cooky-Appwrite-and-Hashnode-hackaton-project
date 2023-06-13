@@ -43,14 +43,15 @@ class RecipeCreationController extends StateNotifier<bool> {
   }) async {
     try {
       state = true;
-      final uid = (await _authService.getCurrentUser())!.$id;
+      final user = (await _authService.getCurrentUser())!;
 
       final ingredientsToString = ingredients.join(" ");
       final queryableString = '$ingredientsToString $title';
 
       final RecipeModel recipeModel = RecipeModel(
+        userName: user.name,
         id: '',
-        uid: uid,
+        uid: user.$id,
         title: title,
         description: description,
         illustrationPic: illustrationPic,
@@ -65,8 +66,8 @@ class RecipeCreationController extends StateNotifier<bool> {
           await _recipeService.createRecipe(recipeModel: recipeModel);
       state = false;
       if (response.document != null) {
-        // TO DO :  navigate to home screen
         if (context.mounted) {
+          Navigator.pop(context);
           showSnackBar(context, 'Recipe created successfully');
         }
       } else {

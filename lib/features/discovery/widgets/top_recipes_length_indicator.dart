@@ -20,13 +20,12 @@ class TopRecipesLengthIndicator extends StatelessWidget {
       margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
       child: SmoothPageIndicator(
         controller: pageController, // PageController
-        count: topRecipes.length,
+        count: 5,
         effect: WormEffect(
           dotHeight: 8,
           dotWidth: 8,
           activeDotColor: context.colorScheme.secondary,
         ),
-        onDotClicked: (index) {},
       ),
     );
   }
