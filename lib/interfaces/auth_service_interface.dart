@@ -6,17 +6,20 @@ abstract class IAuthService {
   Future<({Failure? failure, model.User? user})> register({
     required String email,
     required String password,
+    required String name,
   });
 
-  Future<({Failure? failure, model.Session? session})> login({
-    required String email,
-    required String password,
-  });
+  Future<model.User?> getCurrentUser();
 
-  Future<model.User?> currentUser();
-  Future<({Failure? failure, bool? isSucceded})> logout();
-  Future<({Failure? failure, bool? isSucceded})> updatePassword({
+  Future<({Failure? failure, bool? hasSucceded})> logout();
+
+  Future<({Failure? failure, bool? hasSucceded})> updatePassword({
     required String password,
     required String oldPassword,
+  });
+
+  Future<({Failure? failure, bool hasSucceded})> login({
+    required String email,
+    required String password,
   });
 }

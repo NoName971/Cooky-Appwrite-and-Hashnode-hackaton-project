@@ -25,3 +25,21 @@ extension PaddingExtension on Widget {
     );
   }
 }
+
+String getInitials(String inputString) {
+  List<String> words = inputString.split(' ');
+  String firstLetters = '';
+
+  int wordCount = 0;
+  for (var word in words) {
+    if (word.isNotEmpty) {
+      firstLetters += '${word[0].toUpperCase()} ';
+      wordCount++;
+      if (wordCount == 2) {
+        break;
+      }
+    }
+  }
+
+  return firstLetters.trimRight();
+}

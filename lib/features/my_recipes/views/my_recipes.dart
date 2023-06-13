@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:focus_detector/focus_detector.dart';
 import 'package:hackaton_v1/common/custom_button.dart';
-import 'package:hackaton_v1/common/custom_list_tile.dart';
-import 'package:hackaton_v1/common/text_style.dart';
+import 'package:hackaton_v1/features/my_recipes/widgets/statistics_modal_widget.dart';
 import 'package:hackaton_v1/helpers/utils.dart';
 import 'package:hackaton_v1/controllers/my_recipes_controller.dart';
 import 'package:hackaton_v1/features/my_recipes/views/edit_recipe.dart';
@@ -82,18 +81,15 @@ class _MyRecipesState extends ConsumerState<MyRecipes> {
         body: FocusDetector(
             onVisibilityGained: () async {
               if (!isLoading) {
-                await ref
-                    .read(myRecipesProvider.notifier)
-                    .getUserRecipes(context: context, ref: ref);
+                await getUserRecipes(context);
               }
             },
             child: TabBarView(children: [
               RefreshIndicator(
+                notificationPredicate: !isLoading ? (_) => true : (_) => false,
                 onRefresh: () async {
                   if (!isLoading) {
-                    ref
-                        .read(myRecipesProvider.notifier)
-                        .getUserRecipes(context: context, ref: ref);
+                    getUserRecipes(context);
                   }
                 },
                 child: CustomScrollView(
@@ -117,35 +113,8 @@ class _MyRecipesState extends ConsumerState<MyRecipes> {
                                       onPressed: () {
                                         showCustomModalBottomSheet(
                                           context,
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                              top: 16,
-                                              left: 16,
-                                              right: 16,
-                                              bottom:
-                                                  kBottomNavigationBarHeight,
-                                            ),
-                                            child: CustomListTile(
-                                              title: Text(
-                                                'Statistics',
-                                                style: context.h4,
-                                              ),
-                                              subtitle: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Text(
-                                                      'Views : ${userRecipe.likes}'),
-                                                  Text(
-                                                      'Likes : ${userRecipe.likes}'),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
+                                          StatisticsModalWidget(
+                                              userRecipe: userRecipe),
                                         );
                                       },
                                     ),
@@ -203,6 +172,7 @@ class _MyRecipesState extends ConsumerState<MyRecipes> {
                 ),
               ),
               RefreshIndicator(
+                notificationPredicate: !isLoading ? (_) => true : (_) => false,
                 onRefresh: () async {
                   if (!isLoading) {
                     ref
@@ -247,5 +217,11 @@ class _MyRecipesState extends ConsumerState<MyRecipes> {
             ])),
       ),
     );
+  }
+
+  Future<void> getUserRecipes(BuildContext context) async {
+    await ref
+        .read(myRecipesProvider.notifier)
+        .getUserRecipes(context: context, ref: ref);
   }
 }

@@ -2,12 +2,11 @@ import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/common/custom_button.dart';
+import 'package:hackaton_v1/common/logo_widget.dart';
 import 'package:hackaton_v1/controllers/discovery_controller.dart';
-import 'package:hackaton_v1/features/discover/views/recipe_view.dart';
-import 'package:hackaton_v1/features/discover/widgets/meal_card_large.dart';
+import 'package:hackaton_v1/features/discovery/views/recipe_view.dart';
+import 'package:hackaton_v1/features/discovery/widgets/meal_card_large.dart';
 import 'package:hackaton_v1/models/recipe_model.dart';
-import '../../../common/custom_image_icon.dart';
-import '../../../gen/assets.gen.dart';
 import 'package:focus_detector/focus_detector.dart';
 
 final recipesProvider = StateProvider.autoDispose<List<RecipeModel>>((ref) {
@@ -43,8 +42,6 @@ class _DiscoveryViewState extends ConsumerState<DiscoveryView> {
   @override
   Widget build(BuildContext context) {
     final recipes = ref.watch(recipesProvider);
-    final textTheme = Theme.of(context).textTheme;
-    final colorScheme = Theme.of(context).colorScheme;
     final discoveryController = ref.watch(discoveryProvider);
     final isLoading = ref.watch(discoveryProvider).isLoading;
 
@@ -52,7 +49,7 @@ class _DiscoveryViewState extends ConsumerState<DiscoveryView> {
       appBar: AppBar(
         scrolledUnderElevation: 0,
         elevation: 0,
-        title: CustomImageIcon(iconPath: Assets.icons.hotPot.path),
+        title: const LogoSmallWidget(),
         centerTitle: true,
         actions: [
           Visibility(
@@ -68,29 +65,17 @@ class _DiscoveryViewState extends ConsumerState<DiscoveryView> {
       ),
       body: LayoutBuilder(builder: (context, constraints) {
         return RefreshIndicator(
+          notificationPredicate: !isLoading ? (_) => true : (_) => false,
           onRefresh: () async {
-            // if (recipes.isEmpty) {
-            await ref.read(discoveryProvider.notifier).getRecipes(
+            ref.read(discoveryProvider.notifier).getRecipes(
               ref: ref,
               fetchMode: FetchMode.normal,
               context: context,
               queries: [
                 Query.orderDesc('\$createdAt'),
-                Query.limit(5),
+                Query.limit(10),
               ],
             );
-            // } else {
-            //   await ref.read(discoveryProvider.notifier).getRecipes(
-            //     ref: ref,
-            //     context: context,
-            //     fetchMode: FetchMode.newer,
-            //     queries: [
-            //       Query.limit(5),
-            //       Query.cursorBefore(recipes.first.id),
-            //       Query.orderDesc('\$createdAt'),
-            //     ],
-            //   );
-            // }
           },
           child: FocusDetector(
             onVisibilityGained: () async {
@@ -101,7 +86,7 @@ class _DiscoveryViewState extends ConsumerState<DiscoveryView> {
                   context: context,
                   queries: [
                     Query.orderDesc('\$createdAt'),
-                    Query.limit(5),
+                    Query.limit(10),
                   ],
                 );
               }
@@ -127,12 +112,7 @@ class _DiscoveryViewState extends ConsumerState<DiscoveryView> {
                             );
                           },
                           child: MealCardLargeWidget(
-                            cookingTime: recipe.cookingTime,
-                            imageId: recipe.illustrationPic,
-                            title: recipe.title,
-                            likes: recipe.likes,
-                            textTheme: textTheme,
-                            colorScheme: colorScheme,
+                            recipe: recipe,
                           ),
                         ),
                       );

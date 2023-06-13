@@ -33,7 +33,7 @@ class UserService implements IUserService {
   }) async {
     try {
       final userData = await _databases.createDocument(
-        databaseId: AppwriteConstants.marketplaceDatabaseId,
+        databaseId: AppwriteConstants.mainDatabaseId,
         collectionId: AppwriteConstants.usersCollectionId,
         documentId: userModel.uid,
         data: userModel.toMap(),
@@ -52,9 +52,9 @@ class UserService implements IUserService {
 
   @override
   Future<List> getFavorites() async {
-    final user = await _authService.currentUser();
+    final user = await _authService.getCurrentUser();
     final userData = await _databases.getDocument(
-      databaseId: AppwriteConstants.marketplaceDatabaseId,
+      databaseId: AppwriteConstants.mainDatabaseId,
       collectionId: AppwriteConstants.usersCollectionId,
       documentId: user!.$id,
     );
@@ -68,9 +68,9 @@ class UserService implements IUserService {
     required String recipeId,
   }) async {
     try {
-      final user = await _authService.currentUser();
+      final user = await _authService.getCurrentUser();
       final userData = await _databases.getDocument(
-        databaseId: AppwriteConstants.marketplaceDatabaseId,
+        databaseId: AppwriteConstants.mainDatabaseId,
         collectionId: AppwriteConstants.usersCollectionId,
         documentId: user!.$id,
       );
@@ -81,7 +81,7 @@ class UserService implements IUserService {
         );
 
       await _databases.updateDocument(
-        databaseId: AppwriteConstants.marketplaceDatabaseId,
+        databaseId: AppwriteConstants.mainDatabaseId,
         collectionId: AppwriteConstants.usersCollectionId,
         documentId: user.$id,
         data: {
@@ -105,7 +105,7 @@ class UserService implements IUserService {
   }) async {
     try {
       await _databases.deleteDocument(
-        databaseId: AppwriteConstants.marketplaceDatabaseId,
+        databaseId: AppwriteConstants.mainDatabaseId,
         collectionId: AppwriteConstants.recipeCollectionId,
         documentId: recipeId,
       );
@@ -126,9 +126,9 @@ class UserService implements IUserService {
     required String recipeId,
   }) async {
     try {
-      final user = await _authService.currentUser();
+      final user = await _authService.getCurrentUser();
       final userData = await _databases.getDocument(
-        databaseId: AppwriteConstants.marketplaceDatabaseId,
+        databaseId: AppwriteConstants.mainDatabaseId,
         collectionId: AppwriteConstants.usersCollectionId,
         documentId: user!.$id,
       );
@@ -137,7 +137,7 @@ class UserService implements IUserService {
         ..add(recipeId);
 
       await _databases.updateDocument(
-        databaseId: AppwriteConstants.marketplaceDatabaseId,
+        databaseId: AppwriteConstants.mainDatabaseId,
         collectionId: AppwriteConstants.usersCollectionId,
         documentId: user.$id,
         data: {
@@ -157,9 +157,9 @@ class UserService implements IUserService {
   }
 
   Future<List<RecipeModel>> getUserRecipes() async {
-    final user = await _authService.currentUser();
+    final user = await _authService.getCurrentUser();
     final response = await _databases.listDocuments(
-        databaseId: AppwriteConstants.marketplaceDatabaseId,
+        databaseId: AppwriteConstants.mainDatabaseId,
         collectionId: AppwriteConstants.recipeCollectionId,
         queries: [
           Query.equal('uid', user!.$id),
@@ -176,9 +176,9 @@ class UserService implements IUserService {
   Future<List<model.Document>> getLike({
     required String recipeId,
   }) async {
-    final currentUser = await _authService.currentUser();
+    final currentUser = await _authService.getCurrentUser();
     final likes = await _databases.listDocuments(
-      databaseId: AppwriteConstants.marketplaceDatabaseId,
+      databaseId: AppwriteConstants.mainDatabaseId,
       collectionId: AppwriteConstants.likesCollectionId,
       queries: [
         Query.equal('like', ['${currentUser!.$id}$recipeId']),
@@ -191,9 +191,9 @@ class UserService implements IUserService {
     required String recipeId,
   }) async {
     try {
-      final currentUser = await _authService.currentUser();
+      final currentUser = await _authService.getCurrentUser();
       final like = await _databases.createDocument(
-        databaseId: AppwriteConstants.marketplaceDatabaseId,
+        databaseId: AppwriteConstants.mainDatabaseId,
         collectionId: AppwriteConstants.likesCollectionId,
         documentId: ID.unique(),
         data: {
@@ -216,7 +216,7 @@ class UserService implements IUserService {
   }) async {
     try {
       await _databases.deleteDocument(
-        databaseId: AppwriteConstants.marketplaceDatabaseId,
+        databaseId: AppwriteConstants.mainDatabaseId,
         collectionId: AppwriteConstants.likesCollectionId,
         documentId: likeId,
       );
@@ -232,6 +232,29 @@ class UserService implements IUserService {
     } catch (e, stackTrace) {
       logger.d(e);
 
+      return (failure: Failure(e.toString(), stackTrace), hasSucceded: false);
+    }
+  }
+
+  Future<({bool hasSucceded, Failure? failure})> updateUserData({
+    required Map data,
+    required String uid,
+  }) async {
+    try {
+      await _databases.updateDocument(
+        databaseId: AppwriteConstants.mainDatabaseId,
+        collectionId: AppwriteConstants.usersCollectionId,
+        documentId: uid,
+        data: data,
+      );
+
+      return (hasSucceded: true, failure: null);
+    } on AppwriteException catch (e, stackTrace) {
+      return (
+        failure: Failure(e.message ?? UiMessages.unexpectedError, stackTrace),
+        hasSucceded: false
+      );
+    } catch (e, stackTrace) {
       return (failure: Failure(e.toString(), stackTrace), hasSucceded: false);
     }
   }

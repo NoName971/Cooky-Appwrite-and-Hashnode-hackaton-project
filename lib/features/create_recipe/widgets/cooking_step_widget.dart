@@ -157,9 +157,7 @@ class CookingStepWidget extends StatelessWidget {
 
                         final imageId =
                             await cookingCreationController.uploadAttachment(
-                          index: '${currentStepIndex}_',
-                          fileName:
-                              generateFileName(currentStepIndex.toString()),
+                          fileName: generateFileName('stepPic'),
                           filePath: image!.path,
                         );
 
@@ -237,9 +235,7 @@ class CookingStepWidget extends StatelessWidget {
                     final imageId = await ref
                         .read(recipeCreationProvider.notifier)
                         .uploadAttachment(
-                          index: '${currentStepIndex}_',
-                          fileName:
-                              generateFileName(currentStepIndex.toString()),
+                          fileName: generateFileName('stepPic'),
                           filePath: image!.path,
                         );
 

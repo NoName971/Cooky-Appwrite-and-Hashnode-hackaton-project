@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/constants/appwrite_constants.dart';
 import 'package:hackaton_v1/constants/appwrite_providers.dart';
 import 'package:hackaton_v1/helpers/utils.dart';
-import 'package:hackaton_v1/main.dart';
 import 'package:uuid/uuid.dart';
 
 import '../interfaces/storage_service_interface.dart';
@@ -37,15 +36,13 @@ class StorageService implements IStorageService {
   @override
   Future<String> uploadFile(
     String path,
-    String? fileName, {
-    String index = '',
-  }) async {
+    String? fileName,
+  ) async {
     String rawId = const Uuid().v1();
-    final uid = removeCharacterFromString(rawId, '-');
-    logger.d('$index$uid');
+    final uuid = removeCharacterFromString(rawId, '-');
     final uploadedFile = await _storage.createFile(
       bucketId: AppwriteConstants.recipesBucketId,
-      fileId: '$index$uid',
+      fileId: uuid,
       file: InputFile.fromPath(
         path: path,
         filename: fileName,

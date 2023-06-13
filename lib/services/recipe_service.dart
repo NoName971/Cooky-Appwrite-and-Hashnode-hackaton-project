@@ -2,7 +2,6 @@ import 'package:appwrite/appwrite.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/constants/appwrite_constants.dart';
 import 'package:hackaton_v1/constants/appwrite_providers.dart';
-import 'package:hackaton_v1/main.dart';
 import 'package:hackaton_v1/models/failure.dart';
 import 'package:appwrite/models.dart' as model;
 import 'package:hackaton_v1/models/recipe_model.dart';
@@ -26,9 +25,8 @@ class RecipeService extends IRecipeService {
     required RecipeModel recipeModel,
   }) async {
     try {
-      logger.d(recipeModel.toMap());
       final recipe = await _databases.createDocument(
-        databaseId: AppwriteConstants.marketplaceDatabaseId,
+        databaseId: AppwriteConstants.mainDatabaseId,
         collectionId: AppwriteConstants.recipeCollectionId,
         documentId: ID.unique(),
         data: recipeModel.toMap(),
@@ -51,7 +49,7 @@ class RecipeService extends IRecipeService {
   }) async {
     try {
       await _databases.deleteDocument(
-        databaseId: AppwriteConstants.marketplaceDatabaseId,
+        databaseId: AppwriteConstants.mainDatabaseId,
         collectionId: AppwriteConstants.recipeCollectionId,
         documentId: ID.unique(),
       );
@@ -73,7 +71,7 @@ class RecipeService extends IRecipeService {
   }) async {
     try {
       final recipes = await _databases.listDocuments(
-        databaseId: AppwriteConstants.marketplaceDatabaseId,
+        databaseId: AppwriteConstants.mainDatabaseId,
         collectionId: AppwriteConstants.recipeCollectionId,
         queries: queries,
       );
@@ -94,7 +92,7 @@ class RecipeService extends IRecipeService {
   }) async {
     try {
       final recipe = await _databases.getDocument(
-        databaseId: AppwriteConstants.marketplaceDatabaseId,
+        databaseId: AppwriteConstants.mainDatabaseId,
         collectionId: AppwriteConstants.recipeCollectionId,
         documentId: recipeId,
       );
@@ -116,7 +114,7 @@ class RecipeService extends IRecipeService {
   }) async {
     try {
       await _databases.updateDocument(
-        databaseId: AppwriteConstants.marketplaceDatabaseId,
+        databaseId: AppwriteConstants.mainDatabaseId,
         collectionId: AppwriteConstants.recipeCollectionId,
         documentId: recipeId,
         data: data,

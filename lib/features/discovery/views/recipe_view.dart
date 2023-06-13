@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/common/custom_image_icon.dart';
@@ -10,6 +9,7 @@ import 'package:hackaton_v1/helpers/extensions.dart';
 import 'package:hackaton_v1/features/create_recipe/views/image_preview.dart';
 import 'package:hackaton_v1/controllers/discovery_controller.dart';
 import 'package:hackaton_v1/gen/assets.gen.dart';
+import 'package:hackaton_v1/helpers/utils.dart';
 import 'package:hackaton_v1/main.dart';
 
 final attachmentNameProvider = StateProvider.autoDispose<List>((ref) {
@@ -153,7 +153,15 @@ class _RecipeViewState extends ConsumerState<RecipeView> {
                         style: context.h2,
                       ),
                       subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            recipe.createdAt!.readableDateFormat(),
+                            style: context.p3Regular,
+                          ),
                           const SizedBox(
                             height: 10,
                           ),
@@ -219,8 +227,9 @@ class _RecipeViewState extends ConsumerState<RecipeView> {
                       (context, index) {
                         final instruction = recipe.cookingSteps[index];
                         final attachments = recipe.cookingStepsPics;
-                        final attachment = attachments
-                            .firstWhereOrNull((e) => e.startsWith('${index}_'));
+                        final attachment = attachments[index];
+                        // final attachment = attachments
+                        //     .firstWhereOrNull((e) => e.startsWith('${index}_'));
                         return CustomListTile(
                           title: Row(
                             children: [
@@ -238,12 +247,13 @@ class _RecipeViewState extends ConsumerState<RecipeView> {
                             ],
                           ),
                           subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const SizedBox(
                                 height: 10,
                               ),
                               Visibility(
-                                visible: attachment != null,
+                                visible: attachment.isNotEmpty,
                                 child: GestureDetector(
                                   behavior: HitTestBehavior.opaque,
                                   onTap: () {
@@ -253,12 +263,12 @@ class _RecipeViewState extends ConsumerState<RecipeView> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (_) => ImagePreviewView(
-                                            imagePath: attachment ?? ''),
+                                            imagePath: attachment),
                                       ),
                                     );
                                   },
                                   child: NetworkImageWidget(
-                                    imageId: attachment ?? '',
+                                    imageId: attachment,
                                     height: 200,
                                     width: double.infinity,
                                   ),
@@ -286,6 +296,7 @@ class _RecipeViewState extends ConsumerState<RecipeView> {
             return const SizedBox.shrink();
           },
           error: (error, stackTrace) {
+            logger.d(error);
             logger.d(stackTrace);
             return ErrorView(
               provider: currentRecipeProvider(widget.recipeId),

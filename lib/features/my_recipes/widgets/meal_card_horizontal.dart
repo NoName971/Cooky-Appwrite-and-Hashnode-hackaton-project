@@ -4,7 +4,7 @@ import 'package:hackaton_v1/common/custom_list_tile.dart';
 import 'package:hackaton_v1/common/network_image_widget.dart';
 import 'package:hackaton_v1/common/text_style.dart';
 import 'package:hackaton_v1/helpers/extensions.dart';
-import 'package:hackaton_v1/features/discover/views/recipe_view.dart';
+import 'package:hackaton_v1/features/discovery/views/recipe_view.dart';
 import 'package:hackaton_v1/models/recipe_model.dart';
 
 class MealCardHorizontal extends ConsumerStatefulWidget {

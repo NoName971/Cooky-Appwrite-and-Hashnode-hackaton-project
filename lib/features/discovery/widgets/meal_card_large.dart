@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hackaton_v1/common/network_image_widget.dart';
 import 'package:hackaton_v1/common/text_style.dart';
 import 'package:hackaton_v1/helpers/extensions.dart';
+import 'package:hackaton_v1/helpers/utils.dart';
+import 'package:hackaton_v1/models/recipe_model.dart';
 
 import '../../../common/custom_image_icon.dart';
 import '../../../common/custom_list_tile.dart';
@@ -10,20 +12,10 @@ import '../../../gen/assets.gen.dart';
 class MealCardLargeWidget extends StatelessWidget {
   const MealCardLargeWidget({
     super.key,
-    required this.title,
-    required this.textTheme,
-    required this.colorScheme,
-    required this.imageId,
-    required this.cookingTime,
-    required this.likes,
+    required this.recipe,
   });
 
-  final TextTheme textTheme;
-  final ColorScheme colorScheme;
-  final String title;
-  final String imageId;
-  final String cookingTime;
-  final int likes;
+  final RecipeModel recipe;
 
   @override
   Widget build(BuildContext context) {
@@ -38,23 +30,10 @@ class MealCardLargeWidget extends StatelessWidget {
       child: Stack(
         children: [
           NetworkImageWidget(
-            imageId: imageId,
+            imageId: recipe.illustrationPic,
             height: 250,
             width: double.infinity,
           ),
-          // Positioned(
-          //   left: 16,
-          //   top: 16,
-          //   child: Text(
-          //     'Rice',
-          //     style: textTheme.p3Medium.copyWith(color: Colors.white),
-          //   ).frosted(
-          //     blur: 15,
-          //     frostColor: colorScheme.primary,
-          //     borderRadius: BorderRadius.circular(10),
-          //     padding: const EdgeInsets.all(8),
-          //   ),
-          // ),
           Container(
             alignment: Alignment.bottomLeft,
             width: double.infinity,
@@ -70,16 +49,28 @@ class MealCardLargeWidget extends StatelessWidget {
             child: CustomListTile(
               contentPadding: const EdgeInsets.only(left: 16),
               title: Text(
-                title,
+                recipe.title,
                 style: context.h3.copyWith(
                   color: Colors.white,
                 ),
               ),
-              subtitle: Text(
-                cookingTime,
-                style: context.p3Regular.copyWith(
-                  color: Colors.white,
-                ),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    recipe.createdAt!.readableDateFormat(),
+                    style: context.p3Regular.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    recipe.cookingTime,
+                    style: context.p3Regular.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -89,7 +80,7 @@ class MealCardLargeWidget extends StatelessWidget {
                     iconPath: Assets.icons.starFilled.path,
                   ),
                   Text(
-                    likes.toString(),
+                    recipe.likes.toString(),
                     style: context.p2Medium.copyWith(
                       color: Colors.white,
                     ),

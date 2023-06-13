@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 void showSnackBar(BuildContext context, String content) {
@@ -79,4 +80,13 @@ String generateFileName(String someString) {
 
 String removeCharacterFromString(String string, String char) {
   return string.split(char).join('');
+}
+
+extension StringExtensions on String {
+  readableDateFormat() {
+    return DateFormat.yMMMMEEEEd('en_US')
+        .add_Hm()
+        .format(DateTime.parse(this))
+        .toString();
+  }
 }

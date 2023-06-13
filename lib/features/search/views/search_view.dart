@@ -10,7 +10,7 @@ import '../../../common/appbar.dart';
 import '../../../common/custom_list_tile.dart';
 import '../../../common/network_image_widget.dart';
 import '../../../helpers/utils.dart';
-import '../../discover/views/recipe_view.dart';
+import '../../discovery/views/recipe_view.dart';
 
 final searchResultsProvider = StateProvider<List<RecipeModel>>((ref) {
   return [];

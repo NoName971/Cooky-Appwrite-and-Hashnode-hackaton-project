@@ -40,7 +40,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
         onDestinationSelected: (value) {
           ref.watch(indexProvider.notifier).update((state) => value);
         },
-        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
         indicatorColor: colorScheme.primaryContainer,
         indicatorShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),

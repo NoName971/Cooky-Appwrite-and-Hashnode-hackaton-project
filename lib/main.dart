@@ -5,12 +5,18 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/common/error_view.dart';
 import 'package:hackaton_v1/common/loading_view.dart';
+import 'package:hackaton_v1/common/logo_widget.dart';
 import 'package:hackaton_v1/controllers/auth_controller.dart';
 import 'package:hackaton_v1/features/auth/views/login_view.dart';
 import 'package:hackaton_v1/features/home/views/home_view.dart';
+import 'package:hackaton_v1/models/user_model.dart';
 import 'package:hackaton_v1/services/dark_mode_service.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+final globalCurrentUserProvider = StateProvider(
+  (ref) => UserModel(email: 'email', name: 'name', uid: 'uid'),
+);
 
 Future main() async {
   await dotenv.load(fileName: ".env");
@@ -66,7 +72,9 @@ class Hackaton extends ConsumerWidget {
               provider: authControllerProvider,
             );
           },
-          loading: () => const LoadingView(),
+          loading: () => const LoadingView(
+            logo: LogoLargeWidget(),
+          ),
         ),
       ),
     );

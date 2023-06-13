@@ -76,16 +76,18 @@ class _RecipeCreationViewState extends ConsumerState<RecipeCreationView> {
     final cookingTimeTextEditingController = ref.watch(cookingTimeProvider);
     List<String> ingredients = ref.watch(ingredientsProvider);
 
-    ref.listen(recipeCreationProvider.select((value) => value),
-        (previous, next) {
-      if (next) {
-        showLoadingIndicator(
-          context: context,
-        );
-      } else if (!next) {
-        Navigator.pop(context);
-      }
-    });
+    ref.listen(
+      recipeCreationProvider.select((value) => value),
+      (previous, next) {
+        if (next) {
+          showLoadingIndicator(
+            context: context,
+          );
+        } else if (!next) {
+          Navigator.pop(context);
+        }
+      },
+    );
     return Scaffold(
       appBar: appBar(const Text('New recipe'), true, [
         TextButton(

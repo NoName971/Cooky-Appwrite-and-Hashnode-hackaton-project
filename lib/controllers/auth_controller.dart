@@ -19,7 +19,15 @@ final authControllerProvider =
 
 final currentAccountProvider = FutureProvider((ref) async {
   final authController = ref.watch(authControllerProvider.notifier);
-  return authController.currentUser();
+  final currentUser = await authController.getCurrentUser();
+  ref.read(globalCurrentUserProvider.notifier).update(
+        (state) => state.copyWith(
+          email: currentUser!.email,
+          name: currentUser.name,
+          uid: currentUser.$id,
+        ),
+      );
+  return currentUser;
 });
 
 class AuthController extends StateNotifier<bool> {
@@ -36,16 +44,18 @@ class AuthController extends StateNotifier<bool> {
     required String email,
     required String password,
     required BuildContext context,
+    String? fullName,
   }) async {
     state = true;
     final response = await _authService.register(
       email: email,
       password: password,
+      name: fullName ?? getNameFromEmail(email),
     );
     if (response.user != null) {
       final userModel = UserModel(
         email: email,
-        name: getNameFromEmail(email),
+        name: fullName ?? getNameFromEmail(email),
         uid: response.user!.$id,
       );
       final userData = await _userService.saveUserData(userModel: userModel);
@@ -73,6 +83,7 @@ class AuthController extends StateNotifier<bool> {
     required String email,
     required String password,
     required BuildContext context,
+    required WidgetRef ref,
   }) async {
     state = !state;
     final response = await _authService.login(
@@ -81,6 +92,14 @@ class AuthController extends StateNotifier<bool> {
     );
     state = !state;
     if (response.hasSucceded) {
+      final currentUser = await getCurrentUser();
+      ref.read(globalCurrentUserProvider.notifier).update(
+            (state) => state.copyWith(
+              email: currentUser!.email,
+              name: currentUser.name,
+              uid: currentUser.$id,
+            ),
+          );
       if (context.mounted) {
         Navigator.pushAndRemoveUntil(
           context,
@@ -95,7 +114,7 @@ class AuthController extends StateNotifier<bool> {
     }
   }
 
-  Future<model.User?> currentUser() async {
-    return await _authService.currentUser();
+  Future<model.User?> getCurrentUser() async {
+    return await _authService.getCurrentUser();
   }
 }

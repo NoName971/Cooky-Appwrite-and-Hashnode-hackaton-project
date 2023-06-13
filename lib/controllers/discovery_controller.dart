@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/constants/ui_messages.dart';
-import 'package:hackaton_v1/features/discover/views/discovery_view.dart';
-import 'package:hackaton_v1/features/discover/views/recipe_view.dart';
+import 'package:hackaton_v1/features/discovery/views/discovery_view.dart';
+import 'package:hackaton_v1/features/discovery/views/recipe_view.dart';
 import 'package:hackaton_v1/main.dart';
 import 'package:hackaton_v1/models/recipe_model.dart';
+import 'package:hackaton_v1/services/auth_service.dart';
 import 'package:hackaton_v1/services/recipe_service.dart';
 import 'package:hackaton_v1/services/user_service.dart';
 import '../helpers/utils.dart';
@@ -26,7 +27,9 @@ final discoveryProvider =
 final currentRecipeProvider = FutureProvider.autoDispose
     .family<({Failure? failure, RecipeModel? recipe}), String>(
   (ref, recipeId) async {
+    final authService = ref.watch(authServiceProvider);
     final favorites = await ref.read(userServiceProvider).getFavorites();
+
     final like =
         await ref.read(userServiceProvider).getLike(recipeId: recipeId);
     if (like.isNotEmpty) {
@@ -38,7 +41,22 @@ final currentRecipeProvider = FutureProvider.autoDispose
     ref.watch(favoritesIdsProvider.notifier).update((state) => [...favorites]);
 
     final recipeService = ref.watch(recipeServiceProvider);
-    return recipeService.getRecipe(recipeId: recipeId);
+    final recipe = await recipeService.getRecipe(recipeId: recipeId);
+    final currentUserId = (await authService.getCurrentUser())!.$id;
+
+    /* update views if it's not the creator who is currently viewing
+     helpful if in the future stats are importants so the user himself cannot boost his stats by viewing
+     his recipes himself
+     */
+
+    if (currentUserId != recipe.recipe!.uid) {
+      await recipeService.updateRecipe(
+        recipeId: recipeId,
+        data: {"views": recipe.recipe!.views + 1},
+      );
+    }
+
+    return recipe;
   },
 );
 

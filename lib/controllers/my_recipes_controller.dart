@@ -8,7 +8,7 @@ import '../constants/ui_messages.dart';
 import '../helpers/utils.dart';
 import '../services/recipe_service.dart';
 import '../services/user_service.dart';
-import '../features/discover/views/recipe_view.dart';
+import '../features/discovery/views/recipe_view.dart';
 
 final myRecipesProvider =
     StateNotifierProvider<FavoriteController, bool>((ref) {
@@ -197,7 +197,6 @@ class FavoriteController extends StateNotifier<bool> {
     final uploadedImage = await _storageService.uploadFile(
       filePath,
       fileName,
-      index: index ?? '',
     );
     return uploadedImage;
   }

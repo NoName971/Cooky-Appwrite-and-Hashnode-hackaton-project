@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/helpers/utils.dart';
-import 'package:hackaton_v1/main.dart';
 import 'package:hackaton_v1/models/recipe_model.dart';
 import 'package:hackaton_v1/services/auth_service.dart';
 import 'package:hackaton_v1/services/recipe_service.dart';
@@ -44,7 +43,7 @@ class RecipeCreationController extends StateNotifier<bool> {
   }) async {
     try {
       state = true;
-      final uid = (await _authService.currentUser())!.$id;
+      final uid = (await _authService.getCurrentUser())!.$id;
 
       final ingredientsToString = ingredients.join(" ");
       final queryableString = '$ingredientsToString $title';
@@ -66,9 +65,9 @@ class RecipeCreationController extends StateNotifier<bool> {
           await _recipeService.createRecipe(recipeModel: recipeModel);
       state = false;
       if (response.document != null) {
+        // TO DO :  navigate to home screen
         if (context.mounted) {
           showSnackBar(context, 'Recipe created successfully');
-          logger.d(response.document!.data);
         }
       } else {
         if (context.mounted) {
@@ -117,12 +116,10 @@ class RecipeCreationController extends StateNotifier<bool> {
   Future<String> uploadAttachment({
     required String fileName,
     required String filePath,
-    String? index,
   }) async {
     final uploadedImage = await _storageService.uploadFile(
       filePath,
       fileName,
-      index: index ?? '',
     );
     return uploadedImage;
   }

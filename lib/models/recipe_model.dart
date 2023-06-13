@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:collection/collection.dart';
 
 class RecipeModel {
@@ -16,6 +14,7 @@ class RecipeModel {
   final String? createdAt;
   final String? updatedAt;
   final String? queryableString;
+  final int views;
 
   RecipeModel({
     required this.id,
@@ -28,6 +27,7 @@ class RecipeModel {
     required this.cookingSteps,
     required this.cookingStepsPics,
     required this.likes,
+    this.views = 0,
     this.createdAt,
     this.updatedAt,
     this.queryableString,
@@ -101,16 +101,12 @@ class RecipeModel {
       cookingSteps: List<String>.from(map['cookingSteps']),
       cookingStepsPics: List<String>.from(map['cookingStepsPics']),
       likes: map['likes']?.toInt() ?? 0,
-      createdAt: map['createdAt'],
-      updatedAt: map['updatedAt'],
+      views: map['views']?.toInt() ?? 0,
+      createdAt: map['\$createdAt'],
+      updatedAt: map['\$updatedAt'],
       queryableString: map['queryableString'],
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory RecipeModel.fromJson(String source) =>
-      RecipeModel.fromMap(json.decode(source));
 
   @override
   String toString() {
