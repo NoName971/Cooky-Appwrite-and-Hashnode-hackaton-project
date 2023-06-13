@@ -291,6 +291,10 @@ class $AssetsIconsGen {
   AssetGenImage get settings =>
       const AssetGenImage('assets/icons/settings.png');
 
+  /// File path: assets/icons/settings_filled.png
+  AssetGenImage get settingsFilled =>
+      const AssetGenImage('assets/icons/settings_filled.png');
+
   /// File path: assets/icons/share.png
   AssetGenImage get share => const AssetGenImage('assets/icons/share.png');
 
@@ -386,6 +390,7 @@ class $AssetsIconsGen {
         schedule,
         search,
         settings,
+        settingsFilled,
         share,
         show,
         spaguetti,
