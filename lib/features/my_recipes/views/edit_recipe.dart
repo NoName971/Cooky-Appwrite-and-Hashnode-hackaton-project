@@ -10,6 +10,7 @@ import 'package:hackaton_v1/common/custom_textfield.dart';
 import 'package:hackaton_v1/common/network_image_widget.dart';
 import 'package:hackaton_v1/common/text_style.dart';
 import 'package:hackaton_v1/controllers/recipe_creation_controller.dart';
+import 'package:hackaton_v1/features/my_recipes/views/my_recipes.dart';
 import 'package:hackaton_v1/helpers/extensions.dart';
 import 'package:hackaton_v1/helpers/utils.dart';
 import 'package:hackaton_v1/features/create_recipe/views/image_preview.dart';
@@ -95,16 +96,27 @@ class _EditRecipeState extends ConsumerState<EditRecipe> {
         final cookingStepsPics = widget.recipeModel.cookingStepsPics;
         final instructions = widget.recipeModel.cookingSteps;
         for (int index = 0; index < instructions.length; index++) {
-          String attachment = cookingStepsPics.firstWhereOrNull(
-                  (element) => element.startsWith('${index}_')) ??
-              '';
           cookingSteps.add(
             CookingStep(
-              attachment: attachment,
+              attachment: cookingStepsPics[index],
               instructions: TextEditingController(text: instructions[index]),
             ),
           );
         }
+
+        logger.d('${cookingStepsPics.length} and ${instructions.length}');
+
+        // for (int index = 0; index < instructions.length; index++) {
+        //   String attachment = cookingStepsPics.firstWhereOrNull(
+        //           (element) => element.startsWith('${index}_')) ??
+        //       '';
+        //   cookingSteps.add(
+        //     CookingStep(
+        //       attachment: attachment,
+        //       instructions: TextEditingController(text: instructions[index]),
+        //     ),
+        //   );
+        // }
         return [...cookingSteps];
       },
     );
@@ -130,6 +142,7 @@ class _EditRecipeState extends ConsumerState<EditRecipe> {
     final descriptionTextEditingController = ref.watch(descriptionProvider);
     final cookingTimeTextEditingController = ref.watch(cookingTimeProvider);
     List<String> ingredients = ref.watch(ingredientsProvider);
+    final isLoading = ref.watch(recipeCreationProvider);
 
     ref.listen(recipeCreationProvider.select((value) => value),
         (previous, next) {
@@ -189,266 +202,304 @@ class _EditRecipeState extends ConsumerState<EditRecipe> {
           ),
         ),
       ]),
-      body: LayoutBuilder(builder: (context, constraints) {
-        return Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            controller: scrollController,
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewPadding.bottom,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFieldLabel(
-                  textTheme: textTheme,
-                  label: 'Picture',
-                ).addHorizontalPadding(16),
-                const SizedBox(
-                  height: 8,
-                ).addHorizontalPadding(16),
-                Visibility(
-                  visible: mainPic.isNotEmpty,
-                  replacement: GestureDetector(
-                    onTap: () async {
-                      final image = await pickImage();
-                      final imageId = await ref
-                          .read(recipeCreationProvider.notifier)
-                          .uploadAttachment(
-                            fileName: generateFileName('mainPic'),
-                            filePath: image!.path,
-                          );
-                      ref.read(mainPictureProvider.notifier).update((_) {
-                        return imageId;
-                      });
+      body: WillPopScope(
+        onWillPop: () async {
+          if (isLoading) {
+            return false;
+          } else {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const FittedBox(
+                  child: Text('Are you sure to go back?'),
+                ),
+                content: const Text('All changes will be lost.'),
+                actions: [
+                  CustomButton(
+                    buttonType: ButtonType.outlined,
+                    buttonSize: ButtonSize.small,
+                    child: const FittedBox(child: Text('Cancel')),
+                    onPressed: () {
+                      Navigator.pop(context);
                     },
-                    child: Container(
-                      height: 250,
-                      clipBehavior: Clip.hardEdge,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.grey.shade300,
-                      ),
-                      child: Center(
-                        child: CustomImageIcon(
-                          iconPath: Assets.icons.photoPicker.path,
-                          color: Colors.grey.shade700,
-                          size: 30,
+                  ),
+                  CustomButton(
+                    buttonType: ButtonType.filled,
+                    buttonSize: ButtonSize.small,
+                    child: const FittedBox(child: Text('Confirm')),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
+                  )
+                ],
+              ),
+            );
+            return true;
+          }
+        },
+        child: LayoutBuilder(builder: (context, constraints) {
+          return Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              controller: scrollController,
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewPadding.bottom,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextFieldLabel(
+                    textTheme: textTheme,
+                    label: 'Picture',
+                  ).addHorizontalPadding(16),
+                  const SizedBox(
+                    height: 8,
+                  ).addHorizontalPadding(16),
+                  Visibility(
+                    visible: mainPic.isNotEmpty,
+                    replacement: GestureDetector(
+                      onTap: () async {
+                        final image = await pickImage();
+                        final imageId = await ref
+                            .read(recipeCreationProvider.notifier)
+                            .uploadAttachment(
+                              fileName: generateFileName('mainPic'),
+                              filePath: image!.path,
+                            );
+                        ref.read(mainPictureProvider.notifier).update((_) {
+                          return imageId;
+                        });
+                      },
+                      child: Container(
+                        height: 250,
+                        clipBehavior: Clip.hardEdge,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.grey.shade300,
+                        ),
+                        child: Center(
+                          child: CustomImageIcon(
+                            iconPath: Assets.icons.photoPicker.path,
+                            color: Colors.grey.shade700,
+                            size: 30,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  child: GestureDetector(
-                    onTap: () {
-                      updateAttachment(
-                        assetPath: mainPic,
-                        context: context,
-                        onDelete: () {
-                          Navigator.pop(context);
-                          ref
-                              .read(mainPictureProvider.notifier)
-                              .update((state) {
-                            return '';
-                          });
-                        },
-                        onChange: () async {
-                          Navigator.pop(context);
-                          final image = await pickImage();
-                          final imageId = await ref
-                              .read(recipeCreationProvider.notifier)
-                              .uploadAttachment(
-                                fileName: generateFileName('mainPic'),
-                                filePath: image!.path,
-                              );
-                          ref.read(mainPictureProvider.notifier).update((_) {
-                            return imageId;
-                          });
-                        },
-                      );
-                    },
-                    child: NetworkImageWidget(
-                      imageId: mainPic,
-                      height: 250,
-                      width: double.infinity,
-                    ),
-                  ),
-                ).addHorizontalPadding(16),
-                const SizedBox(
-                  height: 16,
-                ),
-                NewRecipeTextField(
-                  maxLength: 100,
-                  validator: (value) {
-                    if (value == null || value.length < 10) {
-                      return '10 characters minimum';
-                    }
-                    return null;
-                  },
-                  textTheme: textTheme,
-                  label: 'Title',
-                  hintText: 'E.g. Garba',
-                  maxLines: 1,
-                  textEditingController: titleTextEditingController,
-                ).addHorizontalPadding(16),
-                const SizedBox(
-                  height: 16,
-                ),
-                NewRecipeTextField(
-                  textTheme: textTheme,
-                  maxLength: 200,
-                  textEditingController: descriptionTextEditingController,
-                  label: 'Description',
-                  maxLines: null,
-                  hintText: 'E.g. A loved ivorian meal...',
-                  validator: (value) {
-                    if (value == null || value.length < 10) {
-                      return '10 characters minimum';
-                    }
-                    return null;
-                  },
-                ).addHorizontalPadding(16),
-                const SizedBox(
-                  height: 16,
-                ),
-                NewRecipeTextField(
-                  maxLength: 10,
-                  validator: (value) {
-                    if (value == null || value.length < 3) {
-                      return '3 characters minimum';
-                    }
-                    return null;
-                  },
-                  textTheme: textTheme,
-                  textEditingController: cookingTimeTextEditingController,
-                  label: 'Cooking time',
-                  maxLines: 1,
-                  hintText: 'E.g. 45min',
-                ).addHorizontalPadding(16),
-                const SizedBox(
-                  height: 16,
-                ),
-                TextFieldLabel(
-                  textTheme: textTheme,
-                  label: 'Ingredients (${ingredients.length})',
-                ).addHorizontalPadding(16),
-                const SizedBox(
-                  height: 8,
-                ),
-                Wrap(
-                  spacing: 10,
-                  children: [
-                    Directionality(
-                      textDirection: TextDirection.rtl,
-                      child: GestureDetector(
-                        onTap: () {
-                          FocusScope.of(context).unfocus();
-                          addNewIngredient(context, ingredients);
-                        },
-                        child: const Chip(
-                          label: Text('Add new'),
-                          avatar: Icon(Icons.add),
-                        ),
-                      ),
-                    ),
-                    ...ingredients.map(
-                      (ingredient) {
-                        return Chip(
-                          onDeleted: () {
-                            ingredients.remove(ingredient);
-                            ref.read(ingredientsProvider.notifier).state = [
-                              ...ingredients
-                            ];
+                    child: GestureDetector(
+                      onTap: () {
+                        updateAttachment(
+                          assetPath: mainPic,
+                          context: context,
+                          onDelete: () {
+                            Navigator.pop(context);
+                            ref
+                                .read(mainPictureProvider.notifier)
+                                .update((state) {
+                              return '';
+                            });
                           },
-                          label: Text(ingredient),
-                          deleteIcon: const Icon(Icons.close),
+                          onChange: () async {
+                            Navigator.pop(context);
+                            final image = await pickImage();
+                            final imageId = await ref
+                                .read(recipeCreationProvider.notifier)
+                                .uploadAttachment(
+                                  fileName: generateFileName('mainPic'),
+                                  filePath: image!.path,
+                                );
+                            ref.read(mainPictureProvider.notifier).update((_) {
+                              return imageId;
+                            });
+                          },
                         );
                       },
-                    ).toList()
-                  ],
-                ).addHorizontalPadding(16),
-                const SizedBox(
-                  height: 16,
-                ),
-                TextFieldLabel(
-                  textTheme: textTheme,
-                  label: 'Steps (${cookingSteps.length})',
-                ).addHorizontalPadding(16),
-                const SizedBox(
-                  height: 16,
-                ),
-                ReorderableListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    CookingStep cookingStep = cookingSteps[index];
-                    return GestureDetector(
-                      key: ValueKey(cookingStep.hashCode + index),
-                      child: CookingStepWidget(
-                        provider: cookingStepsProvider,
-                        cookingStepNumber: index + 1,
-                        cookingStep: cookingStep,
-                        ref: ref,
-                        textTheme: textTheme,
+                      child: NetworkImageWidget(
+                        imageId: mainPic,
+                        height: 250,
+                        width: double.infinity,
                       ),
-                    );
-                  },
-                  itemCount: cookingSteps.length,
-                  onReorder: (oldIndex, newIndex) {
-                    if (newIndex > oldIndex) {
-                      newIndex -= 1;
-                    }
-                    logger.d(newIndex > oldIndex);
-                    CookingStep currentStep = cookingSteps.elementAt(oldIndex);
-                    cookingSteps
-                      ..remove(currentStep)
-                      ..insert(newIndex, currentStep);
-                    ref.read(cookingStepsProvider.notifier).update((state) {
-                      return [...cookingSteps];
-                    });
-                  },
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                Center(
-                  child: CustomButton(
-                    buttonType: ButtonType.filledIcon,
-                    buttonSize: ButtonSize.medium,
-                    icon: CustomImageIcon(iconPath: Assets.icons.add.path),
-                    onPressed: () {
-                      final cookingStep = CookingStep(
-                        attachment: '',
-                        instructions: TextEditingController(),
+                    ),
+                  ).addHorizontalPadding(16),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  NewRecipeTextField(
+                    maxLength: 100,
+                    validator: (value) {
+                      if (value == null || value.length < 10) {
+                        return '10 characters minimum';
+                      }
+                      return null;
+                    },
+                    textTheme: textTheme,
+                    label: 'Title',
+                    hintText: 'E.g. Garba',
+                    maxLines: 1,
+                    textEditingController: titleTextEditingController,
+                  ).addHorizontalPadding(16),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  NewRecipeTextField(
+                    textTheme: textTheme,
+                    maxLength: 200,
+                    textEditingController: descriptionTextEditingController,
+                    label: 'Description',
+                    maxLines: null,
+                    hintText: 'E.g. A loved ivorian meal...',
+                    validator: (value) {
+                      if (value == null || value.length < 10) {
+                        return '10 characters minimum';
+                      }
+                      return null;
+                    },
+                  ).addHorizontalPadding(16),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  NewRecipeTextField(
+                    maxLength: 10,
+                    validator: (value) {
+                      if (value == null || value.length < 3) {
+                        return '3 characters minimum';
+                      }
+                      return null;
+                    },
+                    textTheme: textTheme,
+                    textEditingController: cookingTimeTextEditingController,
+                    label: 'Cooking time',
+                    maxLines: 1,
+                    hintText: 'E.g. 45min',
+                  ).addHorizontalPadding(16),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  TextFieldLabel(
+                    textTheme: textTheme,
+                    label: 'Ingredients (${ingredients.length})',
+                  ).addHorizontalPadding(16),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Wrap(
+                    spacing: 10,
+                    children: [
+                      Directionality(
+                        textDirection: TextDirection.rtl,
+                        child: GestureDetector(
+                          onTap: () {
+                            FocusScope.of(context).unfocus();
+                            addNewIngredient(context, ingredients);
+                          },
+                          child: const Chip(
+                            label: Text('Add new'),
+                            avatar: Icon(Icons.add),
+                          ),
+                        ),
+                      ),
+                      ...ingredients.map(
+                        (ingredient) {
+                          return Chip(
+                            onDeleted: () {
+                              ingredients.remove(ingredient);
+                              ref.read(ingredientsProvider.notifier).state = [
+                                ...ingredients
+                              ];
+                            },
+                            label: Text(ingredient),
+                            deleteIcon: const Icon(Icons.close),
+                          );
+                        },
+                      ).toList()
+                    ],
+                  ).addHorizontalPadding(16),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  TextFieldLabel(
+                    textTheme: textTheme,
+                    label: 'Steps (${cookingSteps.length})',
+                  ).addHorizontalPadding(16),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  ReorderableListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      CookingStep cookingStep = cookingSteps[index];
+                      return GestureDetector(
+                        key: ValueKey(cookingStep.hashCode + index),
+                        child: CookingStepWidget(
+                          provider: cookingStepsProvider,
+                          cookingStepNumber: index + 1,
+                          cookingStep: cookingStep,
+                          ref: ref,
+                          textTheme: textTheme,
+                        ),
                       );
-                      ref.read(cookingStepsProvider.notifier).state = [
-                        ...cookingSteps,
-                        cookingStep
-                      ];
-                      SchedulerBinding.instance
-                          .addPostFrameCallback((timeStamp) {
-                        ref
-                            .read(scrollControllerProvider.notifier)
-                            .state
-                            .animateTo(
-                              ref
-                                  .read(scrollControllerProvider.notifier)
-                                  .state
-                                  .position
-                                  .maxScrollExtent,
-                              curve: Curves.easeOut,
-                              duration: const Duration(milliseconds: 300),
-                            );
+                    },
+                    itemCount: cookingSteps.length,
+                    onReorder: (oldIndex, newIndex) {
+                      if (newIndex > oldIndex) {
+                        newIndex -= 1;
+                      }
+                      logger.d(newIndex > oldIndex);
+                      CookingStep currentStep =
+                          cookingSteps.elementAt(oldIndex);
+                      cookingSteps
+                        ..remove(currentStep)
+                        ..insert(newIndex, currentStep);
+                      ref.read(cookingStepsProvider.notifier).update((state) {
+                        return [...cookingSteps];
                       });
                     },
-                    child: const Text('Add step'),
                   ),
-                )
-              ],
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Center(
+                    child: CustomButton(
+                      buttonType: ButtonType.filledIcon,
+                      buttonSize: ButtonSize.medium,
+                      icon: CustomImageIcon(iconPath: Assets.icons.add.path),
+                      onPressed: () {
+                        final cookingStep = CookingStep(
+                          attachment: '',
+                          instructions: TextEditingController(),
+                        );
+                        ref.read(cookingStepsProvider.notifier).state = [
+                          ...cookingSteps,
+                          cookingStep
+                        ];
+                        SchedulerBinding.instance
+                            .addPostFrameCallback((timeStamp) {
+                          ref
+                              .read(scrollControllerProvider.notifier)
+                              .state
+                              .animateTo(
+                                ref
+                                    .read(scrollControllerProvider.notifier)
+                                    .state
+                                    .position
+                                    .maxScrollExtent,
+                                curve: Curves.easeOut,
+                                duration: const Duration(milliseconds: 300),
+                              );
+                        });
+                      },
+                      child: const Text('Add step'),
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 

@@ -75,8 +75,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
             icon: CustomImageIcon(
               color: index == 3 ? Colors.white : colorScheme.onBackground,
               iconPath: index == 3
-                  ? Assets.icons.personFilled.path
-                  : Assets.icons.person.path,
+                  ? Assets.icons.settings.path
+                  : Assets.icons.settings.path,
             ),
             label: 'Profile',
           ),
