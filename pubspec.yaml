@@ -31,6 +31,13 @@ dependencies:
   flutter_dotenv:
   duration_picker:
   lazy_load_indexed_stack:
+  flutter_launcher_icons:
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icons/pot2.png"
+  min_sdk_android: 21
 
 dev_dependencies:
   flutter_test:

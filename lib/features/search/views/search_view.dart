@@ -62,6 +62,7 @@ class _SearchViewState extends ConsumerState<SearchView> {
             slivers: [
               SliverToBoxAdapter(
                 child: CustomTextField(
+                  hintText: 'Type an ingredient or a meal',
                   validator: (value) {
                     if (value == null || value.trim().length < 3) {
                       return '3 characters minimum';

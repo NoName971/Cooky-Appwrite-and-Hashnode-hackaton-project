@@ -31,6 +31,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/add.png
   AssetGenImage get add => const AssetGenImage('assets/icons/add.png');
 
+  /// File path: assets/icons/add_bold.png
+  AssetGenImage get addBold => const AssetGenImage('assets/icons/add_bold.png');
+
   /// File path: assets/icons/clear.png
   AssetGenImage get clear => const AssetGenImage('assets/icons/clear.png');
 
@@ -93,6 +96,9 @@ class $AssetsIconsGen {
   AssetGenImage get photoPicker =>
       const AssetGenImage('assets/icons/photoPicker.png');
 
+  /// File path: assets/icons/pot.png
+  AssetGenImage get pot => const AssetGenImage('assets/icons/pot.png');
+
   /// File path: assets/icons/schedule.png
   AssetGenImage get schedule =>
       const AssetGenImage('assets/icons/schedule.png');
@@ -124,6 +130,7 @@ class $AssetsIconsGen {
   /// List of all assets
   List<AssetGenImage> get values => [
         add,
+        addBold,
         clear,
         close,
         darkMode,
@@ -142,6 +149,7 @@ class $AssetsIconsGen {
         person,
         personFilled,
         photoPicker,
+        pot,
         schedule,
         search,
         settings,

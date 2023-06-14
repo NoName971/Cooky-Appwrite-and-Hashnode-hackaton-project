@@ -9,7 +9,6 @@ import 'package:hackaton_v1/features/discovery/views/recipe_view.dart';
 import 'package:hackaton_v1/features/discovery/widgets/meal_card_large.dart';
 import 'package:hackaton_v1/features/discovery/widgets/top_recipes_length_indicator.dart';
 import 'package:hackaton_v1/models/recipe_model.dart';
-import 'package:focus_detector/focus_detector.dart';
 
 final recipesProvider = StateProvider.autoDispose<List<RecipeModel>>((ref) {
   return [];
@@ -84,145 +83,131 @@ class _DiscoveryViewState extends ConsumerState<DiscoveryView> {
               ],
             );
           },
-          child: FocusDetector(
-            onVisibilityGained: () async {
-              if (!isLoading) {
-                await ref.read(discoveryProvider.notifier).getRecipes(
-                  fetchMode: FetchMode.normal,
-                  context: context,
-                  queries: [
-                    Query.orderDesc('\$createdAt'),
-                    Query.limit(10),
-                  ],
-                );
-              }
-            },
-            child: CustomScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              slivers: [
-                SliverVisibility(
-                  visible: topRecipes.isNotEmpty,
-                  sliver: SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 16),
-                      child: Text(
-                        'Top recipes',
-                        style: context.h3,
-                      ),
+          child: CustomScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            slivers: [
+              SliverVisibility(
+                visible: topRecipes.isNotEmpty,
+                sliver: SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 16),
+                    child: Text(
+                      'Top recipes',
+                      style: context.h3,
                     ),
                   ),
                 ),
-                SliverVisibility(
-                  visible: topRecipes.isNotEmpty,
-                  sliver: SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 250,
-                      child: PageView(controller: pageController, children: [
-                        for (final topRecipe in topRecipes)
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                RecipeView(recipeId: topRecipe.id).route(),
-                              );
-                            },
-                            child: MealCardLargeWidget(recipe: topRecipe),
-                          ),
-                      ]),
-                    ),
-                  ),
-                ),
-                SliverVisibility(
-                  visible: topRecipes.isNotEmpty,
-                  sliver: SliverToBoxAdapter(
-                    child: TopRecipesLengthIndicator(
-                      pageController: pageController,
-                      topRecipes: topRecipes,
-                    ),
-                  ),
-                ),
-                SliverVisibility(
-                  visible: recipes.isNotEmpty,
-                  sliver: SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 16,
-                      ),
-                      child: Text(
-                        'Latest recipes',
-                        style: context.h3,
-                      ),
-                    ),
-                  ),
-                ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      final recipe = recipes[index];
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 16),
-                        child: GestureDetector(
+              ),
+              SliverVisibility(
+                visible: topRecipes.isNotEmpty,
+                sliver: SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 250,
+                    child: PageView(controller: pageController, children: [
+                      for (final topRecipe in topRecipes)
+                        GestureDetector(
                           onTap: () {
                             Navigator.push(
                               context,
-                              RecipeView(recipeId: recipe.id).route(),
+                              RecipeView(recipeId: topRecipe.id).route(),
                             );
                           },
-                          child: MealCardLargeWidget(
-                            recipe: recipe,
-                          ),
+                          child: MealCardLargeWidget(recipe: topRecipe),
                         ),
-                      );
-                    },
-                    childCount: recipes.length,
+                    ]),
                   ),
                 ),
-                const SliverToBoxAdapter(
-                  child: SizedBox(height: 16),
+              ),
+              SliverVisibility(
+                visible: topRecipes.isNotEmpty,
+                sliver: SliverToBoxAdapter(
+                  child: TopRecipesLengthIndicator(
+                    pageController: pageController,
+                    topRecipes: topRecipes,
+                  ),
                 ),
-                SliverVisibility(
-                  visible:
-                      discoveryController.canFetchMore && recipes.length >= 10,
-                  sliver: SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 16,
-                        right: 16,
-                        bottom: 16,
-                      ),
-                      child: CustomButton(
-                        buttonType: ButtonType.outlinedIcon,
-                        buttonSize: ButtonSize.small,
-                        icon: !discoveryController.isFetchingOlder
-                            ? const Icon(Icons.add)
-                            : const SizedBox(
-                                height: 24,
-                                width: 24,
-                                child: Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                              ),
-                        child: const Text('Load more'),
-                        onPressed: () {
-                          ref.read(discoveryProvider.notifier).getRecipes(
-                            fetchMode: FetchMode.older,
-                            context: context,
-                            queries: [
-                              Query.orderDesc('\$createdAt'),
-                              Query.cursorAfter(
-                                  ref.read(recipesProvider).last.id),
-                              Query.limit(10),
-                            ],
-                          );
-                        },
-                      ),
+              ),
+              SliverVisibility(
+                visible: recipes.isNotEmpty,
+                sliver: SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 16,
+                    ),
+                    child: Text(
+                      'Latest recipes',
+                      style: context.h3,
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    final recipe = recipes[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            RecipeView(recipeId: recipe.id).route(),
+                          );
+                        },
+                        child: MealCardLargeWidget(
+                          recipe: recipe,
+                        ),
+                      ),
+                    );
+                  },
+                  childCount: recipes.length,
+                ),
+              ),
+              const SliverToBoxAdapter(
+                child: SizedBox(height: 16),
+              ),
+              SliverVisibility(
+                visible:
+                    discoveryController.canFetchMore && recipes.length >= 10,
+                sliver: SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: 16,
+                      right: 16,
+                      bottom: 16,
+                    ),
+                    child: CustomButton(
+                      buttonType: ButtonType.outlinedIcon,
+                      buttonSize: ButtonSize.small,
+                      icon: !discoveryController.isFetchingOlder
+                          ? const Icon(Icons.add)
+                          : const SizedBox(
+                              height: 24,
+                              width: 24,
+                              child: Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            ),
+                      child: const Text('Load more'),
+                      onPressed: () {
+                        ref.read(discoveryProvider.notifier).getRecipes(
+                          fetchMode: FetchMode.older,
+                          context: context,
+                          queries: [
+                            Query.orderDesc('\$createdAt'),
+                            Query.cursorAfter(
+                                ref.read(recipesProvider).last.id),
+                            Query.limit(10),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         );
       }),

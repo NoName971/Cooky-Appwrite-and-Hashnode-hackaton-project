@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hackaton_v1/common/custom_image_icon.dart';
 import 'package:hackaton_v1/common/text_style.dart';
+import 'package:hackaton_v1/gen/assets.gen.dart';
 
 class LogoLargeWidget extends StatelessWidget {
   const LogoLargeWidget({
@@ -8,9 +10,21 @@ class LogoLargeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      'Cooky',
-      style: context.h1,
+    return Column(
+      children: [
+        CustomImageIcon(
+          iconPath: Assets.icons.pot.path,
+          color: context.colorScheme.primary,
+          size: 50,
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Text(
+          'Cooky',
+          style: context.h1,
+        ),
+      ],
     );
   }
 }
@@ -22,9 +36,10 @@ class LogoSmallWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      'Cooky',
-      style: context.h3,
+    return CustomImageIcon(
+      color: context.colorScheme.primary,
+      iconPath: Assets.icons.pot.path,
+      size: 30,
     );
   }
 }
