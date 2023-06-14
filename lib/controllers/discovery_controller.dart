@@ -115,7 +115,7 @@ class DiscoveryViewController extends StateNotifier<DiscoberyControllerState> {
           isLoading: false,
         );
         if (context.mounted) {
-          showSnackBar(context, response.failure!.message);
+          showSnackBar(context, UiMessages.unexpectedError);
         }
       } else {
         if (fetchMode == FetchMode.normal) {
@@ -164,7 +164,7 @@ class DiscoveryViewController extends StateNotifier<DiscoberyControllerState> {
         isLoading: false,
         isFetchingOlder: false,
       );
-      showSnackBar(context, e.toString());
+      showSnackBar(context, UiMessages.unexpectedError);
     }
   }
 

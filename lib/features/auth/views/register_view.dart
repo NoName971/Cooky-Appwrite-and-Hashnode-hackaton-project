@@ -131,14 +131,14 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                   children: <TextSpan>[
                     TextSpan(
                       style: TextStyle(
-                          fontFamily: 'Montserrat',
+                          fontFamily: 'DMSans',
                           color: context.colorScheme.onBackground),
                       text: 'Have an account?',
                     ),
                     TextSpan(
                       text: ' Login',
                       style: TextStyle(
-                        fontFamily: 'Montserrat',
+                        fontFamily: 'DMSans',
                         fontWeight: FontWeight.w600,
                         color: context.colorScheme.primary,
                       ),
