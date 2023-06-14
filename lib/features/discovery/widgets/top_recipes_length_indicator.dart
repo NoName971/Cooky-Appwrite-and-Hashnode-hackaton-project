@@ -24,7 +24,7 @@ class TopRecipesLengthIndicator extends StatelessWidget {
         effect: WormEffect(
           dotHeight: 8,
           dotWidth: 8,
-          activeDotColor: context.colorScheme.secondary,
+          activeDotColor: context.colorScheme.primary,
         ),
       ),
     );
