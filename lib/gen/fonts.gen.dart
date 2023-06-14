@@ -12,7 +12,4 @@ class FontFamily {
 
   /// Font family: DMSans
   static const String dMSans = 'DMSans';
-
-  /// Font family: Montserrat
-  static const String montserrat = 'Montserrat';
 }

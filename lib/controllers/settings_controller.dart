@@ -7,21 +7,21 @@ import 'package:hackaton_v1/main.dart';
 import 'package:hackaton_v1/services/auth_service.dart';
 import 'package:hackaton_v1/services/user_service.dart';
 
-final profileProvider = StateNotifierProvider<ProfileController, bool>((ref) {
+final settingsProvider = StateNotifierProvider<SettingsController, bool>((ref) {
   final authService = ref.watch(authServiceProvider);
   final userService = ref.watch(userServiceProvider);
-  return ProfileController(
+  return SettingsController(
     ref: ref,
     authService: authService,
     userService: userService,
   );
 });
 
-class ProfileController extends StateNotifier<bool> {
+class SettingsController extends StateNotifier<bool> {
   final AuthService _authService;
   final UserService _userService;
   final Ref _ref;
-  ProfileController({
+  SettingsController({
     required AuthService authService,
     required UserService userService,
     required Ref ref,

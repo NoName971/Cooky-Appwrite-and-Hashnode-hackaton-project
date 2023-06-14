@@ -6,7 +6,7 @@ import 'package:hackaton_v1/common/custom_textfield.dart';
 import 'package:hackaton_v1/gen/assets.gen.dart';
 import 'package:hackaton_v1/helpers/extensions.dart';
 import 'package:hackaton_v1/features/create_recipe/widgets/textfield_label_widget.dart';
-import 'package:hackaton_v1/controllers/profile_controller.dart';
+import 'package:hackaton_v1/controllers/settings_controller.dart';
 
 import '../../../common/custom_button.dart';
 import '../../../helpers/utils.dart';
@@ -40,7 +40,7 @@ class _PasswordChangeViewState extends ConsumerState<PasswordChangeView> {
     final obscureText2 = ref.watch(obscureTextProvider2);
 
     final textTheme = Theme.of(context).textTheme;
-    ref.listen(profileProvider.select((value) => value), (previous, next) {
+    ref.listen(settingsProvider.select((value) => value), (previous, next) {
       if (next) {
         showLoadingIndicator(
           context: context,
@@ -111,7 +111,7 @@ class _PasswordChangeViewState extends ConsumerState<PasswordChangeView> {
                 child: const Text('Update'),
                 onPressed: () {
                   FocusScope.of(context).unfocus();
-                  ref.read(profileProvider.notifier).updatePassword(
+                  ref.read(settingsProvider.notifier).updatePassword(
                         context: context,
                         password: passwordTextEditingController.text,
                         oldPassword: oldPasswordTextEditingController.text,

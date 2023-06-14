@@ -45,7 +45,7 @@ class Hackaton extends ConsumerWidget {
       ),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'Cooky',
         themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
         theme: FlexThemeData.light(
           useMaterial3: true,

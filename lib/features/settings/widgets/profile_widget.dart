@@ -21,8 +21,9 @@ class ProfileWidget extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           margin: const EdgeInsets.only(top: 16, bottom: 10),
           decoration: BoxDecoration(
-            shape: BoxShape.circle,
+            shape: BoxShape.rectangle,
             color: context.colorScheme.primary,
+            borderRadius: BorderRadius.circular(10),
           ),
           child: Center(
             child: Text(

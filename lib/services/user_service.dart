@@ -168,6 +168,7 @@ class UserService implements IUserService {
         queries: [
           Query.equal('uid', user!.$id),
           Query.limit(25),
+          Query.orderDesc('\$createdAt'),
           Query.offset(userRecipes.length)
         ],
       );

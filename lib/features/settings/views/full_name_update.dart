@@ -4,7 +4,7 @@ import 'package:hackaton_v1/common/appbar.dart';
 import 'package:hackaton_v1/common/custom_textfield.dart';
 import 'package:hackaton_v1/helpers/extensions.dart';
 import 'package:hackaton_v1/features/create_recipe/widgets/textfield_label_widget.dart';
-import 'package:hackaton_v1/controllers/profile_controller.dart';
+import 'package:hackaton_v1/controllers/settings_controller.dart';
 
 import '../../../common/custom_button.dart';
 import '../../../helpers/utils.dart';
@@ -25,7 +25,7 @@ class _FullNameUpdateState extends ConsumerState<FullNameUpdate> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    ref.listen(profileProvider.select((value) => value), (previous, next) {
+    ref.listen(settingsProvider.select((value) => value), (previous, next) {
       if (next) {
         showLoadingIndicator(
           context: context,
@@ -71,7 +71,7 @@ class _FullNameUpdateState extends ConsumerState<FullNameUpdate> {
                     if (validation) {
                       FocusScope.of(context).unfocus();
                       if (newFullNameController.text.isNotEmpty) {
-                        ref.read(profileProvider.notifier).updateFullName(
+                        ref.read(settingsProvider.notifier).updateFullName(
                               context: context,
                               name: newFullNameController.text,
                             );

@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/common/custom_list_tile.dart';
-import 'package:hackaton_v1/controllers/profile_controller.dart';
-import 'package:hackaton_v1/features/profile/views/full_name_update.dart';
-import 'package:hackaton_v1/features/profile/widgets/profile_widget.dart';
+import 'package:hackaton_v1/controllers/settings_controller.dart';
+import 'package:hackaton_v1/features/settings/views/full_name_update.dart';
+import 'package:hackaton_v1/features/settings/widgets/profile_widget.dart';
 import 'package:hackaton_v1/main.dart';
 import '../../../helpers/utils.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../services/dark_mode_service.dart';
 import 'password_update_view.dart';
 
-class ProfileView extends ConsumerStatefulWidget {
-  const ProfileView({super.key});
+class SettingsView extends ConsumerStatefulWidget {
+  const SettingsView({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ProfileViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _SettingsViewState();
 }
 
-class _ProfileViewState extends ConsumerState<ProfileView> {
+class _SettingsViewState extends ConsumerState<SettingsView> {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = ref.watch(darkModeProvider);
     final currentUser = ref.watch(globalCurrentUserProvider);
-    ref.listen(profileProvider.select((value) => value), (previous, next) {
+    ref.listen(settingsProvider.select((value) => value), (previous, next) {
       if (next) {
         showLoadingIndicator(
           context: context,
@@ -83,7 +83,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
             child: CustomListTile(
               onTap: () async {
                 await ref
-                    .read(profileProvider.notifier)
+                    .read(settingsProvider.notifier)
                     .logout(context: context);
               },
               contentPadding: const EdgeInsets.fromLTRB(16, 0, 32, 16),
