@@ -1,16 +1,26 @@
-# Cooky
+# Cooky : Share your recipe all around the world !
 
-Appwrite & Hashnode hackaton project
+**Appwrite & Hashnode hackaton project**
 
-## Getting Started
+## What's Cooky ?
 
-This project is a starting point for a Flutter application.
+Cooky is a simple recipe sharing app built entirely with [Appwrite Cloud](https://cloud.appwrite.io) ( as backend solution ) where the user can : 
 
-A few resources to get you started if this is your first Flutter project:
+1. Fetch and see recipe details
+2. Save and like recipes
+3. Create recipes with steps and attchments to describe the process
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Tech stack
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Flutter
+
+- Appwrite
+
+    - Authentication to authenticate and manage users
+
+    - Database to store recipes, users data, likes
+
+    - Storage to store recipes assets
+ 
+
+
