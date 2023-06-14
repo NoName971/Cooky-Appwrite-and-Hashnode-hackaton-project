@@ -1,6 +1,6 @@
-# hackaton_v1
+# Cooky
 
-A new Flutter project.
+Appwrite & Hashnode hackaton project
 
 ## Getting Started
 
