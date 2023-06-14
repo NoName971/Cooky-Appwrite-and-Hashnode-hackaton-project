@@ -192,10 +192,12 @@ class FavoriteController extends StateNotifier<bool> {
     required String filePath,
     String? index,
   }) async {
+    state = !state;
     final uploadedImage = await _storageService.uploadFile(
       filePath,
       fileName,
     );
+    state = state;
     return uploadedImage;
   }
 

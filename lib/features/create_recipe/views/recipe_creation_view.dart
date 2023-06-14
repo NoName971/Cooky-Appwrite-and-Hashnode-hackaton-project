@@ -282,8 +282,8 @@ class _RecipeCreationViewState extends ConsumerState<RecipeCreationView> {
                     maxLines: null,
                     hintText: 'E.g. A loved ivorian meal...',
                     validator: (value) {
-                      if (value == null || value.length < 10) {
-                        return '10 characters minimum';
+                      if (value == null || value.length < 5) {
+                        return '5 characters minimum';
                       }
                       return null;
                     },

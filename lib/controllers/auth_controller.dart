@@ -54,7 +54,7 @@ class AuthController extends StateNotifier<bool> {
     String? fullName,
   }) async {
     state = true;
-    final response = await _authService.register(
+    final (response) = await _authService.register(
       email: email,
       password: password,
       name: fullName ?? getNameFromEmail(email),

@@ -109,8 +109,8 @@ class CookingStepWidget extends StatelessWidget {
               controller: cookingStep.instructions,
               hintText: 'E.g. Chop onions in little pieces',
               validator: (value) {
-                if (value == null || value.length < 20) {
-                  return "20 characters minimum";
+                if (value == null || value.length < 5) {
+                  return "5 characters minimum";
                 }
                 return null;
               },

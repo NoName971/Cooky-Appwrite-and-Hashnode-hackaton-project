@@ -118,10 +118,12 @@ class RecipeCreationController extends StateNotifier<bool> {
     required String fileName,
     required String filePath,
   }) async {
+    state = !state;
     final uploadedImage = await _storageService.uploadFile(
       filePath,
       fileName,
     );
+    state = !state;
     return uploadedImage;
   }
 
