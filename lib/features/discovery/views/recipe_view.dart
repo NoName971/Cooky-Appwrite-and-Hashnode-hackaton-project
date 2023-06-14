@@ -156,6 +156,13 @@ class _RecipeViewState extends ConsumerState<RecipeView> {
                           const SizedBox(
                             height: 10,
                           ),
+                          Text(
+                            recipe.description,
+                            style: context.p1Medium,
+                          ),
+                          const SizedBox(
+                            height: 16,
+                          ),
                           RichText(
                             text: TextSpan(
                               children: [
