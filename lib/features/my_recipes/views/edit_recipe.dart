@@ -316,8 +316,8 @@ class _EditRecipeState extends ConsumerState<EditRecipe> {
                   NewRecipeTextField(
                     maxLength: 100,
                     validator: (value) {
-                      if (value == null || value.length < 10) {
-                        return '10 characters minimum';
+                      if (value == null || value.length < 5) {
+                        return '5 characters minimum';
                       }
                       return null;
                     },

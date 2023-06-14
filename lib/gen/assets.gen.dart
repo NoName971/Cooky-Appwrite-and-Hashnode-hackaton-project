@@ -34,6 +34,13 @@ class $AssetsIconsGen {
   /// File path: assets/icons/add_bold.png
   AssetGenImage get addBold => const AssetGenImage('assets/icons/add_bold.png');
 
+  /// File path: assets/icons/book.png
+  AssetGenImage get book => const AssetGenImage('assets/icons/book.png');
+
+  /// File path: assets/icons/book_filled.png
+  AssetGenImage get bookFilled =>
+      const AssetGenImage('assets/icons/book_filled.png');
+
   /// File path: assets/icons/clear.png
   AssetGenImage get clear => const AssetGenImage('assets/icons/clear.png');
 
@@ -99,6 +106,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/pot.png
   AssetGenImage get pot => const AssetGenImage('assets/icons/pot.png');
 
+  /// File path: assets/icons/pot2.png
+  AssetGenImage get pot2 => const AssetGenImage('assets/icons/pot2.png');
+
   /// File path: assets/icons/schedule.png
   AssetGenImage get schedule =>
       const AssetGenImage('assets/icons/schedule.png');
@@ -131,6 +141,8 @@ class $AssetsIconsGen {
   List<AssetGenImage> get values => [
         add,
         addBold,
+        book,
+        bookFilled,
         clear,
         close,
         darkMode,
@@ -150,6 +162,7 @@ class $AssetsIconsGen {
         personFilled,
         photoPicker,
         pot,
+        pot2,
         schedule,
         search,
         settings,

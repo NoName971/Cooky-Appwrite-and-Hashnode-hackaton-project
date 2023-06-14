@@ -77,7 +77,7 @@ class MealCardLargeWidget extends StatelessWidget {
                 children: [
                   CustomImageIcon(
                     color: Colors.white,
-                    iconPath: Assets.icons.starFilled.path,
+                    iconPath: Assets.icons.favoriteFilled.path,
                   ),
                   Text(
                     recipe.likes.toString(),

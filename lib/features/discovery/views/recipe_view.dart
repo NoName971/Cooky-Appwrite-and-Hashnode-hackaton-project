@@ -64,31 +64,6 @@ class _RecipeViewState extends ConsumerState<RecipeView> {
               ignoring: future.isLoading,
               child: IconButton(
                 onPressed: () {
-                  if (favorites.contains(widget.recipeId)) {
-                    ref.read(discoveryProvider.notifier).removeFavorite(
-                          recipeId: widget.recipeId,
-                          ref: ref,
-                          context: context,
-                        );
-                  } else {
-                    ref.read(discoveryProvider.notifier).addFavorite(
-                          recipeId: widget.recipeId,
-                          ref: ref,
-                          context: context,
-                        );
-                  }
-                },
-                icon: CustomImageIcon(
-                  iconPath: isFavorite
-                      ? Assets.icons.favoriteFilled.path
-                      : Assets.icons.favorite.path,
-                ),
-              ),
-            ),
-            IgnorePointer(
-              ignoring: future.isLoading,
-              child: IconButton(
-                onPressed: () {
                   if (isLiked) {
                     ref.read(discoveryProvider.notifier).removeLike(
                           recipeId: widget.recipeId,
@@ -106,6 +81,31 @@ class _RecipeViewState extends ConsumerState<RecipeView> {
                 },
                 icon: CustomImageIcon(
                   iconPath: isLiked
+                      ? Assets.icons.favoriteFilled.path
+                      : Assets.icons.favorite.path,
+                ),
+              ),
+            ),
+            IgnorePointer(
+              ignoring: future.isLoading,
+              child: IconButton(
+                onPressed: () {
+                  if (favorites.contains(widget.recipeId)) {
+                    ref.read(discoveryProvider.notifier).removeFavorite(
+                          recipeId: widget.recipeId,
+                          ref: ref,
+                          context: context,
+                        );
+                  } else {
+                    ref.read(discoveryProvider.notifier).addFavorite(
+                          recipeId: widget.recipeId,
+                          ref: ref,
+                          context: context,
+                        );
+                  }
+                },
+                icon: CustomImageIcon(
+                  iconPath: isFavorite
                       ? Assets.icons.starFilled.path
                       : Assets.icons.star.path,
                 ),
@@ -169,7 +169,7 @@ class _RecipeViewState extends ConsumerState<RecipeView> {
                                 TextSpan(
                                   text: ' ${recipe.userName}',
                                   style: TextStyle(
-                                    fontFamily: 'Montserrat',
+                                    fontFamily: 'DMSans',
                                     fontWeight: FontWeight.w600,
                                     color: context.colorScheme.onBackground,
                                   ),

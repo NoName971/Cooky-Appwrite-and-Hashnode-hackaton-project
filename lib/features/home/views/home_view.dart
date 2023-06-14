@@ -66,8 +66,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
             icon: CustomImageIcon(
               color: index == 2 ? Colors.white : colorScheme.onBackground,
               iconPath: index == 2
-                  ? Assets.icons.favoriteFilled.path
-                  : Assets.icons.favorite.path,
+                  ? Assets.icons.bookFilled.path
+                  : Assets.icons.book.path,
             ),
             label: 'My recipes',
           ),
