@@ -35,6 +35,13 @@ class _PasswordChangeViewState extends ConsumerState<PasswordChangeView> {
       TextEditingController();
 
   @override
+  void dispose() {
+    passwordTextEditingController.dispose();
+    oldPasswordTextEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final obscureText = ref.watch(obscureTextProvider);
     final obscureText2 = ref.watch(obscureTextProvider2);

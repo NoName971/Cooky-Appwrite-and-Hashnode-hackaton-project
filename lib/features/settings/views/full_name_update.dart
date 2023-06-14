@@ -20,6 +20,13 @@ class FullNameUpdate extends ConsumerStatefulWidget {
 
 class _FullNameUpdateState extends ConsumerState<FullNameUpdate> {
   TextEditingController newFullNameController = TextEditingController();
+
+  @override
+  void dispose() {
+    newFullNameController.dispose();
+    super.dispose();
+  }
+
   final _formKey = GlobalKey<FormState>();
 
   @override
