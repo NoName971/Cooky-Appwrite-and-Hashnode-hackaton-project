@@ -1,6 +1,6 @@
 # Cooky : Share your recipe all around the world !
 
-**Appwrite & Hashnode hackaton project**
+[Appwrite](https://cloud.appwrite.io) & [Hashnode](https://hashnode.com) **hackaton project**
 
 ## What's Cooky ?
 
@@ -21,6 +21,6 @@ Cooky is a simple recipe sharing app built entirely with [Appwrite Cloud](https:
     - Database to store recipes, users data, likes
 
     - Storage to store recipes assets
- 
+
 
 
