@@ -104,6 +104,7 @@ class AuthController extends StateNotifier<bool> {
               email: currentUser!.email,
               name: currentUser.name,
               uid: currentUser.$id,
+              isVerified: currentUser.emailVerification,
             ),
           );
       if (context.mounted) {

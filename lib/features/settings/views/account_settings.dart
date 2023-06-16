@@ -14,8 +14,6 @@ import 'package:hackaton_v1/gen/assets.gen.dart';
 import 'package:hackaton_v1/helpers/utils.dart';
 import 'package:hackaton_v1/main.dart';
 
-final isVerifiedProvider = StateProvider((ref) => false);
-
 class ProfileSettings extends ConsumerStatefulWidget {
   static route() => MaterialPageRoute(builder: (_) => const ProfileSettings());
   const ProfileSettings({super.key});
@@ -31,6 +29,7 @@ class _ProfileSettingsState extends ConsumerState<ProfileSettings> {
     final isVerified =
         (await ref.read(authControllerProvider.notifier).getCurrentUser())!
             .emailVerification;
+    logger.d(isVerified);
     if (isVerified) {
       ref.read(globalCurrentUserProvider.notifier).update(
             (state) => state.copyWith(isVerified: true),
@@ -46,6 +45,7 @@ class _ProfileSettingsState extends ConsumerState<ProfileSettings> {
         final isVerified =
             (await ref.read(authControllerProvider.notifier).getCurrentUser())!
                 .emailVerification;
+        logger.d(isVerified);
         if (!isVerified) {
           timer = Timer.periodic(
             const Duration(seconds: 5),

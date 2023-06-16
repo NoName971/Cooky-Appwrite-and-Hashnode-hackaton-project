@@ -107,7 +107,7 @@ class SettingsController extends StateNotifier<bool> {
               );
 
           if (context.mounted) {
-            showSnackBar(context, 'Updated');
+            showSnackBar(context, 'Full name updated');
             Navigator.pop(context);
           }
         } else {
@@ -140,7 +140,7 @@ class SettingsController extends StateNotifier<bool> {
     state = !state;
     if (response.hasSucceded) {
       if (context.mounted) {
-        showSnackBar(context, 'Email verification link sent');
+        showSnackBar(context, 'Account verification link sent');
       }
     } else {
       if (context.mounted) {
