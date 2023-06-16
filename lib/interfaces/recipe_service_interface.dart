@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:hackaton_v1/models/failure.dart';
 import 'package:appwrite/models.dart' as model;
 import 'package:hackaton_v1/models/recipe_model.dart';
@@ -7,7 +9,7 @@ abstract class IRecipeService {
     required List<String> queries,
   });
 
-  Future<({bool hasSucceded, Failure? failure})> updateRecipe({
+  FutureOr updateRecipe({
     required String recipeId,
     required Map data,
   });

@@ -35,7 +35,7 @@ class CookingStepWidget extends StatelessWidget {
     final cookingSteps = ref.watch(provider);
     final List<CookingStep> steps = ref.watch(provider);
     final cookingCreationController =
-        ref.watch(recipeCreationProvider.notifier);
+        ref.watch(recipeCreationControllerProvider.notifier);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
@@ -233,7 +233,7 @@ class CookingStepWidget extends StatelessWidget {
 
                     final image = await pickImage();
                     final imageId = await ref
-                        .read(recipeCreationProvider.notifier)
+                        .read(recipeCreationControllerProvider.notifier)
                         .uploadAttachment(
                           fileName: generateFileName('stepPic'),
                           filePath: image!.path,

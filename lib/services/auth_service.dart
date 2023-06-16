@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hackaton_v1/constants/appwrite_constants.dart';
 import 'package:hackaton_v1/constants/ui_messages.dart';
 import 'package:hackaton_v1/constants/appwrite_providers.dart';
+import 'package:hackaton_v1/helpers/typedefs.dart';
 import 'package:hackaton_v1/interfaces/auth_service_interface.dart';
 import 'package:hackaton_v1/models/failure.dart';
 import 'package:appwrite/appwrite.dart';
@@ -46,7 +48,7 @@ class AuthService implements IAuthService {
   }
 
   @override
-  Future<({Failure? failure, bool hasSucceded})> login({
+  FutureOr login({
     required String email,
     required String password,
   }) async {
@@ -78,7 +80,7 @@ class AuthService implements IAuthService {
   }
 
   @override
-  Future<({Failure? failure, bool hasSucceded})> logout() async {
+  FutureOr logout() async {
     try {
       final session = await _account.getSession(sessionId: 'current');
       await _account.deleteSession(sessionId: session.$id);
@@ -118,11 +120,54 @@ class AuthService implements IAuthService {
     }
   }
 
-  Future<({Failure? failure, bool hasSucceded})> updateFullName({
+  FutureOr updateFullName({
     required String name,
   }) async {
     try {
       await _account.updateName(name: name);
+      return (failure: null, hasSucceded: true);
+    } on AppwriteException catch (e, stackTrace) {
+      return (
+        failure: Failure(e.message ?? 'Something went wrong', stackTrace),
+        hasSucceded: false
+      );
+    } catch (e, stackTrace) {
+      return (
+        failure: Failure(e.toString(), stackTrace),
+        hasSucceded: false,
+      );
+    }
+  }
+
+  FutureOr sendPasswordRecoveryEmail({
+    required String email,
+  }) async {
+    try {
+      await _account.createRecovery(
+        email: email,
+        url: AppwriteConstants.passwordRecoveryEndpoint,
+      );
+      return (failure: null, hasSucceded: true);
+    } on AppwriteException catch (e, stackTrace) {
+      return (
+        failure: Failure(e.message ?? 'Something went wrong', stackTrace),
+        hasSucceded: false
+      );
+    } catch (e, stackTrace) {
+      return (
+        failure: Failure(e.toString(), stackTrace),
+        hasSucceded: false,
+      );
+    }
+  }
+
+  FutureOr sendAccountVerificationEmail({
+    required String email,
+  }) async {
+    try {
+      await _account.createVerification(
+        url: AppwriteConstants.emailVerificationEndpoint,
+      );
       return (failure: null, hasSucceded: true);
     } on AppwriteException catch (e, stackTrace) {
       return (

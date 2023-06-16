@@ -60,6 +60,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/edit.png
   AssetGenImage get edit => const AssetGenImage('assets/icons/edit.png');
 
+  /// File path: assets/icons/exclamation_FILL1_wght400_GRAD0_opsz48.png
+  AssetGenImage get exclamationFILL1Wght400GRAD0Opsz48 => const AssetGenImage(
+      'assets/icons/exclamation_FILL1_wght400_GRAD0_opsz48.png');
+
   /// File path: assets/icons/favorite.png
   AssetGenImage get favorite =>
       const AssetGenImage('assets/icons/favorite.png');
@@ -137,6 +141,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/time.png
   AssetGenImage get time => const AssetGenImage('assets/icons/time.png');
 
+  /// File path: assets/icons/verified_FILL1_wght400_GRAD0_opsz48.png
+  AssetGenImage get verifiedFILL1Wght400GRAD0Opsz48 => const AssetGenImage(
+      'assets/icons/verified_FILL1_wght400_GRAD0_opsz48.png');
+
   /// List of all assets
   List<AssetGenImage> get values => [
         add,
@@ -149,6 +157,7 @@ class $AssetsIconsGen {
         date,
         delete,
         edit,
+        exclamationFILL1Wght400GRAD0Opsz48,
         favorite,
         favoriteFilled,
         hide,
@@ -170,7 +179,8 @@ class $AssetsIconsGen {
         show,
         star,
         starFilled,
-        time
+        time,
+        verifiedFILL1Wght400GRAD0Opsz48
       ];
 }
 

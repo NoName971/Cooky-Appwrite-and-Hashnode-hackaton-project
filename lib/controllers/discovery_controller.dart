@@ -12,7 +12,7 @@ import '../helpers/utils.dart';
 import '../models/failure.dart';
 import '../models/like.dart';
 
-final discoveryProvider =
+final discoveryControllerProvider =
     StateNotifierProvider<DiscoveryViewController, DiscoberyControllerState>(
         (ref) {
   final recipeService = ref.watch(recipeServiceProvider);

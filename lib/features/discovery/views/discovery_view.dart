@@ -30,7 +30,7 @@ class _DiscoveryViewState extends ConsumerState<DiscoveryView> {
   void initState() {
     Future.delayed(Duration.zero).then(
       (value) async {
-        ref.read(discoveryProvider.notifier).getRecipes(
+        ref.read(discoveryControllerProvider.notifier).getRecipes(
           fetchMode: FetchMode.normal,
           context: context,
           queries: [
@@ -49,8 +49,8 @@ class _DiscoveryViewState extends ConsumerState<DiscoveryView> {
   Widget build(BuildContext context) {
     final recipes = ref.watch(recipesProvider);
     final topRecipes = ref.watch(topRecipesProvider);
-    final discoveryController = ref.watch(discoveryProvider);
-    final isLoading = ref.watch(discoveryProvider).isLoading;
+    final discoveryController = ref.watch(discoveryControllerProvider);
+    final isLoading = ref.watch(discoveryControllerProvider).isLoading;
 
     return Scaffold(
       appBar: AppBar(
@@ -74,7 +74,7 @@ class _DiscoveryViewState extends ConsumerState<DiscoveryView> {
         return RefreshIndicator(
           notificationPredicate: !isLoading ? (_) => true : (_) => false,
           onRefresh: () async {
-            ref.read(discoveryProvider.notifier).getRecipes(
+            ref.read(discoveryControllerProvider.notifier).getRecipes(
               fetchMode: FetchMode.normal,
               context: context,
               queries: [
@@ -192,7 +192,9 @@ class _DiscoveryViewState extends ConsumerState<DiscoveryView> {
                             ),
                       child: const Text('Load more'),
                       onPressed: () {
-                        ref.read(discoveryProvider.notifier).getRecipes(
+                        ref
+                            .read(discoveryControllerProvider.notifier)
+                            .getRecipes(
                           fetchMode: FetchMode.older,
                           context: context,
                           queries: [

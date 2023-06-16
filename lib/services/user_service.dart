@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/constants/appwrite_constants.dart';
@@ -100,7 +102,7 @@ class UserService implements IUserService {
   }
 
   @override
-  Future<({Failure? failure, bool hasSucceded})> deleteRecipe({
+  FutureOr deleteRecipe({
     required String recipeId,
   }) async {
     try {

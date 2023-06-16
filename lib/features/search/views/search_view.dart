@@ -37,7 +37,8 @@ class _SearchViewState extends ConsumerState<SearchView> {
     final searchedOnce = ref.watch(searchedOnceProvider);
     final searchResults = ref.watch(searchResultsProvider);
 
-    ref.listen(searchProvider.select((value) => value), (previous, next) {
+    ref.listen(searchControllerProvider.select((value) => value),
+        (previous, next) {
       if (next) {
         showLoadingIndicator(
           context: context,
@@ -75,7 +76,9 @@ class _SearchViewState extends ConsumerState<SearchView> {
                       final validation = _formKey.currentState!.validate();
                       if (validation) {
                         FocusScope.of(context).unfocus();
-                        ref.read(searchProvider.notifier).searchRecipes(
+                        ref
+                            .read(searchControllerProvider.notifier)
+                            .searchRecipes(
                               query: textEditingController.text,
                               context: context,
                             );

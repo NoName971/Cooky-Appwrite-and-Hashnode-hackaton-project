@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
-void showSnackBar(BuildContext context, String content) {
+void showSnackBar(BuildContext context, String content, [Duration? duration]) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
+      duration: duration ?? const Duration(seconds: 4),
       content: Text(content),
     ),
   );

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:hackaton_v1/models/like.dart';
 import 'package:hackaton_v1/models/recipe_model.dart';
 
@@ -18,7 +20,7 @@ abstract class IUserService {
   });
   Future<List> getFavorites();
 
-  Future<({Failure? failure, bool hasSucceded})> deleteRecipe({
+  FutureOr deleteRecipe({
     required String recipeId,
   });
   Future<List<RecipeModel>> getUserRecipes();

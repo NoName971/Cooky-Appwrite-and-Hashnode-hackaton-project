@@ -65,14 +65,14 @@ class _RecipeViewState extends ConsumerState<RecipeView> {
               child: IconButton(
                 onPressed: () {
                   if (isLiked) {
-                    ref.read(discoveryProvider.notifier).removeLike(
+                    ref.read(discoveryControllerProvider.notifier).removeLike(
                           recipeId: widget.recipeId,
                           context: context,
                           ref: ref,
                           likeId: like,
                         );
                   } else {
-                    ref.read(discoveryProvider.notifier).like(
+                    ref.read(discoveryControllerProvider.notifier).like(
                           recipeId: widget.recipeId,
                           context: context,
                           ref: ref,
@@ -91,13 +91,15 @@ class _RecipeViewState extends ConsumerState<RecipeView> {
               child: IconButton(
                 onPressed: () {
                   if (favorites.contains(widget.recipeId)) {
-                    ref.read(discoveryProvider.notifier).removeFavorite(
+                    ref
+                        .read(discoveryControllerProvider.notifier)
+                        .removeFavorite(
                           recipeId: widget.recipeId,
                           ref: ref,
                           context: context,
                         );
                   } else {
-                    ref.read(discoveryProvider.notifier).addFavorite(
+                    ref.read(discoveryControllerProvider.notifier).addFavorite(
                           recipeId: widget.recipeId,
                           ref: ref,
                           context: context,

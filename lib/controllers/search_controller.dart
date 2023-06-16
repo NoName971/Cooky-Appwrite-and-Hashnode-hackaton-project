@@ -7,7 +7,7 @@ import 'package:hackaton_v1/features/search/views/search_view.dart';
 import 'package:hackaton_v1/models/recipe_model.dart';
 import 'package:hackaton_v1/services/recipe_service.dart';
 
-final searchProvider = StateNotifierProvider<SearchController, bool>(
+final searchControllerProvider = StateNotifierProvider<SearchController, bool>(
   (ref) {
     final recipeService = ref.watch(recipeServiceProvider);
     return SearchController(

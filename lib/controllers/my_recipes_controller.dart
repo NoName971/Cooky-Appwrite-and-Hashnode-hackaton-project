@@ -9,7 +9,7 @@ import '../services/recipe_service.dart';
 import '../services/user_service.dart';
 import '../features/discovery/views/recipe_view.dart';
 
-final myRecipesProvider =
+final myRecipesControllerProvider =
     StateNotifierProvider<FavoriteController, bool>((ref) {
   final recipeService = ref.watch(recipeServiceProvider);
   final userService = ref.watch(userServiceProvider);

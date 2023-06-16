@@ -6,7 +6,7 @@ import 'package:hackaton_v1/services/auth_service.dart';
 import 'package:hackaton_v1/services/recipe_service.dart';
 import 'package:hackaton_v1/services/storage_service.dart';
 
-final recipeCreationProvider =
+final recipeCreationControllerProvider =
     StateNotifierProvider<RecipeCreationController, bool>((ref) {
   final authService = ref.watch(authServiceProvider);
   final recipeService = ref.watch(recipeServiceProvider);

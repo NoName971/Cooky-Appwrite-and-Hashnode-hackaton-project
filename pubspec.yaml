@@ -32,6 +32,8 @@ dependencies:
   duration_picker:
   lazy_load_indexed_stack:
   flutter_launcher_icons:
+  uni_links:
+  fluttertoast:
 
 flutter_launcher_icons:
   android: "launcher_icon"

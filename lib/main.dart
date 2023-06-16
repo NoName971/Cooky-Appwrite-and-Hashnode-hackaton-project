@@ -13,28 +13,37 @@ import 'package:hackaton_v1/models/user_model.dart';
 import 'package:hackaton_v1/services/dark_mode_service.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'dart:async';
 
 final globalCurrentUserProvider = StateProvider(
-  (ref) => UserModel(email: '', name: '', uid: ''),
+  (ref) => UserModel(
+    email: '',
+    name: '',
+    uid: '',
+  ),
 );
 
 Future main() async {
   await dotenv.load(fileName: ".env");
-
   runApp(
     const ProviderScope(
-      child: Hackaton(),
+      child: Cooky(),
     ),
   );
 }
 
 final logger = Logger();
 
-class Hackaton extends ConsumerWidget {
-  const Hackaton({super.key});
+class Cooky extends ConsumerStatefulWidget {
+  const Cooky({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _CookyState();
+}
+
+class _CookyState extends ConsumerState<Cooky> {
+  @override
+  Widget build(BuildContext context) {
     final future = ref.watch(currentAccountProvider);
     final isDarkMode = ref.watch(darkModeProvider);
     return AnnotatedRegion<SystemUiOverlayStyle>(

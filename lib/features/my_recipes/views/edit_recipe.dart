@@ -128,9 +128,9 @@ class _EditRecipeState extends ConsumerState<EditRecipe> {
     final descriptionTextEditingController = ref.watch(descriptionProvider);
     final cookingTimeTextEditingController = ref.watch(cookingTimeProvider);
     List<String> ingredients = ref.watch(ingredientsProvider);
-    final isLoading = ref.watch(recipeCreationProvider);
+    final isLoading = ref.watch(recipeCreationControllerProvider);
 
-    ref.listen(recipeCreationProvider.select((value) => value),
+    ref.listen(recipeCreationControllerProvider.select((value) => value),
         (previous, next) {
       if (next) {
         showLoadingIndicator(
@@ -174,7 +174,9 @@ class _EditRecipeState extends ConsumerState<EditRecipe> {
                   cookingStepsPics: attachments,
                   likes: 0,
                 );
-                await ref.read(recipeCreationProvider.notifier).updateRecipe(
+                await ref
+                    .read(recipeCreationControllerProvider.notifier)
+                    .updateRecipe(
                       recipeModel: recipe,
                       context: context,
                     );
@@ -250,7 +252,7 @@ class _EditRecipeState extends ConsumerState<EditRecipe> {
                       onTap: () async {
                         final image = await pickImage();
                         final imageId = await ref
-                            .read(recipeCreationProvider.notifier)
+                            .read(recipeCreationControllerProvider.notifier)
                             .uploadAttachment(
                               fileName: generateFileName('mainPic'),
                               filePath: image!.path,
@@ -292,7 +294,7 @@ class _EditRecipeState extends ConsumerState<EditRecipe> {
                             Navigator.pop(context);
                             final image = await pickImage();
                             final imageId = await ref
-                                .read(recipeCreationProvider.notifier)
+                                .read(recipeCreationControllerProvider.notifier)
                                 .uploadAttachment(
                                   fileName: generateFileName('mainPic'),
                                   filePath: image!.path,

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/constants/appwrite_constants.dart';
@@ -109,7 +111,7 @@ class RecipeService extends IRecipeService {
   }
 
   @override
-  Future<({bool hasSucceded, Failure? failure})> updateRecipe({
+  FutureOr updateRecipe({
     required String recipeId,
     required Map data,
   }) async {
@@ -121,7 +123,10 @@ class RecipeService extends IRecipeService {
         data: data,
       );
 
-      return (hasSucceded: true, failure: null);
+      return (
+        failure: null,
+        hasSucceded: true,
+      );
     } on AppwriteException catch (e, stackTrace) {
       return (
         failure: Failure(e.message ?? UiMessages.unexpectedError, stackTrace),

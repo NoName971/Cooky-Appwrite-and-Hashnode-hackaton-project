@@ -7,6 +7,7 @@ import 'package:hackaton_v1/common/custom_image_icon.dart';
 import 'package:hackaton_v1/common/custom_textfield.dart';
 import 'package:hackaton_v1/common/logo_widget.dart';
 import 'package:hackaton_v1/common/text_style.dart';
+import 'package:hackaton_v1/features/auth/views/password_recovery_view.dart';
 import 'package:hackaton_v1/gen/assets.gen.dart';
 import 'package:hackaton_v1/helpers/utils.dart';
 import 'package:hackaton_v1/controllers/auth_controller.dart';
@@ -85,6 +86,25 @@ class _LoginViewState extends ConsumerState<LoginView> {
                     iconPath: obscureText
                         ? Assets.icons.hide.path
                         : Assets.icons.show.path,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    Navigator.push(context, PasswordRecoveryView.route());
+                  },
+                  child: Text(
+                    'Forgot password?',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: context.colorScheme.primary,
+                    ),
                   ),
                 ),
               ),

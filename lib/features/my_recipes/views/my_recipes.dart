@@ -25,7 +25,7 @@ class MyRecipes extends ConsumerStatefulWidget {
 class _MyRecipesState extends ConsumerState<MyRecipes> {
   void deleteFavorite(recipeId) {
     Navigator.pop(context);
-    ref.read(myRecipesProvider.notifier).removeFavorite(
+    ref.read(myRecipesControllerProvider.notifier).removeFavorite(
           recipeId: recipeId,
           context: context,
         );
@@ -33,7 +33,7 @@ class _MyRecipesState extends ConsumerState<MyRecipes> {
 
   void deleteRecipe(recipeId) {
     Navigator.pop(context);
-    ref.read(myRecipesProvider.notifier).deleteRecipe(
+    ref.read(myRecipesControllerProvider.notifier).deleteRecipe(
           recipeId: recipeId,
           context: context,
         );
@@ -43,7 +43,7 @@ class _MyRecipesState extends ConsumerState<MyRecipes> {
   Widget build(BuildContext context) {
     final favoritesRecipes = ref.watch(favoritesRecipesProvider);
     final userRecipes = ref.watch(userRecipesProvider);
-    final isLoading = ref.watch(myRecipesProvider);
+    final isLoading = ref.watch(myRecipesControllerProvider);
     final textTheme = Theme.of(context).textTheme;
     return DefaultTabController(
       length: 2,
@@ -174,7 +174,7 @@ class _MyRecipesState extends ConsumerState<MyRecipes> {
                 onRefresh: () async {
                   if (!isLoading) {
                     ref
-                        .read(myRecipesProvider.notifier)
+                        .read(myRecipesControllerProvider.notifier)
                         .getUserRecipes(context: context);
                   }
                 },
@@ -218,6 +218,8 @@ class _MyRecipesState extends ConsumerState<MyRecipes> {
   }
 
   Future<void> getUserRecipes(BuildContext context) async {
-    await ref.read(myRecipesProvider.notifier).getUserRecipes(context: context);
+    await ref
+        .read(myRecipesControllerProvider.notifier)
+        .getUserRecipes(context: context);
   }
 }

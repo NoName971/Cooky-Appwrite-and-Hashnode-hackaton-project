@@ -7,7 +7,8 @@ import 'package:hackaton_v1/main.dart';
 import 'package:hackaton_v1/services/auth_service.dart';
 import 'package:hackaton_v1/services/user_service.dart';
 
-final settingsProvider = StateNotifierProvider<SettingsController, bool>((ref) {
+final settingsControllerProvider =
+    StateNotifierProvider<SettingsController, bool>((ref) {
   final authService = ref.watch(authServiceProvider);
   final userService = ref.watch(userServiceProvider);
   return SettingsController(
@@ -125,6 +126,26 @@ class SettingsController extends StateNotifier<bool> {
       state = !false;
 
       showSnackBar(context, e.toString());
+    }
+  }
+
+  void sendAccountVerificationEmail({
+    required String email,
+    required BuildContext context,
+  }) async {
+    state = !state;
+    final response = await _authService.sendAccountVerificationEmail(
+      email: email,
+    );
+    state = !state;
+    if (response.hasSucceded) {
+      if (context.mounted) {
+        showSnackBar(context, 'Email verification link sent');
+      }
+    } else {
+      if (context.mounted) {
+        showSnackBar(context, response.failure!.message);
+      }
     }
   }
 }

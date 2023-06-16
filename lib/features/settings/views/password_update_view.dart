@@ -47,7 +47,8 @@ class _PasswordChangeViewState extends ConsumerState<PasswordChangeView> {
     final obscureText2 = ref.watch(obscureTextProvider2);
 
     final textTheme = Theme.of(context).textTheme;
-    ref.listen(settingsProvider.select((value) => value), (previous, next) {
+    ref.listen(settingsControllerProvider.select((value) => value),
+        (previous, next) {
       if (next) {
         showLoadingIndicator(
           context: context,
@@ -118,7 +119,7 @@ class _PasswordChangeViewState extends ConsumerState<PasswordChangeView> {
                 child: const Text('Update'),
                 onPressed: () {
                   FocusScope.of(context).unfocus();
-                  ref.read(settingsProvider.notifier).updatePassword(
+                  ref.read(settingsControllerProvider.notifier).updatePassword(
                         context: context,
                         password: passwordTextEditingController.text,
                         oldPassword: oldPasswordTextEditingController.text,

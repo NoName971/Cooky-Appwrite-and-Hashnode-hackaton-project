@@ -7,24 +7,27 @@ class UserModel {
   final String name;
   final String uid;
   final List favorites;
+  final bool isVerified;
   UserModel({
     required this.email,
     required this.name,
     required this.uid,
     this.favorites = const [],
+    this.isVerified = false,
   });
 
-  UserModel copyWith({
-    String? email,
-    String? name,
-    String? uid,
-    List? favorites,
-  }) {
+  UserModel copyWith(
+      {String? email,
+      String? name,
+      String? uid,
+      List? favorites,
+      bool? isVerified}) {
     return UserModel(
       email: email ?? this.email,
       name: name ?? this.name,
       uid: uid ?? this.uid,
       favorites: favorites ?? this.favorites,
+      isVerified: isVerified ?? this.isVerified,
     );
   }
 

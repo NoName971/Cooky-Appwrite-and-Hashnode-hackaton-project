@@ -29,6 +29,7 @@ final currentAccountProvider = FutureProvider((ref) async {
           email: currentUser!.email,
           name: currentUser.name,
           uid: currentUser.$id,
+          isVerified: currentUser.emailVerification,
         ),
       );
   return currentUser;
@@ -110,6 +111,31 @@ class AuthController extends StateNotifier<bool> {
           context,
           HomeView.route(),
           (route) => false,
+        );
+      }
+    } else {
+      if (context.mounted) {
+        showSnackBar(context, response.failure!.message);
+      }
+    }
+  }
+
+  void sendPasswordRecoveryEmail({
+    required String email,
+    required BuildContext context,
+  }) async {
+    state = !state;
+    final response = await _authService.sendPasswordRecoveryEmail(
+      email: email,
+    );
+    state = !state;
+    if (response.hasSucceded) {
+      if (context.mounted) {
+        Navigator.pop(context);
+        showSnackBar(
+          context,
+          'Password recovery email sent',
+          const Duration(seconds: 10),
         );
       }
     } else {

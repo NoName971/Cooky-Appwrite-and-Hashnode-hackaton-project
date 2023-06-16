@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackaton_v1/common/appbar.dart';
 import 'package:hackaton_v1/common/custom_textfield.dart';
+import 'package:hackaton_v1/controllers/auth_controller.dart';
 import 'package:hackaton_v1/helpers/extensions.dart';
 import 'package:hackaton_v1/features/create_recipe/widgets/textfield_label_widget.dart';
 import 'package:hackaton_v1/controllers/settings_controller.dart';
@@ -9,21 +10,22 @@ import 'package:hackaton_v1/controllers/settings_controller.dart';
 import '../../../common/custom_button.dart';
 import '../../../helpers/utils.dart';
 
-class FullNameUpdate extends ConsumerStatefulWidget {
+class PasswordRecoveryView extends ConsumerStatefulWidget {
   static route() =>
-      MaterialPageRoute(builder: ((context) => const FullNameUpdate()));
-  const FullNameUpdate({super.key});
+      MaterialPageRoute(builder: ((context) => const PasswordRecoveryView()));
+  const PasswordRecoveryView({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _FullNameUpdateState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _PasswordRecoveryViewState();
 }
 
-class _FullNameUpdateState extends ConsumerState<FullNameUpdate> {
-  TextEditingController newFullNameController = TextEditingController();
+class _PasswordRecoveryViewState extends ConsumerState<PasswordRecoveryView> {
+  TextEditingController emailController = TextEditingController();
 
   @override
   void dispose() {
-    newFullNameController.dispose();
+    emailController.dispose();
     super.dispose();
   }
 
@@ -44,7 +46,7 @@ class _FullNameUpdateState extends ConsumerState<FullNameUpdate> {
     });
     return Scaffold(
       appBar: appBar(
-        const Text('Update name'),
+        const Text('Forgot password'),
       ),
       body: Form(
         key: _formKey,
@@ -52,15 +54,18 @@ class _FullNameUpdateState extends ConsumerState<FullNameUpdate> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextFieldLabel(textTheme: textTheme, label: 'New name'),
+              TextFieldLabel(
+                textTheme: textTheme,
+                label: 'Enter your email address',
+              ),
               const SizedBox(
                 height: 10,
               ),
               CustomTextField(
-                controller: newFullNameController,
+                controller: emailController,
                 validator: (value) {
-                  if (value == null || value.length < 5) {
-                    return '5 characters minimum';
+                  if (value == null || value.isEmpty) {
+                    return 'Email required';
                   }
                   return null;
                 },
@@ -73,17 +78,17 @@ class _FullNameUpdateState extends ConsumerState<FullNameUpdate> {
                 child: CustomButton(
                   buttonType: ButtonType.filled,
                   buttonSize: ButtonSize.large,
-                  child: const Text('Update'),
+                  child: const Text('Recover password'),
                   onPressed: () {
                     final validation = _formKey.currentState!.validate();
                     if (validation) {
                       FocusScope.of(context).unfocus();
-                      if (newFullNameController.text.isNotEmpty) {
+                      if (emailController.text.isNotEmpty) {
                         ref
-                            .read(settingsControllerProvider.notifier)
-                            .updateFullName(
+                            .read(authControllerProvider.notifier)
+                            .sendPasswordRecoveryEmail(
+                              email: emailController.text,
                               context: context,
-                              name: newFullNameController.text,
                             );
                       }
                     }

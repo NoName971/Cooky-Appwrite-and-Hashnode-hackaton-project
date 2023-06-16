@@ -74,11 +74,11 @@ class _RecipeCreationViewState extends ConsumerState<RecipeCreationView> {
     final titleTextEditingController = ref.watch(titleProvider);
     final descriptionTextEditingController = ref.watch(descriptionProvider);
     final cookingTimeTextEditingController = ref.watch(cookingTimeProvider);
-    final isLoading = ref.watch(recipeCreationProvider);
+    final isLoading = ref.watch(recipeCreationControllerProvider);
     List<String> ingredients = ref.watch(ingredientsProvider);
 
     ref.listen(
-      recipeCreationProvider.select((value) => value),
+      recipeCreationControllerProvider.select((value) => value),
       (previous, next) {
         if (next) {
           showLoadingIndicator(
@@ -109,7 +109,9 @@ class _RecipeCreationViewState extends ConsumerState<RecipeCreationView> {
                 }
                 final attachments =
                     cookingSteps.map((e) => e.attachment).toList();
-                await ref.read(recipeCreationProvider.notifier).createRecipe(
+                await ref
+                    .read(recipeCreationControllerProvider.notifier)
+                    .createRecipe(
                       title: titleTextEditingController.text,
                       description: descriptionTextEditingController.text,
                       illustrationPic: mainPic,
@@ -191,7 +193,7 @@ class _RecipeCreationViewState extends ConsumerState<RecipeCreationView> {
                       onTap: () async {
                         final image = await pickImage();
                         final imageId = await ref
-                            .read(recipeCreationProvider.notifier)
+                            .read(recipeCreationControllerProvider.notifier)
                             .uploadAttachment(
                               fileName: generateFileName('mainPic'),
                               filePath: image!.path,
@@ -224,7 +226,7 @@ class _RecipeCreationViewState extends ConsumerState<RecipeCreationView> {
                           onDelete: () {
                             Navigator.pop(context);
                             ref
-                                .read(recipeCreationProvider.notifier)
+                                .read(recipeCreationControllerProvider.notifier)
                                 .deleteAttachment(mainPic);
                             ref
                                 .read(mainPictureProvider.notifier)
@@ -236,7 +238,7 @@ class _RecipeCreationViewState extends ConsumerState<RecipeCreationView> {
                             Navigator.pop(context);
                             final image = await pickImage();
                             final imageId = await ref
-                                .read(recipeCreationProvider.notifier)
+                                .read(recipeCreationControllerProvider.notifier)
                                 .uploadAttachment(
                                   fileName: generateFileName('mainPic'),
                                   filePath: image!.path,
