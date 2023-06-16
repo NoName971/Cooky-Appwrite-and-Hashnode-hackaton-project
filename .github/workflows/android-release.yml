@@ -32,7 +32,8 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           # 11
-          flutter-version: "3.0.0"
+          flutter-version: "3.10.0"
+          sdk-version: "3.0.1"
           channel: "stable"
           cache: true
       # 12
@@ -41,4 +42,4 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Start release build
-        run: flutter build appbundle
+        run: flutter build apk --debug --split-per-abi

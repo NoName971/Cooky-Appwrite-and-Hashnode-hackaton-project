@@ -120,6 +120,7 @@ class AuthService implements IAuthService {
     }
   }
 
+  @override
   FutureOr updateFullName({
     required String name,
   }) async {
@@ -139,6 +140,7 @@ class AuthService implements IAuthService {
     }
   }
 
+  @override
   FutureOr sendPasswordRecoveryEmail({
     required String email,
   }) async {
@@ -161,6 +163,7 @@ class AuthService implements IAuthService {
     }
   }
 
+  @override
   FutureOr sendAccountVerificationEmail({
     required String email,
   }) async {
